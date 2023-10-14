@@ -3,6 +3,9 @@ package com.example.group4_web_project.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.util.Objects;
 
 @Entity
@@ -14,6 +17,8 @@ public class User {
     @Column(name = "user_id")
     private int id;
 
+    @NotNull(message = "Name can't be empty")
+    @Size(min = 2, max = 20, message = "Name should be between 2 and 20 symbols")
     @Column(name = "username")
     private String username;
 
