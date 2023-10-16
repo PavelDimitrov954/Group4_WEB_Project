@@ -1,12 +1,23 @@
 package com.example.group4_web_project.repositories;
 
+import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository{
+    private final SessionFactory sessionFactory;
+
+    @Autowired
+    public UserRepositoryImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
     @Override
     public List<User> get() {
         return null;
@@ -19,7 +30,17 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public User get(String username) {
-        return null;
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where username = :username", User.class);
+            query.setParameter("username", username);
+
+            List<User> result = query.list();
+            if (result.size() == 0) {
+                throw new EntityNotFoundException("User", "username", username);
+            }
+
+            return result.get(0);
+        }
     }
 
     @Override
@@ -34,7 +55,12 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public void register(User user, String phoneNumber) {
-
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.persist(user);
+            //TODO save phone number
+            session.getTransaction().commit();
+        }
     }
 
     @Override

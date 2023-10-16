@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface PostRepository {
 
-    List<Post> get(FilterOptions filterOptions);  // Borko
+    List<Post> get(FilterOptions filterOptions);  // Borko TODO
     Post get(int id);   // Monika
     int getPostCount(); // Pavel
-    void create(Post post); // Borko
+    void create(Post post); // Borko DONE
     void update(Post post);  // Monika
     void delete(int id);    // Pavel
 }
