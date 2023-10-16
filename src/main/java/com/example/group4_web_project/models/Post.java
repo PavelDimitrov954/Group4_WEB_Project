@@ -1,9 +1,8 @@
 package com.example.group4_web_project.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,7 +13,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private int id;
-
+    @JsonIgnoreProperties({"id", "email", "firstName", "lastName", "admin"})
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User createdBy;

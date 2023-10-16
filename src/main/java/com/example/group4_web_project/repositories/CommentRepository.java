@@ -6,12 +6,8 @@ import java.util.List;
 
 public interface CommentRepository {
 
-    List<Comment> get();
-
-    void create(Comment comment);
-
-    void update(Comment comment);
-
-
-
+    List<Comment> get();    // Borko
+    void create(Comment comment);   // Monika
+    void update(Comment comment);   // Pavel
+    void delete(Comment comment);   // Borko
 }

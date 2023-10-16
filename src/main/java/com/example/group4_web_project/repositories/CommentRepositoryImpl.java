@@ -21,4 +21,9 @@ public class CommentRepositoryImpl implements CommentRepository{
     public void update(Comment comment) {
 
     }
+
+    @Override
+    public void delete(Comment comment) {
+
+    }
 }

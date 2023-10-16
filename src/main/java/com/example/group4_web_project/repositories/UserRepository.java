@@ -6,9 +6,12 @@ import java.util.List;
 
 public interface UserRepository {
 
-    List<User> get();
-    List<User> get(int id);
-
-    void register(User user);
-    void register(User user, String phoneNumber );
+    List<User> get();  // Monika
+    User get(int id); //Pavel
+    User get(String username);  // Borko
+    int getUserCount();  // Monika
+    void register(User user);  // Pavel
+    void register(User user, String phoneNumber);  // Borko
+    void update(User user);  // Monika
+    void makeUserAdmin(User user, String phoneNumber);  // Pavel
 }

@@ -1,5 +1,6 @@
 package com.example.group4_web_project.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;

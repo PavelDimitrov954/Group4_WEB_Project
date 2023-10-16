@@ -13,8 +13,18 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public List<User> get(int id) {
+    public User get(int id) {
         return null;
+    }
+
+    @Override
+    public User get(String username) {
+        return null;
+    }
+
+    @Override
+    public int getUserCount() {
+        return 0;
     }
 
     @Override
@@ -24,6 +34,16 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public void register(User user, String phoneNumber) {
+
+    }
+
+    @Override
+    public void update(User user) {
+
+    }
+
+    @Override
+    public void makeUserAdmin(User user, String phoneNumber) {
 
     }
 }

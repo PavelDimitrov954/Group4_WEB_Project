@@ -1,4 +1,4 @@
 package com.example.group4_web_project.controllers;
 
-public class UserController {
+public class UserRestController {
 }
