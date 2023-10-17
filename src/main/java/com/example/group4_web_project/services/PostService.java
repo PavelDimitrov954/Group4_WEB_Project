@@ -5,4 +5,5 @@ public interface PostService {
 
     Post get(int id);
     void update(Post post);
+    int getPostCount();
 }

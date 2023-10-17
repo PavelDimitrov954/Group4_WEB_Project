@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.group4_web_project.models.Post;
 
 @Service
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
 
@@ -22,6 +22,11 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public void update(Post post) {
-     postRepository.update(post);
+        postRepository.update(post);
+    }
+
+    @Override
+    public int getPostCount() {
+        return postRepository.getPostCount();
     }
 }

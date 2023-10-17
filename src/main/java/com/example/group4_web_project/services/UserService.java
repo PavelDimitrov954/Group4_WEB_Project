@@ -7,6 +7,8 @@ import java.util.List;
 public interface UserService {
 
     List<User> get();
+    User get(int id);
+    void register(User user);
     int getUserCount();
     void update(User user);
 

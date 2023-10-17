@@ -34,4 +34,9 @@ public class PostRestController {
         postService.update(post);
 
     }
+
+    @GetMapping("/all")
+    public int getPostCount() {
+        return postService.getPostCount();
+    }
 }

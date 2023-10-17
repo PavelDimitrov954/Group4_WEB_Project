@@ -4,12 +4,8 @@ import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.Comment;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-<<<<<<< Updated upstream
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-=======
->>>>>>> Stashed changes
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,20 +15,12 @@ public class CommentRepositoryImpl implements CommentRepository{
 
     private final SessionFactory sessionFactory;
 
-<<<<<<< Updated upstream
+
     @Autowired
-
-
-=======
->>>>>>> Stashed changes
     public CommentRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     @Override
     public List<Comment> get() {
         return null;
