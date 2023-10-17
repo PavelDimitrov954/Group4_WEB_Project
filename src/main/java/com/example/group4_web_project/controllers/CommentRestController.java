@@ -28,6 +28,7 @@ public class CommentRestController {
   @Autowired
     public CommentRestController(CommentService commentService,
                                  CommentMapper commentMapper, AuthenticationHelper authenticationHelper) {
+    @Autowired
     public CommentRestController(CommentService commentService, CommentMapper commentMapper) {
         this.commentService = commentService;
         this.commentMapper = commentMapper;
