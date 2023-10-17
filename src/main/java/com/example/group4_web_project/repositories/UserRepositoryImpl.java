@@ -1,31 +1,56 @@
 package com.example.group4_web_project.repositories;
 
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
+
 import com.example.group4_web_project.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.group4_web_project.models.Post;
+import com.example.group4_web_project.models.User;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+
 import org.springframework.stereotype.Repository;
+import org.hibernate.SessionFactory;
 
 import java.util.List;
 
+
 @Repository
 public class UserRepositoryImpl implements UserRepository{
+
     private final SessionFactory sessionFactory;
 
     @Autowired
+
+
     public UserRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
+
+
+
     @Override
     public List<User> get() {
-        return null;
+
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User", User.class);
+            return query.list();
+        }
     }
 
     @Override
     public User get(int id) {
-        return null;
+        try (Session session = sessionFactory.openSession()) {
+            User user = session.get(User.class, id);
+            if (user == null) {
+                throw new EntityNotFoundException("Post", id);
+            }
+            return user;
+        }
     }
 
     @Override
@@ -45,7 +70,12 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public int getUserCount() {
-        return 0;
+
+       try (Session session = sessionFactory.openSession()){
+        Query query = session.createNativeQuery("select count(*) from users",Integer.class);
+        return (int)query.uniqueResult();
+       }
+       //return get().size();
     }
 
     @Override
@@ -65,6 +95,13 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public void update(User user) {
+
+        try (Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.merge(user);
+            session.getTransaction().commit();
+
+        }
 
     }
 

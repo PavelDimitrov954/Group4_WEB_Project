@@ -4,4 +4,5 @@ import  com.example.group4_web_project.models.Post;
 public interface PostService {
 
     Post get(int id);
+    void update(Post post);
 }

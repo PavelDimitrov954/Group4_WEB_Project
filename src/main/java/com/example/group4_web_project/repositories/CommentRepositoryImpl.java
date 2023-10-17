@@ -4,19 +4,26 @@ import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.Comment;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public class CommentRepositoryImpl implements CommentRepository{
+
     private final SessionFactory sessionFactory;
 
     @Autowired
+
+
     public CommentRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
+
+
     @Override
     public List<Comment> get() {
         return null;
@@ -35,6 +42,12 @@ public class CommentRepositoryImpl implements CommentRepository{
 
     @Override
     public void create(Comment comment) {
+        try (Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.persist(comment);
+            session.getTransaction().commit();
+
+        }
 
     }
 

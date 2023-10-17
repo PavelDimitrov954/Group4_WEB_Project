@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface UserService {
 
-
+    List<User> get();
+    int getUserCount();
+    void update(User user);
 
 
 }

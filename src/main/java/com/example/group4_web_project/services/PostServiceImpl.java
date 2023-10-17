@@ -19,4 +19,9 @@ public class PostServiceImpl implements PostService{
     public Post get(int id) {
         return postRepository.get(id);
     }
+
+    @Override
+    public void update(Post post) {
+     postRepository.update(post);
+    }
 }
