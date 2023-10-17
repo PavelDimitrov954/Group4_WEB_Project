@@ -21,13 +21,10 @@ public class CommentRepositoryImpl implements CommentRepository{
         this.sessionFactory = sessionFactory;
     }
 
-    @Override
-    public List<Comment> get() {
-        return null;
-    }
 
-    @Override
-    public Comment get(int id) {
+
+
+    private Comment get(int id) {
         try (Session session = sessionFactory.openSession()) {
             Comment comment = session.get(Comment.class, id);
             if (comment == null) {
@@ -36,6 +33,17 @@ public class CommentRepositoryImpl implements CommentRepository{
             return comment;
         }
     }
+
+    @Override
+    public List<Comment> getByPostId(int id) {
+        return null;
+    }
+
+    @Override
+    public List<Comment> getByUserId(int id) {
+        return null;
+    }
+
 
     @Override
     public void create(Comment comment) {

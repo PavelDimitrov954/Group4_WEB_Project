@@ -6,8 +6,10 @@ import java.util.List;
 
 public interface CommentRepository {
 
-    List<Comment> get();    // Borko TODO
-    Comment get(int id);    //Borko additional DONE
+
+
+    List<Comment> getByPostId(int id); //Borko
+    List<Comment> getByUserId(int id); //Borko
     void create(Comment comment);   // Monika
     void update(Comment comment);   // Pavel DONE
     void delete(int id);   // Borko DONE
