@@ -3,6 +3,7 @@ package com.example.group4_web_project.controllers;
 import com.example.group4_web_project.exceptions.AuthorizationException;
 import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
+import com.example.group4_web_project.helpers.AuthenticationHelper;
 import com.example.group4_web_project.helpers.UserMapper;
 import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.models.UserDto;
@@ -21,11 +22,13 @@ public class UserRestController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final AuthenticationHelper authenticationHelper;
 
 
-    public UserRestController(UserService userService, UserMapper userMapper) {
+    public UserRestController(UserService userService, UserMapper userMapper, AuthenticationHelper authenticationHelper) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.authenticationHelper = authenticationHelper;
     }
 
 
@@ -63,7 +66,20 @@ public class UserRestController {
         }
     }
     @PutMapping("/{id}")
-    public void update(@PathVariable int id, @RequestBody User user) {
-        userService.update(user);
+    public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody UserDto userDto) {
+
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            User updateUser = userMapper.fromDto(id,userDto);
+            userService.update(user,updateUser);
+
+        }catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
     }
 }

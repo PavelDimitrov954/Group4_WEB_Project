@@ -11,7 +11,7 @@ public interface UserService {
     User get(int id);
     void register(User user);
     int getUserCount();
-    void update(User user);
+    void update(User user, User user1);
 
 
 }

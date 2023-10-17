@@ -20,13 +20,12 @@ public class CommentMapper {
     }
 
 
-    public Comment fromDto(CommentDto commentDto){
+    public Comment fromDto(int userId, CommentDto commentDto){
 
         Comment comment = new Comment();
         comment.setContent(commentDto.getContent());
-        comment.setCreatedBy(userRepository.get(commentDto.getUserId()));
+        comment.setCreatedBy(userRepository.get(userId));
         comment.setPost(postRepository.get(commentDto.getPostId()));
-
         return comment;
     }
 }
