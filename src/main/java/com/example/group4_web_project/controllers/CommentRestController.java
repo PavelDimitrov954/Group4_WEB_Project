@@ -28,6 +28,7 @@ public class CommentRestController {
   @Autowired
     public CommentRestController(CommentService commentService,
                                  CommentMapper commentMapper, AuthenticationHelper authenticationHelper) {
+    public CommentRestController(CommentService commentService, CommentMapper commentMapper) {
         this.commentService = commentService;
         this.commentMapper = commentMapper;
       this.authenticationHelper = authenticationHelper;
@@ -46,5 +47,19 @@ public class CommentRestController {
           throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
       }
 
+    }
+
+    @PutMapping
+    public void update(@RequestBody CommentDto commentDto) {
+        try {
+            Comment comment = commentMapper.fromDto(commentDto);
+            commentService.update(comment);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
     }
 }
