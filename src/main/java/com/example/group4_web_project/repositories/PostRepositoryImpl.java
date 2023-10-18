@@ -38,9 +38,10 @@ public class PostRepositoryImpl implements PostRepository {
                 filters.add("createdBy.id = :user_id");
                 params.put("user_id", value);
             });
-            //TODO sort by number of comments
-            //TODO sort by id(date created)
-            //TODO sort order
+
+            //TODO sort by number of comments add comments count to Post
+
+
 
             StringBuilder queryString = new StringBuilder("from Post");
             if (!filters.isEmpty()) {
@@ -48,7 +49,7 @@ public class PostRepositoryImpl implements PostRepository {
                         .append(" where ")
                         .append(String.join(" and ", filters));
             }
-            //queryString.append(generateOrderBy(filterOptions));
+            queryString.append(generateOrderBy(filterOptions));
             Query<Post> query = session.createQuery(queryString.toString(), Post.class);
             query.setProperties(params);
             return query.list();
@@ -135,14 +136,8 @@ public class PostRepositoryImpl implements PostRepository {
 
         String orderBy = "";
         switch (filterOptions.getSortBy().get()) {
-            case "name":
-                orderBy = "name";
-                break;
-            case "abv":
-                orderBy = "abv";
-                break;
-            case "style":
-                orderBy = "style.name";
+            case "post_id":
+                orderBy = "id";
                 break;
             default:
                 return "";
