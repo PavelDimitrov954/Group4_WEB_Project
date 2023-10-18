@@ -16,11 +16,6 @@ public class CommentDto {
     }
 
 
-
-
-
-
-
     public int getPostId() {
         return postId;
     }

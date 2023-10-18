@@ -37,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository{
         try (Session session = sessionFactory.openSession()) {
             User user = session.get(User.class, id);
             if (user == null) {
-                throw new EntityNotFoundException("Post", id);
+                throw new EntityNotFoundException("User", id);
             }
             return user;
         }

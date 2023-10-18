@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/comment")
+@RequestMapping("/api/comments")
 public class CommentRestController {
 
     private final CommentService commentService;
@@ -48,17 +48,18 @@ public class CommentRestController {
 
     }
 
-//    @PutMapping
-//    public void update(@RequestBody CommentDto commentDto) {
-//        try {
-//            Comment comment = commentMapper.fromDto(commentDto);
-//            commentService.update(comment);
-//        } catch (EntityNotFoundException e) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-//        } catch (EntityDuplicateException e) {
-//            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-//        } catch (AuthorizationException e) {
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-//        }
-//    }
+    @PutMapping
+    public void update(@RequestHeader HttpHeaders headers, @RequestBody CommentDto commentDto) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            Comment comment = commentMapper.fromDto(user.getId(), commentDto);
+            commentService.update(comment);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
 }
