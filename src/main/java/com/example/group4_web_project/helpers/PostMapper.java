@@ -31,4 +31,13 @@ public class PostMapper {
         return postToUpdate;
 
     }
+    public Post fromDto(PostDto postDto){
+
+        Post post = new Post();
+        post.setTitle(postDto.getTitle());
+        post.setContent(postDto.getContent());
+
+        return  post;
+
+    }
 }

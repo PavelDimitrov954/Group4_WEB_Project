@@ -4,50 +4,47 @@ import java.util.Optional;
 
 public class FilterOptions {
 
-    private Optional<String> name;
-    private Optional<Double> minAbv;
-    private Optional<Double> maxAbv;
-    private Optional<Integer> styleId;
+    private Optional<String> title;
+    private Optional<String> createdBy;
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
 
-    public FilterOptions(
-            String name,
-            Double minAbv,
-            Double maxAbv,
-            Integer styleId,
-            String sortBy,
-            String sortOrder) {
-        this.name = Optional.ofNullable(name);
-        this.minAbv = Optional.ofNullable(minAbv);
-        this.maxAbv = Optional.ofNullable(maxAbv);
-        this.styleId = Optional.ofNullable(styleId);
+    public FilterOptions(String title, String createdBy, String sortBy, String sortOrder) {
+        this.title = Optional.ofNullable(title);
+        this.createdBy = Optional.ofNullable(createdBy);
         this.sortBy = Optional.ofNullable(sortBy);
         this.sortOrder = Optional.ofNullable(sortOrder);
     }
 
-    public Optional<String> getName() {
-        return name;
+    public Optional<String> getTitle() {
+        return title;
     }
 
-    public Optional<Double> getMinAbv() {
-        return minAbv;
+    public void setTitle(Optional<String> title) {
+        this.title = title;
     }
 
-    public Optional<Double> getMaxAbv() {
-        return maxAbv;
+    public Optional<String> getCreatedBy() {
+        return createdBy;
     }
 
-    public Optional<Integer> getStyleId() {
-        return styleId;
+    public void setCreatedBy(Optional<String> createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Optional<String> getSortBy() {
         return sortBy;
     }
 
+    public void setSortBy(Optional<String> sortBy) {
+        this.sortBy = sortBy;
+    }
+
     public Optional<String> getSortOrder() {
         return sortOrder;
     }
 
+    public void setSortOrder(Optional<String> sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 }

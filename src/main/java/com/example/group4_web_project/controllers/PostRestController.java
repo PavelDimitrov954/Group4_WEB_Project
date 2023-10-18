@@ -5,6 +5,7 @@ import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.helpers.AuthenticationHelper;
 import com.example.group4_web_project.helpers.PostMapper;
+import com.example.group4_web_project.models.FilterOptions;
 import com.example.group4_web_project.models.PostDto;
 import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.services.PostService;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -31,6 +34,16 @@ public class PostRestController {
         this.postMapper = postMapper;
     }
 
+    @GetMapping
+    public List<Post> get(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String createdBy,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortOrder
+    ) {
+        FilterOptions filterOptions = new FilterOptions(title, createdBy, sortBy, sortOrder);
+        return postService.get(filterOptions);
+    }
 
     @GetMapping("/{id}")
     public Post get(@PathVariable int id) {
@@ -39,6 +52,24 @@ public class PostRestController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
+    @PostMapping
+    public void create(@RequestHeader HttpHeaders headers, @RequestBody PostDto postDto) {
+
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            Post post = postMapper.fromDto(postDto);
+            postService.create(post, user);
+        }catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
+
+
     }
 
     @PutMapping("/{id}")

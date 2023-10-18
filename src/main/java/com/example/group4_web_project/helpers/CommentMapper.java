@@ -29,4 +29,5 @@ public class CommentMapper {
         comment.setPost(postRepository.get(commentDto.getPostId()));
         return comment;
     }
+
 }
