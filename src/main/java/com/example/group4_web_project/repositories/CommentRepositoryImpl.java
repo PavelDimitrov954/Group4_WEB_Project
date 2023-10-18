@@ -2,9 +2,11 @@ package com.example.group4_web_project.repositories;
 
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.Comment;
+import com.example.group4_web_project.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -36,12 +38,33 @@ public class CommentRepositoryImpl implements CommentRepository{
 
     @Override
     public List<Comment> getByPostId(int id) {
-        return null;
+        try (Session session = sessionFactory.openSession()) {
+            Query<Comment> query = session.createQuery("from Comment where post_id = :post_id", Comment.class);
+            query.setParameter("post_id", id);
+
+            List<Comment> result = query.list();
+            if (result.size() == 0) {
+                throw new EntityNotFoundException("Comment", "post_id", Integer.toString(id));
+            }
+
+            return result;
+        }
     }
 
     @Override
     public List<Comment> getByUserId(int id) {
-        return null;
+        try (Session session = sessionFactory.openSession()) {
+            Query<Comment> query = session.createQuery("from Comment where user_id = :user_id", Comment.class);
+            query.setParameter("user_id", id);
+
+            List<Comment> result = query.list();
+            if (result.size() == 0) {
+                throw new EntityNotFoundException("Comment", "user_id", Integer.toString(id));
+            }
+
+            return result;
+        }
+
     }
 
 

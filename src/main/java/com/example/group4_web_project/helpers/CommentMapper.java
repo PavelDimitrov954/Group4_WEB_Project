@@ -24,8 +24,8 @@ public class CommentMapper {
 
         Comment comment = new Comment();
         comment.setContent(commentDto.getContent());
-        comment.setCreatedBy(userRepository.get(userId));
-        comment.setPost(postRepository.get(commentDto.getPostId()));
+        comment.setUserId(userId);
+        comment.setPostId(commentDto.getPostId());
         return comment;
     }
 }

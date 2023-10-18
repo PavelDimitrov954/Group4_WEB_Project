@@ -3,6 +3,7 @@ package com.example.group4_web_project.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +24,8 @@ public class Post {
     private String content;
 
 
+    @Transient
+    private List<Comment> comments;
 
 
 
@@ -65,6 +68,13 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
+    }
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

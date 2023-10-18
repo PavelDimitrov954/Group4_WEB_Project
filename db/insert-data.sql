@@ -12,3 +12,6 @@ INSERT INTO forum.posts (post_id, title, content, user_id)
 VALUES (2, 'Title2', 'Description1', 2);
 INSERT INTO forum.posts (post_id, title, content, user_id)
 VALUES (3, 'Title3', 'Description2', 3);
+
+INSERT INTO forum.comments (comment_id, content, user_id, post_id)
+VALUES (1, 'TestsComment', 2, 1);

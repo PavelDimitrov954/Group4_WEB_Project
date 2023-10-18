@@ -15,12 +15,12 @@ public class Comment {
     private int id;
     @Column(name = "content")
     private String content;
-    @ManyToOne
+
     @JoinColumn(name = "user_id")
-    private User createdBy;
-    @ManyToOne
+    private int user_id;
+
     @JoinColumn(name = "post_id")
-    private Post post;
+    private int post_id;
 
     public Comment() {
     }
@@ -41,20 +41,21 @@ public class Comment {
         this.content = content;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
+
+    public int getUserId() {
+        return user_id;
     }
 
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
+    public void setUserId(int user_id) {
+        this.user_id = user_id;
     }
 
-    public Post getPost() {
-        return post;
+    public int getPostId() {
+        return post_id;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setPostId(int post_id) {
+        this.post_id = post_id;
     }
 
     @Override
