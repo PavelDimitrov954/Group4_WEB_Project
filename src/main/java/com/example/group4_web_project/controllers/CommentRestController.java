@@ -34,11 +34,11 @@ public class CommentRestController {
   }
 
 
-    @PostMapping()
+    @PostMapping( )
     public void create(@RequestHeader HttpHeaders headers, @RequestBody CommentDto commentDto) {
       try{
         User user = authenticationHelper.tryGetUser(headers);
-        Comment comment = commentMapper.fromDto(user.getId(),commentDto);
+        Comment comment = commentMapper.createFromDto(user.getId(),commentDto);
         commentService.create(comment);
       }catch (EntityNotFoundException e) {
           throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -48,12 +48,12 @@ public class CommentRestController {
 
     }
 
-    @PutMapping
-    public void update(@RequestHeader HttpHeaders headers, @RequestBody CommentDto commentDto) {
+    @PutMapping("/{id}")
+    public void update(@RequestHeader HttpHeaders headers,@PathVariable int id, @RequestBody CommentDto commentDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Comment comment = commentMapper.fromDto(user.getId(), commentDto);
-            commentService.update(comment);
+            Comment comment = commentMapper.updateFromDto(id, commentDto);
+            commentService.update(user,comment);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
@@ -62,4 +62,20 @@ public class CommentRestController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
-}
+
+
+    @DeleteMapping("/{id}")
+    public void delete (@RequestHeader HttpHeaders headers,@PathVariable int id){
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+
+            commentService.delete(user,id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+    }

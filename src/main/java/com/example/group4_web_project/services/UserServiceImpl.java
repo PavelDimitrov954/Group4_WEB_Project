@@ -56,15 +56,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User user1, User user) {
-        if(user1.getId() != user.getId() ){
+    public void update(User user, User upddateUser) {
+        if(user.getId() != upddateUser.getId() ){
             throw new  AuthorizationException(INVALID_AUTHORIZATION);
         }
 
-        else if(!user1.getUsername().equals(user.getUsername())){
+        else if(!user.getUsername().equals(upddateUser.getUsername())){
             throw new AuthorizationException(YOU_CANNOT_CHANGE_YOUR_USERNAME);
         }
 
-        userRepository.update(user);
+        userRepository.update(upddateUser);
     }
 }

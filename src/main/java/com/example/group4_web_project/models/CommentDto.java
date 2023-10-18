@@ -8,6 +8,8 @@ public class CommentDto {
 
     private int postId;
 
+
+
     public CommentDto() {
     }
 
@@ -15,10 +17,7 @@ public class CommentDto {
         return content;
     }
 
-
     public int getPostId() {
         return postId;
     }
-
-
 }

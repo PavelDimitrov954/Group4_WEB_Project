@@ -26,7 +26,7 @@ public class CommentRepositoryImpl implements CommentRepository{
 
 
 
-    private Comment get(int id) {
+    public Comment get(int id) {
         try (Session session = sessionFactory.openSession()) {
             Comment comment = session.get(Comment.class, id);
             if (comment == null) {
@@ -89,14 +89,16 @@ public class CommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
-    public void delete(int id) {
-        Comment commentToDelete = get(id);
+    public void delete(Comment comment) {
+
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.remove(commentToDelete);
+            session.remove(comment);
             session.getTransaction().commit();
         }
     }
+
+
 
 
 }

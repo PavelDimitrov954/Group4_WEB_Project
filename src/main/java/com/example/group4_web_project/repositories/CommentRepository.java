@@ -12,5 +12,7 @@ public interface CommentRepository {
     List<Comment> getByUserId(int id); //Borko
     void create(Comment comment);   // Monika
     void update(Comment comment);   // Pavel DONE
-    void delete(int id);   // Borko DONE
+    void delete(Comment comment);   // Borko DONE
+
+    Comment get(int id);
 }
