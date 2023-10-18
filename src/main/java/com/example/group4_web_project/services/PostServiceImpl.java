@@ -1,13 +1,17 @@
 package com.example.group4_web_project.services;
 
 import com.example.group4_web_project.exceptions.AuthorizationException;
+import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
+import com.example.group4_web_project.models.FilterOptions;
 import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.repositories.CommentRepository;
 import com.example.group4_web_project.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.group4_web_project.models.Post;
+
+import java.util.List;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -21,7 +25,9 @@ public class PostServiceImpl implements PostService {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
     }
-
+    public List<Post> get(FilterOptions filterOptions) {
+        return postRepository.get(filterOptions);
+    }
     @Override
     public Post get(int id) {
         Post post = postRepository.get(id);
@@ -33,6 +39,23 @@ public class PostServiceImpl implements PostService {
         }
         return post;
     //    return postRepository.get(id);
+    }
+
+    @Override
+    public void create(Post post, User user) {
+        boolean duplicateExists = true;
+        try {
+            postRepository.get(post.getTitle());
+        } catch (EntityNotFoundException e) {
+            duplicateExists = false;
+        }
+
+        if (duplicateExists) {
+            throw new EntityDuplicateException("Post", "title", post.getTitle());
+        }
+
+        post.setCreatedBy(user);
+        postRepository.create(post);
     }
 
     @Override

@@ -54,7 +54,7 @@ public class CommentRepositoryImpl implements CommentRepository{
     @Override
     public List<Comment> getByUserId(int id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Comment> query = session.createQuery("from Comment where user_id = :user_id", Comment.class);
+            Query<Comment> query = session.createQuery("from Comment where post.createdBy.id = :user_id", Comment.class);
             query.setParameter("user_id", id);
 
             List<Comment> result = query.list();
