@@ -1,5 +1,6 @@
 package com.example.group4_web_project.repositories;
 
+import com.example.group4_web_project.models.Comment;
 import com.example.group4_web_project.models.FilterOptions;
 import com.example.group4_web_project.models.Post;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
@@ -29,11 +30,17 @@ public class PostRepositoryImpl implements PostRepository {
         try (Session session = sessionFactory.openSession()) {
             List<String> filters = new ArrayList<>();
             Map<String, Object> params = new HashMap<>();
-
             filterOptions.getTitle().ifPresent(value -> {
                 filters.add("title like :title");
                 params.put("title", String.format("%%%s%%", value));
             });
+            filterOptions.getCreatedBy().ifPresent(value -> {
+                filters.add("createdBy.id = :user_id");
+                params.put("user_id", value);
+            });
+            //TODO sort by number of comments
+            //TODO sort by id(date created)
+            //TODO sort order
 
             StringBuilder queryString = new StringBuilder("from Post");
             if (!filters.isEmpty()) {
