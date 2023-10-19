@@ -25,35 +25,35 @@ public class CommentRestController {
     private final AuthenticationHelper authenticationHelper;
 
 
-  @Autowired
+    @Autowired
     public CommentRestController(CommentService commentService,
                                  CommentMapper commentMapper, AuthenticationHelper authenticationHelper) {
         this.commentService = commentService;
         this.commentMapper = commentMapper;
-      this.authenticationHelper = authenticationHelper;
-  }
+        this.authenticationHelper = authenticationHelper;
+    }
 
 
-    @PostMapping( )
+    @PostMapping()
     public void create(@RequestHeader HttpHeaders headers, @RequestBody CommentDto commentDto) {
-      try{
-        User user = authenticationHelper.tryGetUser(headers);
-        Comment comment = commentMapper.createFromDto(user.getId(),commentDto);
-        commentService.create(comment);
-      }catch (EntityNotFoundException e) {
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-      } catch (AuthorizationException e) {
-          throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-      }
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            Comment comment = commentMapper.createFromDto(user.getId(), commentDto);
+            commentService.create(comment);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
 
     }
 
     @PutMapping("/{id}")
-    public void update(@RequestHeader HttpHeaders headers,@PathVariable int id, @RequestBody CommentDto commentDto) {
+    public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody CommentDto commentDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             Comment comment = commentMapper.updateFromDto(id, commentDto);
-            commentService.update(user,comment);
+            commentService.update(user, comment);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
@@ -65,11 +65,11 @@ public class CommentRestController {
 
 
     @DeleteMapping("/{id}")
-    public void delete (@RequestHeader HttpHeaders headers,@PathVariable int id){
+    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
 
-            commentService.delete(user,id);
+            commentService.delete(user, id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
@@ -78,4 +78,4 @@ public class CommentRestController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
-    }
+}

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class CommentRepositoryImpl implements CommentRepository{
+public class CommentRepositoryImpl implements CommentRepository {
 
     private final SessionFactory sessionFactory;
 
@@ -22,8 +22,6 @@ public class CommentRepositoryImpl implements CommentRepository{
     public CommentRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-
-
 
 
     public Comment get(int id) {
@@ -70,7 +68,7 @@ public class CommentRepositoryImpl implements CommentRepository{
 
     @Override
     public void create(Comment comment) {
-        try (Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.persist(comment);
             session.getTransaction().commit();
@@ -97,8 +95,6 @@ public class CommentRepositoryImpl implements CommentRepository{
             session.getTransaction().commit();
         }
     }
-
-
 
 
 }

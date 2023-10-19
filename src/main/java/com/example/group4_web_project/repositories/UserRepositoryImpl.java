@@ -1,16 +1,19 @@
 package com.example.group4_web_project.repositories;
+
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 
 @Repository
-public class UserRepositoryImpl implements UserRepository{
+public class UserRepositoryImpl implements UserRepository {
 
     private final SessionFactory sessionFactory;
 
@@ -20,7 +23,6 @@ public class UserRepositoryImpl implements UserRepository{
     public UserRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-
 
 
     @Override
@@ -62,11 +64,11 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public int getUserCount() {
 
-       try (Session session = sessionFactory.openSession()){
-        Query query = session.createNativeQuery("select count(*) from users",Integer.class);
-        return (int)query.uniqueResult();
-       }
-       //return get().size();
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createNativeQuery("select count(*) from users", Integer.class);
+            return (int) query.uniqueResult();
+        }
+        //return get().size();
     }
 
     @Override
@@ -91,7 +93,7 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public void update(User user) {
 
-        try (Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.merge(user);
             session.getTransaction().commit();
@@ -102,6 +104,21 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public void makeUserAdmin(User user, String phoneNumber) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
 
+            user.setAdmin(true);
+
+            Query query = session.createNativeQuery(
+                    "INSERT INTO admin_phone_number (phone_number, user_id) VALUES (:phoneNumber, :userId)"
+            );
+            query.setParameter("phoneNumber", phoneNumber);
+            query.setParameter("userId", user.getId());
+            query.executeUpdate();
+
+            session.merge(user);
+
+            session.getTransaction().commit();
+        }
     }
 }

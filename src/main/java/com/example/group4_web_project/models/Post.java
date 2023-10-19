@@ -28,8 +28,6 @@ public class Post {
     private List<Comment> comments;
 
 
-
-
     public Post() {
     }
 
@@ -69,6 +67,7 @@ public class Post {
     public void setContent(String content) {
         this.content = content;
     }
+
     public List<Comment> getComments() {
         return comments;
     }

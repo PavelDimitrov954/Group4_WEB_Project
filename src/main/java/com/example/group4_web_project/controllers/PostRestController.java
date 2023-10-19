@@ -53,6 +53,7 @@ public class PostRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+
     @PostMapping
     public void create(@RequestHeader HttpHeaders headers, @RequestBody PostDto postDto) {
 
@@ -60,33 +61,31 @@ public class PostRestController {
             User user = authenticationHelper.tryGetUser(headers);
             Post post = postMapper.fromDto(postDto);
             postService.create(post, user);
-        }catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
-
 
 
     }
 
     @PutMapping("/{id}")
-    public void update(@RequestHeader HttpHeaders headers,@PathVariable int id, @RequestBody PostDto postDto) {
+    public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody PostDto postDto) {
 
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Post post = postMapper.fromDto(id,postDto);
-            postService.update(user,post);
-        }catch (EntityNotFoundException e) {
+            Post post = postMapper.fromDto(id, postDto);
+            postService.update(user, post);
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
-
 
 
     }

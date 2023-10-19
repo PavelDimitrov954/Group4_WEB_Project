@@ -1,10 +1,13 @@
 package com.example.group4_web_project.services;
+
 import com.example.group4_web_project.exceptions.AuthorizationException;
 import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.User;
+import com.example.group4_web_project.repositories.AdminPhoneNumberRepository;
 import com.example.group4_web_project.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -14,8 +17,11 @@ public class UserServiceImpl implements UserService {
     public static final String YOU_CANNOT_CHANGE_YOUR_USERNAME = "You cannot change your username";
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    private final AdminPhoneNumberRepository adminPhoneNumberRepository;
+
+    public UserServiceImpl(UserRepository userRepository, AdminPhoneNumberRepository adminPhoneNumberRepository) {
         this.userRepository = userRepository;
+        this.adminPhoneNumberRepository = adminPhoneNumberRepository;
     }
 
 
@@ -57,14 +63,43 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user, User upddateUser) {
-        if(user.getId() != upddateUser.getId() ){
-            throw new  AuthorizationException(INVALID_AUTHORIZATION);
-        }
-
-        else if(!user.getUsername().equals(upddateUser.getUsername())){
+        if (user.getId() != upddateUser.getId()) {
+            throw new AuthorizationException(INVALID_AUTHORIZATION);
+        } else if (!user.getUsername().equals(upddateUser.getUsername())) {
             throw new AuthorizationException(YOU_CANNOT_CHANGE_YOUR_USERNAME);
         }
 
         userRepository.update(upddateUser);
+    }
+
+    @Override
+    public void makeUserAdmin(User adminUser, int userId, String phoneNumber) {
+        // Check if the adminUser has the necessary permissions to make a user an admin
+        if (!adminUser.isAdmin()) {
+            throw new AuthorizationException("You don't have permission to make users admin.");
+        }
+
+        // Retrieve the user to be made an admin
+        User userToPromote = userRepository.get(userId);
+
+        if (userToPromote != null) {
+            // Check if the user is not already an admin
+            if (!userToPromote.isAdmin()) {
+                // Set the user as an admin
+                userToPromote.setAdmin(true);
+
+                // If a phoneNumber is provided, associate it with the user in the admin_phone_number table
+                if (phoneNumber != null) {
+                    adminPhoneNumberRepository.createAdminPhoneNumber(userToPromote, phoneNumber);
+                }
+
+                // Update the user in the database
+                userRepository.update(userToPromote);
+            } else {
+                throw new EntityDuplicateException(userToPromote.getUsername());
+            }
+        } else {
+            throw new EntityNotFoundException("User", userId);
+        }
     }
 }

@@ -7,7 +7,7 @@ import com.example.group4_web_project.repositories.CommentRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
     public static final String ONLY_CREATOR_CAN_MODIFY_A_COMMENT = "Only  creator or admin can modify a comment.";
     public static final String INVALID_AUTHORIZATION = "Invalid authorization";
@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService{
     public void update(User user, Comment comment) {
 
 
-        if(!user.equals(comment.getCreatedBy()) && !user.isAdmin()){
+        if (!user.equals(comment.getCreatedBy()) && !user.isAdmin()) {
             throw new AuthorizationException(ONLY_CREATOR_CAN_MODIFY_A_COMMENT);
         }
 
@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService{
         Comment comment = commentRepository.get(id);
 
 
-        if(!comment.getCreatedBy().equals(user) && !user.isAdmin() ){
+        if (!comment.getCreatedBy().equals(user) && !user.isAdmin()) {
             throw new AuthorizationException(INVALID_AUTHORIZATION);
         }
 

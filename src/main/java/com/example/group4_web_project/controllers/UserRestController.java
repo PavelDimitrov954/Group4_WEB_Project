@@ -53,7 +53,7 @@ public class UserRestController {
     }
 
     @PostMapping()
-    public void register(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDto userDto) {
+    public void register(@Valid @RequestBody UserDto userDto) {
         try {
             User user = userMapper.fromDto(userDto);
             userService.register(user);
@@ -65,21 +65,38 @@ public class UserRestController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
+
     @PutMapping("/{id}")
     public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody UserDto userDto) {
-
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            User updateUser = userMapper.fromDto(id,userDto);
-            userService.update(user,updateUser);
+            User updateUser = userMapper.fromDto(id, userDto);
+            userService.update(user, updateUser);
 
-        }catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
+    }
 
+    @PutMapping("/makeAdmin/{id}")
+    public void makeUserAdmin(
+            @RequestHeader HttpHeaders headers,
+            @PathVariable int id,
+            @RequestBody String phoneNumber
+    ) {
+        try {
+            User adminUser = authenticationHelper.tryGetUser(headers);
+            userService.makeUserAdmin(adminUser, id, phoneNumber);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 }

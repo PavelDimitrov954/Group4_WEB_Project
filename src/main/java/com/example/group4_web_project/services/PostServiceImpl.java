@@ -25,20 +25,22 @@ public class PostServiceImpl implements PostService {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
     }
+
     public List<Post> get(FilterOptions filterOptions) {
         return postRepository.get(filterOptions);
     }
+
     @Override
     public Post get(int id) {
         Post post = postRepository.get(id);
         try {
             post.setComments(commentRepository.getByPostId(id));
 
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             post.setComments(null);
         }
         return post;
-    //    return postRepository.get(id);
+        //    return postRepository.get(id);
     }
 
     @Override

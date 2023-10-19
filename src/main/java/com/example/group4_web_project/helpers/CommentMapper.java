@@ -24,7 +24,7 @@ public class CommentMapper {
     }
 
 
-    public Comment createFromDto(int userId, CommentDto commentDto){
+    public Comment createFromDto(int userId, CommentDto commentDto) {
         Comment comment = new Comment();
         comment.setContent(commentDto.getContent());
         comment.setCreatedBy(userRepository.get(userId));
@@ -33,7 +33,7 @@ public class CommentMapper {
         return comment;
     }
 
-    public Comment updateFromDto(int commentId, CommentDto commentDto){
+    public Comment updateFromDto(int commentId, CommentDto commentDto) {
 
         Comment comment = commentRepository.get(commentId);
         comment.setContent(commentDto.getContent());

@@ -42,7 +42,6 @@ public class PostRepositoryImpl implements PostRepository {
             //TODO sort by number of comments add comments count to Post
 
 
-
             StringBuilder queryString = new StringBuilder("from Post");
             if (!filters.isEmpty()) {
                 queryString
@@ -129,6 +128,7 @@ public class PostRepositoryImpl implements PostRepository {
             session.getTransaction().commit();
         }
     }
+
     private String generateOrderBy(FilterOptions filterOptions) {
         if (filterOptions.getSortBy().isEmpty()) {
             return "";

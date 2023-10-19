@@ -11,7 +11,6 @@ public class PostDto {
     }
 
 
-
     public String getTitle() {
         return title;
     }

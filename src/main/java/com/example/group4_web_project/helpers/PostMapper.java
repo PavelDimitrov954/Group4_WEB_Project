@@ -17,7 +17,7 @@ public class PostMapper {
         this.postRepository = postRepository;
     }
 
-    public Post fromDto(int postID, PostDto postDto){
+    public Post fromDto(int postID, PostDto postDto) {
 
         Post post = postRepository.get(postID);
 
@@ -31,13 +31,14 @@ public class PostMapper {
         return postToUpdate;
 
     }
-    public Post fromDto(PostDto postDto){
+
+    public Post fromDto(PostDto postDto) {
 
         Post post = new Post();
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
 
-        return  post;
+        return post;
 
     }
 }
