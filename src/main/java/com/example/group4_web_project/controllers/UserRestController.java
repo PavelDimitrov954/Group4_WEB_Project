@@ -86,7 +86,7 @@ public class UserRestController {
         }
     }
 
-    @PutMapping("/makeAdmin/{id}")
+    @PutMapping("/{id}/admin")
     public void makeUserAdmin(
             @RequestHeader HttpHeaders headers,
             @PathVariable int id,
@@ -104,7 +104,7 @@ public class UserRestController {
         }
     }
 
-    @PutMapping("/admin/block/{userId}")
+    @PutMapping("/{userId}/block")
     public void blockUser(@RequestHeader HttpHeaders headers, @PathVariable int userId) {
         try {
             User adminUser = authenticationHelper.tryGetUser(headers);
@@ -122,7 +122,7 @@ public class UserRestController {
         }
     }
 
-    @PutMapping("/admin/unblock/{userId}")
+    @PutMapping("/{userId}/unblock")
     public void unblockUser(@RequestHeader HttpHeaders headers, @PathVariable int userId) {
         try {
             User adminUser = authenticationHelper.tryGetUser(headers);
