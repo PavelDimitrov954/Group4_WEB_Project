@@ -94,4 +94,15 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException("User", userId);
         }
     }
+
+    public void blockUser(User user) {
+        user.setBlocked(true);
+        userRepository.update(user);
+    }
+
+    public void unblockUser(User user) {
+        user.setBlocked(false);
+        userRepository.update(user);
+    }
+
 }

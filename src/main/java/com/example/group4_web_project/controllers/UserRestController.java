@@ -108,14 +108,10 @@ public class UserRestController {
             User adminUser = authenticationHelper.tryGetUser(headers);
             User user = userService.get(userId);
 
-            if (user != null) {
-                if (adminUser.isAdmin()) {
-                    user.setBlocked(true);
-                } else {
-                    throw new AuthorizationException("You don't have permission to block users.");
-                }
+            if (adminUser.isAdmin()) {
+                userService.blockUser(user);
             } else {
-                throw new EntityNotFoundException("User", userId);
+                throw new AuthorizationException("You don't have permission to block users.");
             }
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
@@ -130,14 +126,10 @@ public class UserRestController {
             User adminUser = authenticationHelper.tryGetUser(headers);
             User user = userService.get(userId);
 
-            if (user != null) {
-                if (adminUser.isAdmin()) {
-                    user.setBlocked(false);
-                } else {
-                    throw new AuthorizationException("You don't have permission to unblock users.");
-                }
+            if (adminUser.isAdmin()) {
+                userService.unblockUser(user);
             } else {
-                throw new EntityNotFoundException("User", userId);
+                throw new AuthorizationException("You don't have permission to unblock users.");
             }
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
@@ -145,4 +137,5 @@ public class UserRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+
 }

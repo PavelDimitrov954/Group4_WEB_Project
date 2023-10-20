@@ -19,4 +19,8 @@ public interface UserService {
     void update(User user, User user1);
 
     void makeUserAdmin(User adminUser, int userId, String phoneNumber);
+
+    void blockUser(User user);
+
+    void unblockUser(User user);
 }
