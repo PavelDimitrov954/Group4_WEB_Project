@@ -8,6 +8,7 @@ import com.example.group4_web_project.helpers.UserMapper;
 import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.models.UserDto;
 import com.example.group4_web_project.services.UserService;
+import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@Api(tags = "User Management")
 public class UserRestController {
 
     private final UserService userService;
@@ -97,6 +99,50 @@ public class UserRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
+    @PutMapping("/admin/block/{userId}")
+    public void blockUser(@RequestHeader HttpHeaders headers, @PathVariable int userId) {
+        try {
+            User adminUser = authenticationHelper.tryGetUser(headers);
+            User user = userService.get(userId);
+
+            if (user != null) {
+                if (adminUser.isAdmin()) {
+                    user.setBlocked(true);
+                } else {
+                    throw new AuthorizationException("You don't have permission to block users.");
+                }
+            } else {
+                throw new EntityNotFoundException("User", userId);
+            }
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PutMapping("/admin/unblock/{userId}")
+    public void unblockUser(@RequestHeader HttpHeaders headers, @PathVariable int userId) {
+        try {
+            User adminUser = authenticationHelper.tryGetUser(headers);
+            User user = userService.get(userId);
+
+            if (user != null) {
+                if (adminUser.isAdmin()) {
+                    user.setBlocked(false);
+                } else {
+                    throw new AuthorizationException("You don't have permission to unblock users.");
+                }
+            } else {
+                throw new EntityNotFoundException("User", userId);
+            }
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 }

@@ -38,6 +38,9 @@ public class User {
     @Column(name = "is_admin")
     private boolean isAdmin;
 
+    @Column(name = "is_blocked")
+    private Boolean isBlocked;
+
     public User() {
     }
 
@@ -97,6 +100,13 @@ public class User {
         isAdmin = admin;
     }
 
+    public Boolean getBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        isBlocked = blocked;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -10,6 +10,7 @@ import com.example.group4_web_project.models.PostDto;
 import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.services.PostService;
 import com.example.group4_web_project.models.Post;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
+@Api(tags = "Post Management")
+
 public class PostRestController {
 
     private final PostService postService;

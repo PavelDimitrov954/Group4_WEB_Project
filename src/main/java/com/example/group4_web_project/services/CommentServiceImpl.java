@@ -21,8 +21,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void create(Comment comment) {
         commentRepository.create(comment);
-
-
     }
 
     @Override
