@@ -14,14 +14,17 @@ public class AdminPhoneNumber {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(targetEntity = User.class,cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     public AdminPhoneNumber() {
     }
 
-    public AdminPhoneNumber(int adminPhoneNumberId, String phoneNumber, User user) {
+
+
+
+    public AdminPhoneNumber( String phoneNumber, User user) {
         this.adminPhoneNumberId = adminPhoneNumberId;
         this.phoneNumber = phoneNumber;
         this.user = user;

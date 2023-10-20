@@ -93,6 +93,18 @@ public class PostRestController {
 
     }
 
+    @DeleteMapping("/{id}")
+    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            postService.delete(user, id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
     @GetMapping("/all")
     public int getPostCount() {
         return postService.getPostCount();

@@ -21,6 +21,6 @@ public interface UserService {
     void makeUserAdmin(User adminUser, int userId, String phoneNumber);
 
     void blockUser(User user);
-
+    void delete(int id, User user);
     void unblockUser(User user);
 }

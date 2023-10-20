@@ -20,7 +20,7 @@ public interface PostRepository {
 
     void update(Post post);  // Monika
 
-    void delete(int id);    // Pavel DONE
+    void delete(Post post);    // Pavel DONE
     void increaseCommentCount(Post post);
     void decreaseCommentCount(Post post);
     void likePost(Post post, User user);

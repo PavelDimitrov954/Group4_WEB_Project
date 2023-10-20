@@ -11,7 +11,8 @@ public interface UserRepository {
     User get(String username);  // Borko DONE
     int getUserCount();  // Monika
     void register(User user);  // Pavel     DONE
-    void register(User user, String phoneNumber);  // Borko TODO
+     // Borko TODO
     void update(User user);  // Monika
+    void delete(User user);  // Monika
     void makeUserAdmin(User user, String phoneNumber);  // Pavel
 }

@@ -17,6 +17,7 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     public static final String ONLY_CREATOR_CAN_MODIFY_A_POST = "Only  creator can modify a post.";
+    public static final String INVALID_AUTHORIZATION_DELETE = "IOnly  creator or admin can delete a post.";
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
@@ -71,6 +72,17 @@ public class PostServiceImpl implements PostService {
         post.setLikes(postRepository.get(post.getId()).getLikes());
         post.setCommentsCount(postRepository.get(post.getId()).getCommentsCount());
         postRepository.update(post);
+    }
+
+    @Override
+    public void delete(User user, int postId) {
+        Post post = get(postId);
+
+        if (user.getId() != post.getCreatedBy().getId() && !user.isAdmin()) {
+            throw new AuthorizationException(INVALID_AUTHORIZATION_DELETE);
+        }
+        postRepository.delete(post);
+
     }
 
 

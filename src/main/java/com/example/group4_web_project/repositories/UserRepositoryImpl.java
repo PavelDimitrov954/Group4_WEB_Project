@@ -81,21 +81,23 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void register(User user, String phoneNumber) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            session.persist(user);
-            //TODO save phone number
-            session.getTransaction().commit();
-        }
-    }
-
-    @Override
     public void update(User user) {
-
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.merge(user);
+            session.getTransaction().commit();
+
+        }
+
+    }
+
+
+    @Override
+    public void delete(User user) {
+
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.remove(user);
             session.getTransaction().commit();
 
         }

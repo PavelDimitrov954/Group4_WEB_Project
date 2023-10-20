@@ -41,8 +41,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.get(id);
     }
 
+
+
     @Override
-    public void register(User user, Optional<String> phoneNumber) {
+    public void register(User user) {
         boolean duplicateExists = true;
         try {
             userRepository.get(user.getUsername());
@@ -53,9 +55,7 @@ public class UserServiceImpl implements UserService {
         if (duplicateExists) {
             throw new EntityDuplicateException("User", "username", user.getUsername());
         }
-        if(phoneNumber.isPresent()){
-            userRepository.register(user,phoneNumber.get());
-        }
+
         else{
             userRepository.register(user);
        }
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user, User upddateUser) {
-        if (user.getId() != upddateUser.getId()) {
+        if (user.getId() != upddateUser.getId() && !user.isAdmin()) {
             throw new AuthorizationException(INVALID_AUTHORIZATION);
         } else if (!user.getUsername().equals(upddateUser.getUsername())) {
             throw new AuthorizationException(YOU_CANNOT_CHANGE_YOUR_USERNAME);
@@ -79,18 +79,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void makeUserAdmin(User adminUser, int userId, String phoneNumber) {
+        // Check if the adminUser has the necessary permissions to make a user an admin
         if (!adminUser.isAdmin()) {
             throw new AuthorizationException("You don't have permission to make users admin.");
         }
 
+        // Retrieve the user to be made an admin
         User userToPromote = userRepository.get(userId);
 
         if (userToPromote != null) {
+            // Check if the user is not already an admin
             if (!userToPromote.isAdmin()) {
+                // Set the user as an admin
                 userToPromote.setAdmin(true);
+
+                // If a phoneNumber is provided, associate it with the user in the admin_phone_number table
                 if (phoneNumber != null) {
                     adminPhoneNumberRepository.createAdminPhoneNumber(userToPromote, phoneNumber);
                 }
+
+                // Update the user in the database
                 userRepository.update(userToPromote);
             } else {
                 throw new EntityDuplicateException(userToPromote.getUsername());
@@ -98,6 +106,17 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new EntityNotFoundException("User", userId);
         }
+    }
+
+    @Override
+    public void delete(int id, User user) {
+
+        User deleteUsed = get(id);
+        if (deleteUsed.getId() != user.getId() && !user.isAdmin()) {
+            throw new AuthorizationException(INVALID_AUTHORIZATION);
+        }
+        userRepository.delete(deleteUsed);
+
     }
 
     public void blockUser(User user) {
