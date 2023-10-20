@@ -90,7 +90,7 @@ public class UserRestController {
     public void makeUserAdmin(
             @RequestHeader HttpHeaders headers,
             @PathVariable int id,
-            @RequestBody String phoneNumber
+            @RequestBody(required = false) String phoneNumber
     ) {
         try {
             User adminUser = authenticationHelper.tryGetUser(headers);
