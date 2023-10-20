@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -53,7 +54,8 @@ public class UserRestController {
     }
 
     @PostMapping()
-    public void register(@Valid @RequestBody UserDto userDto) {
+    public void register( @Valid @RequestBody UserDto userDto,
+                        @RequestParam(required = false) Optional<String> phoneNumber) {
         try {
             User user = userMapper.fromDto(userDto);
             userService.register(user);
@@ -65,9 +67,9 @@ public class UserRestController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
-
     @PutMapping("/{id}")
     public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody UserDto userDto) {
+
         try {
             User user = authenticationHelper.tryGetUser(headers);
             User updateUser = userMapper.fromDto(id, userDto);

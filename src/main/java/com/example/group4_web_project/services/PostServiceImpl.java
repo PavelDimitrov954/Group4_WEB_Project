@@ -56,6 +56,8 @@ public class PostServiceImpl implements PostService {
             throw new EntityDuplicateException("Post", "title", post.getTitle());
         }
 
+
+
         post.setCreatedBy(user);
         postRepository.create(post);
     }

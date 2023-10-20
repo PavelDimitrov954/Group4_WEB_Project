@@ -9,6 +9,7 @@ import com.example.group4_web_project.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User user) {
+    public void register(User user, Optional<String> phoneNumber) {
         boolean duplicateExists = true;
         try {
             userRepository.get(user.getUsername());
@@ -52,8 +53,12 @@ public class UserServiceImpl implements UserService {
         if (duplicateExists) {
             throw new EntityDuplicateException("User", "username", user.getUsername());
         }
-
-        userRepository.register(user);
+        if(phoneNumber.isPresent()){
+            userRepository.register(user,phoneNumber.get());
+        }
+        else{
+            userRepository.register(user);
+       }
     }
 
     @Override
