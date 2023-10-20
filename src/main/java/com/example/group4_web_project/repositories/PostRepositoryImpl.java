@@ -4,6 +4,7 @@ import com.example.group4_web_project.models.Comment;
 import com.example.group4_web_project.models.FilterOptions;
 import com.example.group4_web_project.models.Post;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
+import com.example.group4_web_project.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
@@ -38,8 +39,6 @@ public class PostRepositoryImpl implements PostRepository {
                 filters.add("createdBy.id = :user_id");
                 params.put("user_id", value);
             });
-
-            //TODO sort by number of comments add comments count to Post
 
 
             StringBuilder queryString = new StringBuilder("from Post");
@@ -129,15 +128,56 @@ public class PostRepositoryImpl implements PostRepository {
         }
     }
 
+    @Override
+    public void increaseCommentCount(Post post) {
+        try (Session session = sessionFactory.openSession()) {
+            post.setCommentsCount(post.getCommentsCount()+1);
+            session.beginTransaction();
+            session.merge(post);
+            session.getTransaction().commit();
+
+        }
+    }
+
+    @Override
+    public void decreaseCommentCount(Post post) {
+        try (Session session = sessionFactory.openSession()) {
+            post.setCommentsCount(post.getCommentsCount()-1);
+            session.beginTransaction();
+            session.merge(post);
+            session.getTransaction().commit();
+
+        }
+    }
+
+    @Override
+    public void likePost(Post post, User user) {
+
+    }
+
+    @Override
+    public void removeLike(Post post, User user) {
+
+    }
+
+    @Override
+    public void hasUserLikedPost(Post post, User user) {
+
+    }
+
     private String generateOrderBy(FilterOptions filterOptions) {
         if (filterOptions.getSortBy().isEmpty()) {
             return "";
         }
 
         String orderBy = "";
+        System.out.println(filterOptions.getSortBy().get());
         switch (filterOptions.getSortBy().get()) {
             case "post_id":
                 orderBy = "id";
+                break;
+            case "commentsCount":
+                orderBy = "commentsCount";
                 break;
             default:
                 return "";

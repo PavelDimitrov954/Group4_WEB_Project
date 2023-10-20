@@ -8,7 +8,8 @@ create table users
     first_name varchar(50) not null,
     last_name  varchar(50) not null,
     email      varchar(50) not null,
-    is_admin   boolean     not null
+    is_admin   boolean     not null,
+    is_blocked boolean     not null
 );
 
 create table posts
@@ -17,6 +18,8 @@ create table posts
     title   varchar(256) not null,
     content text(8192)   not null,
     user_id int          not null,
+    likes int   default 0,
+    comments_count int   default 0,
     constraint posts_users_user_id_fk
         foreign key (user_id) references users (user_id)
 );

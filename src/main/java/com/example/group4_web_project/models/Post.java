@@ -23,6 +23,11 @@ public class Post {
     @Column(name = "content")
     private String content;
 
+    @Column(name="likes")
+    private int likes;
+    @Column(name="comments_count")
+    private int commentsCount;
+
 
     @Transient
     private List<Comment> comments;
@@ -68,12 +73,28 @@ public class Post {
         this.content = content;
     }
 
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
     public List<Comment> getComments() {
         return comments;
     }
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public int getCommentsCount() {
+        return commentsCount;
+    }
+
+    public void setCommentsCount(int commentsCount) {
+        this.commentsCount = commentsCount;
     }
 
     @Override

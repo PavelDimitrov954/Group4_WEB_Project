@@ -59,6 +59,8 @@ public class PostServiceImpl implements PostService {
 
 
         post.setCreatedBy(user);
+        post.setCommentsCount(0);
+        post.setLikes(0);
         postRepository.create(post);
     }
 
@@ -66,7 +68,8 @@ public class PostServiceImpl implements PostService {
     public void update(User user, Post post) {
 
         checkModifyPermissions(post.getId(), user);
-
+        post.setLikes(postRepository.get(post.getId()).getLikes());
+        post.setCommentsCount(postRepository.get(post.getId()).getCommentsCount());
         postRepository.update(post);
     }
 

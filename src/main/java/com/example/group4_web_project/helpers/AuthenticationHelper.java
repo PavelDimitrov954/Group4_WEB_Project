@@ -31,8 +31,16 @@ public class AuthenticationHelper {
         String userInfo = headers.getFirst(AUTHORIZATION_HEADER_NAME);
         String username = getUsername(userInfo);
         String password = getPassword(userInfo);
-        return verifyAuthentication(username, password);
+
+        User user = verifyAuthentication(username, password);
+
+        if (user.isBlocked()) {
+            throw new AuthorizationException("Your account is blocked. Please contact the administrator for assistance.");
+        }
+
+        return user;
     }
+
 
     public User tryGetCurrentUser(HttpSession session) {
         String currentUsername = (String) session.getAttribute("currentUser");

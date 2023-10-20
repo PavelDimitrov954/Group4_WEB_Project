@@ -79,26 +79,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void makeUserAdmin(User adminUser, int userId, String phoneNumber) {
-        // Check if the adminUser has the necessary permissions to make a user an admin
         if (!adminUser.isAdmin()) {
             throw new AuthorizationException("You don't have permission to make users admin.");
         }
 
-        // Retrieve the user to be made an admin
         User userToPromote = userRepository.get(userId);
 
         if (userToPromote != null) {
-            // Check if the user is not already an admin
             if (!userToPromote.isAdmin()) {
-                // Set the user as an admin
                 userToPromote.setAdmin(true);
-
-                // If a phoneNumber is provided, associate it with the user in the admin_phone_number table
                 if (phoneNumber != null) {
                     adminPhoneNumberRepository.createAdminPhoneNumber(userToPromote, phoneNumber);
                 }
-
-                // Update the user in the database
                 userRepository.update(userToPromote);
             } else {
                 throw new EntityDuplicateException(userToPromote.getUsername());
@@ -107,4 +99,15 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException("User", userId);
         }
     }
+
+    public void blockUser(User user) {
+        user.setBlocked(true);
+        userRepository.update(user);
+    }
+
+    public void unblockUser(User user) {
+        user.setBlocked(false);
+        userRepository.update(user);
+    }
+
 }

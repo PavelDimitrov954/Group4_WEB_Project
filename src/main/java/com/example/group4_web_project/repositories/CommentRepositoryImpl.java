@@ -2,7 +2,6 @@ package com.example.group4_web_project.repositories;
 
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.Comment;
-import com.example.group4_web_project.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -16,11 +15,13 @@ import java.util.List;
 public class CommentRepositoryImpl implements CommentRepository {
 
     private final SessionFactory sessionFactory;
+    private final PostRepository postRepository;
 
 
     @Autowired
-    public CommentRepositoryImpl(SessionFactory sessionFactory) {
+    public CommentRepositoryImpl(SessionFactory sessionFactory, PostRepository postRepository) {
         this.sessionFactory = sessionFactory;
+        this.postRepository = postRepository;
     }
 
 
@@ -72,7 +73,7 @@ public class CommentRepositoryImpl implements CommentRepository {
             session.beginTransaction();
             session.persist(comment);
             session.getTransaction().commit();
-
+            postRepository.increaseCommentCount(comment.getPost());
         }
 
     }
@@ -92,6 +93,7 @@ public class CommentRepositoryImpl implements CommentRepository {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.remove(comment);
+            postRepository.decreaseCommentCount(comment.getPost());
             session.getTransaction().commit();
         }
     }

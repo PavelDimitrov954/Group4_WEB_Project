@@ -1,7 +1,5 @@
 package com.example.group4_web_project.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -37,6 +35,9 @@ public class User {
 
     @Column(name = "is_admin")
     private boolean isAdmin;
+
+    @Column(name = "is_blocked")
+    private Boolean isBlocked;
 
     public User() {
     }
@@ -97,6 +98,13 @@ public class User {
         isAdmin = admin;
     }
 
+    public Boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        isBlocked = blocked;
+    }
 
     @Override
     public boolean equals(Object o) {

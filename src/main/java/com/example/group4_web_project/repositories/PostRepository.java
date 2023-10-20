@@ -2,6 +2,7 @@ package com.example.group4_web_project.repositories;
 
 import com.example.group4_web_project.models.FilterOptions;
 import com.example.group4_web_project.models.Post;
+import com.example.group4_web_project.models.User;
 
 import java.util.List;
 
@@ -20,4 +21,9 @@ public interface PostRepository {
     void update(Post post);  // Monika
 
     void delete(int id);    // Pavel DONE
+    void increaseCommentCount(Post post);
+    void decreaseCommentCount(Post post);
+    void likePost(Post post, User user);
+    void removeLike(Post post, User user);
+    void hasUserLikedPost(Post post, User user);
 }

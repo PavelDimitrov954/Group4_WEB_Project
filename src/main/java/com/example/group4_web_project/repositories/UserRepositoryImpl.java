@@ -1,7 +1,6 @@
 package com.example.group4_web_project.repositories;
 
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
-import com.example.group4_web_project.models.AdminInfo;
 import com.example.group4_web_project.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -83,17 +82,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void register(User user, String phoneNumber) {
-        user.setAdmin(true);
-        register(user);
-        AdminInfo adminInfo = new AdminInfo(user, phoneNumber);
-
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.persist(adminInfo);
+            session.persist(user);
+            //TODO save phone number
             session.getTransaction().commit();
         }
-
-
     }
 
     @Override
@@ -115,13 +109,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             user.setAdmin(true);
 
-            Query query = session.createNativeQuery(
-                    "INSERT INTO admin_phone_number (phone_number, user_id) VALUES (:phoneNumber, :userId)"
-            );
-            query.setParameter("phoneNumber", phoneNumber);
-            query.setParameter("userId", user.getId());
-            query.executeUpdate();
-
+            session.persist(phoneNumber);
             session.merge(user);
 
             session.getTransaction().commit();
