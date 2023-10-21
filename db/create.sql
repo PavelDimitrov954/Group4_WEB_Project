@@ -9,7 +9,7 @@ create table users
     last_name  varchar(50) not null,
     email      varchar(50) not null,
     is_admin   boolean     not null,
-    is_blocked boolean     not null
+    is_blocked boolean     not null default false
 );
 
 create table posts

@@ -29,31 +29,64 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> get(FilterOptions filterOptions) {
         try (Session session = sessionFactory.openSession()) {
-            List<String> filters = new ArrayList<>();
-            Map<String, Object> params = new HashMap<>();
-            filterOptions.getTitle().ifPresent(value -> {
-                filters.add("title like :title");
-                params.put("title", String.format("%%%s%%", value));
-            });
-            filterOptions.getCreatedBy().ifPresent(value -> {
-                filters.add("createdBy.id = :user_id");
-                params.put("user_id", value);
-            });
+            if (filterOptions.getSortBy().isPresent() && filterOptions.getSortBy().get().equals("commentsCount")) {
+                System.out.println("AAAAAAAAAAAAAAA");
+                List<String> filters = new ArrayList<>();
+                Map<String, Object> params = new HashMap<>();
+                filterOptions.getTitle().ifPresent(value -> {
+                    filters.add("title like :title");
+                    params.put("title", String.format("%%%s%%", value));
+                });
+                filterOptions.getCreatedBy().ifPresent(value -> {
+                    filters.add("createdBy.id = :user_id");
+                    params.put("user_id", value);
+                });
 
 
-//            StringBuilder queryString = new StringBuilder("from Post");
-//            if (!filters.isEmpty()) {
-//                queryString
-//                        .append(" where ")
-//                        .append(String.join(" and ", filters));
-//            }
+            StringBuilder queryString = new StringBuilder("select count(comment), comment.post from Comment comment right join comment.post post ");
+            if (!filters.isEmpty()) {
+                queryString
+                        .append(" where ")
+                        .append(String.join(" and ", filters));
+            }
+
+            queryString.append(" group by post order by count(comment)");
+            if (filterOptions.getSortOrder().isPresent() && filterOptions.getSortOrder().get().equals("desc")){
+                queryString.append(" desc");
+            }
+            Query<Post> query = session.createQuery(queryString.toString());
 //
-//            queryString.append(generateOrderBy(filterOptions));
-//            Query<Post> query = session.createQuery(queryString.toString(), Post.class);
-            //TODO finish filtering and sorting
-            Query<Post> query = session.createQuery("select count(comment), comment.post from Comment comment join comment.post post where post.title like 'Title1' group by post");
-            query.setProperties(params);
-            return query.list();
+
+                query.setProperties(params);
+                return query.list();
+            } else {
+
+
+                List<String> filters = new ArrayList<>();
+                Map<String, Object> params = new HashMap<>();
+                filterOptions.getTitle().ifPresent(value -> {
+                    filters.add("title like :title");
+                    params.put("title", String.format("%%%s%%", value));
+                });
+                filterOptions.getCreatedBy().ifPresent(value -> {
+                    filters.add("createdBy.id = :user_id");
+                    params.put("user_id", value);
+                });
+
+
+            StringBuilder queryString = new StringBuilder("from Post");
+            if (!filters.isEmpty()) {
+                queryString
+                        .append(" where ")
+                        .append(String.join(" and ", filters));
+            }
+
+            queryString.append(generateOrderBy(filterOptions));
+            Query<Post> query = session.createQuery(queryString.toString(), Post.class);
+                
+                query.setProperties(params);
+                return query.list();
+            }
         }
     }
 
@@ -179,9 +212,6 @@ public class PostRepositoryImpl implements PostRepository {
             case "post_id":
                 orderBy = "id";
                 break;
-            case "commentsCount":
-                orderBy = "commentsCount";
-                break;
             default:
                 return "";
         }
@@ -195,5 +225,4 @@ public class PostRepositoryImpl implements PostRepository {
         return orderBy;
     }
 }
-
 
