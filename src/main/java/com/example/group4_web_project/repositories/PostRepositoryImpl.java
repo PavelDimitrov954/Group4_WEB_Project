@@ -41,14 +41,17 @@ public class PostRepositoryImpl implements PostRepository {
             });
 
 
-            StringBuilder queryString = new StringBuilder("from Post");
-            if (!filters.isEmpty()) {
-                queryString
-                        .append(" where ")
-                        .append(String.join(" and ", filters));
-            }
-            queryString.append(generateOrderBy(filterOptions));
-            Query<Post> query = session.createQuery(queryString.toString(), Post.class);
+//            StringBuilder queryString = new StringBuilder("from Post");
+//            if (!filters.isEmpty()) {
+//                queryString
+//                        .append(" where ")
+//                        .append(String.join(" and ", filters));
+//            }
+//
+//            queryString.append(generateOrderBy(filterOptions));
+//            Query<Post> query = session.createQuery(queryString.toString(), Post.class);
+            //TODO finish filtering and sorting
+            Query<Post> query = session.createQuery("select count(comment), comment.post from Comment comment join comment.post post where post.title like 'Title1' group by post");
             query.setProperties(params);
             return query.list();
         }
