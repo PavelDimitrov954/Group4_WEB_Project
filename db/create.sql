@@ -22,6 +22,8 @@ create table posts
     comments_count int   default 0,
     constraint posts_users_user_id_fk
         foreign key (user_id) references users (user_id)
+            ON DELETE CASCADE
+
 );
 
 create table comments
@@ -31,9 +33,12 @@ create table comments
     user_id    int          not null,
     post_id    int          not null,
     constraint comments_users_user_id_fk
-        foreign key (user_id) references users (user_id),
+        foreign key (user_id) references users (user_id)
+            ON DELETE CASCADE,
     constraint comments_posts_post_id_fk
         foreign key (post_id) references posts (post_id)
+            ON DELETE CASCADE
+
 );
 
 create table admin_phone_number
@@ -43,6 +48,8 @@ create table admin_phone_number
     user_id               int         not null,
     constraint admin_phone_number_users_user_id_fk
         foreign key (user_id) references users (user_id)
+            ON DELETE CASCADE
+
 );
 
 create table likes
@@ -51,8 +58,11 @@ create table likes
     post_id int not null,
     user_id int not null,
     constraint likes_posts_post_id_fk
-        foreign key (post_id) references posts (post_id),
+        foreign key (post_id) references posts (post_id)
+            ON DELETE CASCADE,
     constraint likes_users_user_id_fk
         foreign key (user_id) references users (user_id)
+            ON DELETE CASCADE
+
 );
 

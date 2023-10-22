@@ -1,6 +1,7 @@
 package com.example.group4_web_project.repositories;
 
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
+import com.example.group4_web_project.models.FilterOptionsUser;
 import com.example.group4_web_project.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Repository
@@ -25,14 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
 
-    @Override
-    public List<User> get() {
 
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User", User.class);
-            return query.list();
-        }
-    }
 
     @Override
     public User get(int id) {
@@ -43,6 +40,43 @@ public class UserRepositoryImpl implements UserRepository {
             }
             return user;
         }
+    }
+
+
+    @Override
+    public List <User> get(FilterOptionsUser filterOptionsUser) {
+
+        try(Session session = sessionFactory.openSession()){
+            List<String> filters = new ArrayList<>();
+            Map<String, Object> params = new HashMap<>();
+
+            filterOptionsUser.getUsername().ifPresent(value -> {
+                filters.add("username like :username");
+                params.put("username", value);
+            });
+
+            filterOptionsUser.getEmail().ifPresent(value -> {
+                filters.add(" email like :email ");
+                params.put("email", String.format("%%%s%%",value));
+            });
+
+            filterOptionsUser.getFirstName().ifPresent(value -> {
+                filters.add(" first_name like :first_name");
+                params.put("first_name", value);
+            });
+
+            StringBuilder queryString = new StringBuilder();
+            queryString.append("from User ");
+
+            if(!filters.isEmpty()){
+                queryString.append(" where ").append(String.join(" and ", filters ));
+            }
+
+            Query<User> query = session.createQuery(queryString.toString(),User.class);
+            query.setProperties(params);
+            return query.list();
+        }
+
     }
 
     @Override
@@ -68,7 +102,7 @@ public class UserRepositoryImpl implements UserRepository {
             Query query = session.createNativeQuery("select count(*) from users", Integer.class);
             return (int) query.uniqueResult();
         }
-        //return get().size();
+
     }
 
     @Override

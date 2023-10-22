@@ -1,13 +1,15 @@
 package com.example.group4_web_project.services;
 
+import com.example.group4_web_project.models.FilterOptionsUser;
 import com.example.group4_web_project.models.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<User> get();
 
+
+    List<User> get(FilterOptionsUser filterOptionsUser);
     User get(String username);
 
     User get(int id);

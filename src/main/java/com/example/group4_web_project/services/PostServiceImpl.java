@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class PostServiceImpl implements PostService {
 
-    public static final String ONLY_CREATOR_CAN_MODIFY_A_POST = "Only  creator can modify a post.";
+    public static final String ONLY_CREATOR_CAN_MODIFY_A_POST = "Only  creator or admin can modify a post.";
     public static final String INVALID_AUTHORIZATION_DELETE = "IOnly  creator or admin can delete a post.";
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
@@ -67,6 +67,16 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void update(User user, Post post) {
+        boolean duplicateExists = true;
+        try {
+            postRepository.get(post.getTitle());
+        } catch (EntityNotFoundException e) {
+            duplicateExists = false;
+        }
+
+        if (duplicateExists) {
+            throw new EntityDuplicateException("Post", "title", post.getTitle());
+        }
 
         checkModifyPermissions(post.getId(), user);
         post.setLikes(postRepository.get(post.getId()).getLikes());
@@ -93,7 +103,7 @@ public class PostServiceImpl implements PostService {
 
     private void checkModifyPermissions(int postId, User user) {
         Post post = postRepository.get(postId);
-        if (!post.getCreatedBy().equals(user)) {
+        if (!post.getCreatedBy().equals(user) && !user.isAdmin()) {
             throw new AuthorizationException(ONLY_CREATOR_CAN_MODIFY_A_POST);
         }
 

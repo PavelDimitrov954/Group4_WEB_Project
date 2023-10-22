@@ -30,7 +30,7 @@ public class PostRepositoryImpl implements PostRepository {
     public List<Post> get(FilterOptions filterOptions) {
         try (Session session = sessionFactory.openSession()) {
             if (filterOptions.getSortBy().isPresent() && filterOptions.getSortBy().get().equals("commentsCount")) {
-                System.out.println("AAAAAAAAAAAAAAA");
+
                 List<String> filters = new ArrayList<>();
                 Map<String, Object> params = new HashMap<>();
                 filterOptions.getTitle().ifPresent(value -> {
@@ -43,7 +43,7 @@ public class PostRepositoryImpl implements PostRepository {
                 });
 
 
-            StringBuilder queryString = new StringBuilder("select count(comment), comment.post from Comment comment right join comment.post post ");
+            StringBuilder queryString = new StringBuilder("select  comment.post from Comment comment right join comment.post post ");
             if (!filters.isEmpty()) {
                 queryString
                         .append(" where ")

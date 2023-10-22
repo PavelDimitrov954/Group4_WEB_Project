@@ -5,8 +5,7 @@ import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.helpers.AuthenticationHelper;
 import com.example.group4_web_project.helpers.UserMapper;
-import com.example.group4_web_project.models.User;
-import com.example.group4_web_project.models.UserDto;
+import com.example.group4_web_project.models.*;
 import com.example.group4_web_project.services.UserService;
 import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
@@ -35,14 +34,31 @@ public class UserRestController {
     }
 
 
+
+
     @GetMapping
-    public List<User> get() {
-        return userService.get();
+    public List<User> get(@RequestHeader HttpHeaders headers,
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String firstName
+
+    ) {
+        try {
+            authenticationHelper.tryGetUser(headers);
+            FilterOptionsUser filterOptionsUser = new FilterOptionsUser(username, email,firstName);
+
+            return userService.get(filterOptionsUser);
+        }catch (AuthorizationException e){
+            return userService.get(new FilterOptionsUser());
+        }
+
+
     }
 
     @GetMapping("/{id}")
     public User get(@PathVariable int id) {
         try {
+
             return userService.get(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -70,7 +86,7 @@ public class UserRestController {
         }
     }
     @PutMapping("/{id}")
-    public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody UserDto userDto) {
+    public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody @Valid UserDto userDto) {
 
         try {
             User user = authenticationHelper.tryGetUser(headers);
@@ -81,6 +97,17 @@ public class UserRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+    @DeleteMapping("/{id}")
+    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            userService.delete(id,user);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }

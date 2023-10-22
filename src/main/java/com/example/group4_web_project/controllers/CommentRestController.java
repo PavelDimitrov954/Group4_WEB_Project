@@ -11,6 +11,7 @@ import com.example.group4_web_project.models.CommentDto;
 import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.services.CommentService;
 import io.swagger.annotations.Api;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class CommentRestController {
 
 
     @PostMapping()
-    public void create(@RequestHeader HttpHeaders headers, @RequestBody CommentDto commentDto) {
+    public void create(@RequestHeader HttpHeaders headers, @RequestBody @Valid CommentDto commentDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             Comment comment = commentMapper.createFromDto(user.getId(), commentDto);
@@ -51,7 +52,7 @@ public class CommentRestController {
     }
 
     @PutMapping("/{id}")
-    public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody CommentDto commentDto) {
+    public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody @Valid CommentDto commentDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             Comment comment = commentMapper.updateFromDto(id, commentDto);

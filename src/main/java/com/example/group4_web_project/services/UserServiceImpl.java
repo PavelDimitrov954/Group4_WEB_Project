@@ -3,13 +3,17 @@ package com.example.group4_web_project.services;
 import com.example.group4_web_project.exceptions.AuthorizationException;
 import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
+import com.example.group4_web_project.models.Comment;
+import com.example.group4_web_project.models.FilterOptionsUser;
+import com.example.group4_web_project.models.Post;
 import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.repositories.AdminPhoneNumberRepository;
+import com.example.group4_web_project.repositories.CommentRepository;
+import com.example.group4_web_project.repositories.PostRepository;
 import com.example.group4_web_project.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,22 +22,30 @@ public class UserServiceImpl implements UserService {
     public static final String YOU_CANNOT_CHANGE_YOUR_USERNAME = "You cannot change your username";
     private final UserRepository userRepository;
 
+    private final CommentRepository commentRepository;
+
+    private final  PostRepository postRepository;
+
     private final AdminPhoneNumberRepository adminPhoneNumberRepository;
 
-    public UserServiceImpl(UserRepository userRepository, AdminPhoneNumberRepository adminPhoneNumberRepository) {
+    public UserServiceImpl(UserRepository userRepository, CommentRepository commentRepository, PostRepository postRepository, AdminPhoneNumberRepository adminPhoneNumberRepository) {
         this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
         this.adminPhoneNumberRepository = adminPhoneNumberRepository;
     }
 
 
+
+
     @Override
-    public List<User> get() {
-        return userRepository.get();
+    public List<User> get(FilterOptionsUser filterOptionsUser) {
+        return userRepository.get(filterOptionsUser);
     }
 
     @Override
     public User get(String username) {
-        return userRepository.get(username);
+    return userRepository.get(username);
     }
 
     @Override
@@ -105,7 +117,11 @@ public class UserServiceImpl implements UserService {
         if (deleteUsed.getId() != user.getId() && !user.isAdmin()) {
             throw new AuthorizationException(INVALID_AUTHORIZATION);
         }
+
+
         userRepository.delete(deleteUsed);
+
+
 
     }
 

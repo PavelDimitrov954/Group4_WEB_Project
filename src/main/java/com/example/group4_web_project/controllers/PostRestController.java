@@ -11,6 +11,7 @@ import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.services.PostService;
 import com.example.group4_web_project.models.Post;
 import io.swagger.annotations.Api;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -58,7 +59,7 @@ public class PostRestController {
     }
 
     @PostMapping
-    public void create(@RequestHeader HttpHeaders headers, @RequestBody PostDto postDto) {
+    public void create(@RequestHeader HttpHeaders headers, @RequestBody @Valid PostDto postDto) {
 
         try {
             User user = authenticationHelper.tryGetUser(headers);
@@ -76,7 +77,7 @@ public class PostRestController {
     }
 
     @PutMapping("/{id}")
-    public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody PostDto postDto) {
+    public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody @Valid PostDto postDto) {
 
         try {
             User user = authenticationHelper.tryGetUser(headers);
