@@ -3,6 +3,8 @@ package com.example.group4_web_project;
 import com.example.group4_web_project.models.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Random;
+
 public class Helpers {
     public static User createMockAdmin() {
         User mockUser = createMockUser();
@@ -49,7 +51,7 @@ public class Helpers {
                 );
     }
 
-    public static FilterOptionsUser createMockFilterOptionsUsr() {
+    public static FilterOptionsUser createMockFilterOptionsUser() {
         return new FilterOptionsUser(
                 "MockTitle",
                 "mock@user.com",
@@ -82,10 +84,7 @@ public class Helpers {
         return dto;
     }
 
-    /**
-     * Accepts an object and returns the stringified object.
-     * Useful when you need to pass a body to a HTTP request.
-     */
+
     public static String toJson(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);

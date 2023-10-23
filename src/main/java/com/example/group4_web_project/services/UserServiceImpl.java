@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
         if (user.getId() != upddateUser.getId() && !user.isAdmin()) {
             throw new AuthorizationException(INVALID_AUTHORIZATION);
         } else if (!user.getUsername().equals(upddateUser.getUsername())) {
-            throw new AuthorizationException(YOU_CANNOT_CHANGE_YOUR_USERNAME);
+            throw new IllegalArgumentException(YOU_CANNOT_CHANGE_YOUR_USERNAME);
         }
 
         userRepository.update(upddateUser);
