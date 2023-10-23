@@ -88,27 +88,28 @@ public class UserServiceImpl implements UserService {
 
         userRepository.update(upddateUser);
     }
-
+    
     @Override
     public void makeUserAdmin(User adminUser, int userId, String phoneNumber) {
         if (!adminUser.isAdmin()) {
             throw new AuthorizationException("You don't have permission to make users admin.");
         }
+
         User userToPromote = userRepository.get(userId);
-        if (userToPromote != null) {
-            if (!userToPromote.isAdmin()) {
-                userToPromote.setAdmin(true);
-                if (phoneNumber != null) {
-                    adminPhoneNumberRepository.createAdminPhoneNumber(userToPromote, phoneNumber);
-                }
-                userRepository.update(userToPromote);
-            } else {
-                throw new EntityDuplicateException(userToPromote.getUsername());
-            }
-        } else {
-            throw new EntityNotFoundException("User", userId);
+
+        if (userToPromote.isAdmin()) {
+            throw new EntityDuplicateException("User is already an admin: " + userToPromote.getUsername());
         }
+
+        userToPromote.setAdmin(true);
+
+        if (phoneNumber != null) {
+            adminPhoneNumberRepository.createAdminPhoneNumber(userToPromote, phoneNumber);
+        }
+
+        userRepository.update(userToPromote);
     }
+
 
     @Override
     public void delete(int id, User user) {

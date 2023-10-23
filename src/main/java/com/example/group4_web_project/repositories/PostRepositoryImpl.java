@@ -115,19 +115,14 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public int getPostCount() {
-        try (Session currentSession = sessionFactory.openSession()) {
-            // Create a native SQL query to count the posts
-            Query<?> countQuery = currentSession.createNativeQuery("SELECT COUNT(*) FROM posts");
+        try (Session session = sessionFactory.openSession()) {
+            Number postCount = (Number) session.createNativeQuery("SELECT COUNT(*) FROM posts")
+                    .uniqueResult();
 
-            // Execute the query and get the result as a BigInteger
-            Object result = countQuery.uniqueResult();
-
-            // Convert the result to an integer
-            int postCount = (result instanceof Number) ? ((Number) result).intValue() : 0;
-
-            return postCount;
+            return postCount != null ? postCount.intValue() : 0;
         }
     }
+
 
 
     @Override

@@ -66,8 +66,7 @@ public class UserRestController {
     }
 
     @PostMapping()
-    public void register( @Valid @RequestBody UserDto userDto,
-                        @RequestParam(required = false) Optional<String> phoneNumber) {
+    public void register( @Valid @RequestBody UserDto userDto) {
         try {
             User user = userMapper.fromDto(userDto);
             userService.register(user);

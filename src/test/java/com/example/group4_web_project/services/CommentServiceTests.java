@@ -3,6 +3,11 @@ package com.example.group4_web_project.services;
 import com.example.group4_web_project.models.Comment;
 import com.example.group4_web_project.repositories.CommentRepository;
 import org.junit.jupiter.api.Assertions;
+import com.example.group4_web_project.Helpers;
+import com.example.group4_web_project.exceptions.AuthorizationException;
+import com.example.group4_web_project.models.Comment;
+import com.example.group4_web_project.models.User;
+import com.example.group4_web_project.repositories.CommentRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,6 +16,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.group4_web_project.Helpers.createMockComment;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CommentServiceTests {
@@ -34,4 +42,38 @@ public class CommentServiceTests {
     }
 
 
+    private CommentRepository commentRepository;
+
+    @InjectMocks
+    private CommentServiceImpl commentService;
+
+    @Test
+    public void update_ShouldUpdateCommentByAdmin() {
+        User adminUser = Helpers.createMockAdmin();
+        Comment comment = Helpers.createMockComment();
+        when(commentRepository.get(comment.getId())).thenReturn(comment);
+
+        assertDoesNotThrow(() -> commentService.update(adminUser, comment));
+        verify(commentRepository, times(1)).update(comment);
+    }
+
+    @Test
+    public void update_ShouldUpdateCommentByCreator() {
+        User creatorUser = Helpers.createMockUser();
+        Comment comment = Helpers.createMockComment();
+        comment.setCreatedBy(creatorUser);
+        when(commentRepository.get(comment.getId())).thenReturn(comment);
+
+        assertDoesNotThrow(() -> commentService.update(creatorUser, comment));
+        verify(commentRepository, times(1)).update(comment);
+    }
+
+    @Test
+    public void update_ShouldThrowAuthorizationException() {
+        Comment comment = Helpers.createMockComment();
+        when(commentRepository.get(comment.getId())).thenReturn(comment);
+
+        User unauthorizedUser = Helpers.createMockUser();
+        assertThrows(AuthorizationException.class, () -> commentService.update(unauthorizedUser, comment));
+    }
 }
