@@ -18,11 +18,7 @@ public class FilterOptionsUser {
         this.firstName = Optional.ofNullable(firstName);
     }
 
-    public FilterOptionsUser() {
-        this.username = Optional.empty();
-        this.email = Optional.empty();
-        this.firstName = Optional.empty();
-    }
+
 
     public Optional<String> getUsername() {
         return username;

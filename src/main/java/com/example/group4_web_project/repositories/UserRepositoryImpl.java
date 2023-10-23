@@ -52,7 +52,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             filterOptionsUser.getUsername().ifPresent(value -> {
                 filters.add("username like :username");
-                params.put("username", value);
+                params.put("username", String.format("%%%s%%", value));
             });
 
             filterOptionsUser.getEmail().ifPresent(value -> {
@@ -62,7 +62,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             filterOptionsUser.getFirstName().ifPresent(value -> {
                 filters.add(" first_name like :first_name");
-                params.put("first_name", value);
+                params.put("first_name", String.format("%%%s%%", value));
             });
 
             StringBuilder queryString = new StringBuilder();

@@ -18,4 +18,12 @@ public class CommentDto {
     public int getPostId() {
         return postId;
     }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
 }

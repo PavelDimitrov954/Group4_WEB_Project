@@ -7,7 +7,7 @@ import com.example.group4_web_project.helpers.AuthenticationHelper;
 import com.example.group4_web_project.helpers.UserMapper;
 import com.example.group4_web_project.models.*;
 import com.example.group4_web_project.services.UserService;
-import io.swagger.annotations.Api;
+
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
-@Api(tags = "User Management")
+//@Api(tags = "User Management")
 public class UserRestController {
 
     private final UserService userService;
@@ -43,15 +43,9 @@ public class UserRestController {
             @RequestParam(required = false) String firstName
 
     ) {
-        try {
             authenticationHelper.tryGetUser(headers);
             FilterOptionsUser filterOptionsUser = new FilterOptionsUser(username, email,firstName);
-
             return userService.get(filterOptionsUser);
-        }catch (AuthorizationException e){
-            return userService.get(new FilterOptionsUser());
-        }
-
 
     }
 
