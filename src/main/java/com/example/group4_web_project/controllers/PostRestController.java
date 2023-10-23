@@ -23,7 +23,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/posts")
 @Api(tags = "Post Management")
-
 public class PostRestController {
 
     private final PostService postService;

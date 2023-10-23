@@ -9,20 +9,20 @@ public interface UserService {
 
 
 
-    List<User> get(FilterOptionsUser filterOptionsUser);
-    User get(String username);
+    List<User> get(FilterOptionsUser filterOptionsUser);    // Monika
+    User get(String username);      // Pavel
 
-    User get(int id);
+    User get(int id);       // Borko
 
-    void register(User user);
+    void register(User user);       // Monika
 
-    int getUserCount();
+    int getUserCount();     // Pavel
 
-    void update(User user, User user1);
+    void update(User user, User user1);     // Borko
 
-    void makeUserAdmin(User adminUser, int userId, String phoneNumber);
+    void makeUserAdmin(User adminUser, int userId, String phoneNumber); // Monika
 
-    void blockUser(User user);
-    void delete(int id, User user);
-    void unblockUser(User user);
+    void blockUser(User user);      // Pavel
+    void delete(int id, User user);     // Borko
+    void unblockUser(User user);        // Pavel
 }

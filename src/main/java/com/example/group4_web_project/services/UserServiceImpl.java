@@ -134,5 +134,4 @@ public class UserServiceImpl implements UserService {
         user.setBlocked(false);
         userRepository.update(user);
     }
-
 }

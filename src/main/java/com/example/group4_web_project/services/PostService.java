@@ -8,14 +8,15 @@ import org.hibernate.type.descriptor.jdbc.TinyIntAsSmallIntJdbcType;
 import java.util.List;
 
 public interface PostService {
-    List<Post> get(FilterOptions filterOptions);
+    List<Post> get(FilterOptions filterOptions);    // Monika
 
-    Post get(int id);
+    Post get(int id);       // Pavel
 
-    void create(Post post, User user);
+    void create(Post post, User user);      // Borko
 
-    void update(User user, Post post);
-    void delete(User user, int postId);
+    void update(User user, Post post);      // Monika
 
-    int getPostCount();
+    void delete(User user, int postId);     // Pavel
+
+    int getPostCount();         // Borko
 }
