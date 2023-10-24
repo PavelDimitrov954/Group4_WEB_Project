@@ -18,8 +18,6 @@ create table posts
     title   varchar(256) not null,
     content text(8192)   not null,
     user_id int          not null,
-    likes int   default 0,
-    comments_count int   default 0,
     constraint posts_users_user_id_fk
         foreign key (user_id) references users (user_id)
             ON DELETE CASCADE

@@ -4,6 +4,7 @@ import com.example.group4_web_project.exceptions.AuthorizationException;
 import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.FilterOptions;
+import com.example.group4_web_project.models.Like;
 import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.repositories.CommentRepository;
 import com.example.group4_web_project.repositories.PostRepository;
@@ -43,6 +44,8 @@ public class PostServiceImpl implements PostService {
         return post;
         //    return postRepository.get(id);
     }
+
+
 
     @Override
     public void create(Post post, User user) {
@@ -100,6 +103,36 @@ public class PostServiceImpl implements PostService {
     public int getPostCount() {
         return postRepository.getPostCount();
     }
+
+    @Override
+    public void likePost(User user, int postId) {
+        Post post = postRepository.get(postId);
+        if (postRepository.hasUserLikedPost(post, user)){
+            throw new AuthorizationException("User has already liked this post!");
+        } else {
+            Like like = new Like();
+            like.setCreatedBy(user);
+            like.setPost(post);
+            postRepository.likePost(like);
+        }
+//        long count = postRepository.getLikesCount(post);
+//        System.out.println(count);
+    }
+
+    @Override
+    public void removeLike(User user, int postId) {
+        Post post = postRepository.get(postId);
+        if (!postRepository.hasUserLikedPost(post, user)){
+            throw new AuthorizationException("User has not liked this post!");
+        } else {
+            Like like = postRepository.getLikeByPostAndUser(post,user);
+            postRepository.removeLike(like);
+        }
+
+//        long count = postRepository.getLikesCount(post);
+//        System.out.println(count);
+    }
+
 
     private void checkModifyPermissions(int postId, User user) {
         Post post = postRepository.get(postId);

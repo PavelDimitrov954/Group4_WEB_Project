@@ -19,4 +19,6 @@ public interface PostService {
     void delete(User user, int postId);     // Pavel
 
     int getPostCount();         // Borko
+    void likePost(User user, int postId);
+    void removeLike(User user, int postId);
 }

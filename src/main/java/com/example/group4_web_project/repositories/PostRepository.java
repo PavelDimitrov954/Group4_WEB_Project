@@ -1,6 +1,7 @@
 package com.example.group4_web_project.repositories;
 
 import com.example.group4_web_project.models.FilterOptions;
+import com.example.group4_web_project.models.Like;
 import com.example.group4_web_project.models.Post;
 import com.example.group4_web_project.models.User;
 
@@ -21,9 +22,10 @@ public interface PostRepository {
     void update(Post post);  // Monika
 
     void delete(Post post);    // Pavel DONE
-    void increaseCommentCount(Post post);
-    void decreaseCommentCount(Post post);
-    void likePost(Post post, User user);
-    void removeLike(Post post, User user);
-    void hasUserLikedPost(Post post, User user);
+    void likePost(Like like);
+    void removeLike(Like like);
+    boolean hasUserLikedPost(Post post, User user);
+    Like getLikeByPostAndUser(Post post, User user);
+
+    long getLikesCount(Post post);
 }

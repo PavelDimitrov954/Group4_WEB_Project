@@ -1,10 +1,7 @@
 package com.example.group4_web_project.repositories;
 
-import com.example.group4_web_project.models.Comment;
-import com.example.group4_web_project.models.FilterOptions;
-import com.example.group4_web_project.models.Post;
+import com.example.group4_web_project.models.*;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
-import com.example.group4_web_project.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
@@ -43,7 +40,7 @@ public class PostRepositoryImpl implements PostRepository {
                 });
 
 
-            StringBuilder queryString = new StringBuilder("select  comment.post from Comment comment right join comment.post post ");
+            StringBuilder queryString = new StringBuilder("select comment.post from Comment comment right join comment.post post ");
             if (!filters.isEmpty()) {
                 queryString
                         .append(" where ")
@@ -165,40 +162,68 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public void increaseCommentCount(Post post) {
+    public void likePost(Like like) {
         try (Session session = sessionFactory.openSession()) {
-            post.setCommentsCount(post.getCommentsCount()+1);
             session.beginTransaction();
-            session.merge(post);
+            session.persist(like);
             session.getTransaction().commit();
-
         }
     }
 
     @Override
-    public void decreaseCommentCount(Post post) {
+    public void removeLike(Like like) {
         try (Session session = sessionFactory.openSession()) {
-            post.setCommentsCount(post.getCommentsCount()-1);
             session.beginTransaction();
-            session.merge(post);
+            session.remove(like);
             session.getTransaction().commit();
+        }
+    }
 
+
+
+
+    @Override
+    public boolean hasUserLikedPost(Post post, User user) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Like> query = session.createQuery("from Like like where like.createdBy.id = :user_id and like.post.id = :post_id", Like.class);
+            query.setParameter("user_id", user.getId());
+            query.setParameter("post_id", post.getId());
+
+            List<Like> result = query.list();
+            if (result.size() == 0) {
+               return false;
+            }
+
+            return true;
+        }
+
+    }
+
+    @Override
+    public Like getLikeByPostAndUser(Post post, User user) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Like> query = session.createQuery("from Like like where like.createdBy.id = :user_id and like.post.id = :post_id", Like.class);
+            query.setParameter("user_id", user.getId());
+            query.setParameter("post_id", post.getId());
+
+            List<Like> result = query.list();
+
+            return result.get(0);
         }
     }
 
     @Override
-    public void likePost(Post post, User user) {
+    public long getLikesCount(Post post) {
+        try (Session currentSession = sessionFactory.openSession()) {
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session
+                    .createQuery("SELECT COUNT(*) FROM Like likes where likes.post.id = :post_id");
+            query.setParameter("post_id", post.getId());
+            long result = (Long) query.uniqueResult();
 
-    }
 
-    @Override
-    public void removeLike(Post post, User user) {
-
-    }
-
-    @Override
-    public void hasUserLikedPost(Post post, User user) {
-
+            return result;
+        }
     }
 
     private String generateOrderBy(FilterOptions filterOptions) {
@@ -207,7 +232,7 @@ public class PostRepositoryImpl implements PostRepository {
         }
 
         String orderBy = "";
-        System.out.println(filterOptions.getSortBy().get());
+       // System.out.println(filterOptions.getSortBy().get());
         switch (filterOptions.getSortBy().get()) {
             case "post_id":
                 orderBy = "id";
