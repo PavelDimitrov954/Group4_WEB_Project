@@ -136,5 +136,62 @@ public class UserServiceTests {
         invalidUser.setUsername("asd");
 
         assertThrows(AuthorizationException.class, () -> service.update(invalidUser, mockUser));
+    @Test
+    void getUserCount_Should_Return_CountOfUsers() {
+        // Arrange
+        Mockito.when(mockRepository.getUserCount())
+                .thenReturn(10);
+
+        // Act
+        int userCount = service.getUserCount();
+
+        // Assert
+        Assertions.assertEquals(10, userCount);
+        Mockito.verify(mockRepository, Mockito.times(1))
+                .getUserCount();
+    }
+
+    @Test
+    void get_Should_Return_UserWithUsername() {
+        // Arrange
+        String username = "testUser";
+        User mockUser = createMockUser();
+        Mockito.when(mockRepository.get(username))
+                .thenReturn(mockUser);
+
+        // Act
+        User retrievedUser = service.get(username);
+
+        // Assert
+        Assertions.assertEquals(mockUser, retrievedUser);
+        Mockito.verify(mockRepository, Mockito.times(1))
+                .get(username);
+    }
+
+    @Test
+    void blockUser_Should_BlockUser() {
+        // Arrange
+        User mockUser = createMockUser();
+
+        // Act
+        service.blockUser(mockUser);
+
+        // Assert
+        Mockito.verify(mockRepository, Mockito.times(1)).update(mockUser);
+        Assertions.assertTrue(mockUser.isBlocked());
+    }
+
+    @Test
+    void unblockUser_Should_UnblockUser() {
+        // Arrange
+        User mockUser = createMockUser();
+        mockUser.setBlocked(true);
+
+        // Act
+        service.unblockUser(mockUser);
+
+        // Assert
+        Mockito.verify(mockRepository, Mockito.times(1)).update(mockUser);
+        Assertions.assertFalse(mockUser.isBlocked());
     }
 }

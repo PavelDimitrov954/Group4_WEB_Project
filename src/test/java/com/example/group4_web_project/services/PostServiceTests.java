@@ -4,6 +4,11 @@ import com.example.group4_web_project.exceptions.AuthorizationException;
 import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.*;
+import com.example.group4_web_project.models.FilterOptions;
+import com.example.group4_web_project.models.FilterOptionsUser;
+import com.example.group4_web_project.models.Like;
+import com.example.group4_web_project.models.Post;
+import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.repositories.CommentRepository;
 import com.example.group4_web_project.repositories.PostRepository;
 import org.junit.jupiter.api.Assertions;
@@ -23,6 +28,9 @@ public class PostServiceTests {
 
     @Mock
     PostRepository mockRepository;
+
+    @Mock
+    CommentRepository commentRepository;
 
     @InjectMocks
     PostServiceImpl service;
@@ -57,14 +65,11 @@ public class PostServiceTests {
         Mockito.when(mockRepository.get(Mockito.anyInt()))
                 .thenReturn(mockPost);
 
-        service.update(mockUser,mockPost);
+        service.update(mockUser, mockPost);
 
         Mockito.verify(mockRepository, Mockito.times(1))
                 .update(mockPost);
     }
-
-
-
 
 
     @Test
@@ -172,7 +177,83 @@ public class PostServiceTests {
         service.likePost( Mockito.any(User.class), Mockito.anyInt());
         verify(mockRepository, times(1)).likePost(Mockito.any(Like.class));
     }
+    public void get_Should_ReturnPost_When_MatchExists() {
+        // Arrange
+        int postId = 1;
+        Post expectedPost = new Post();
 
+        Post result = service.get(postId);
+
+        // Assert
+        Assertions.assertEquals(expectedPost, result);
+    }
+
+    @Test
+    public void delete_Should_DeletePost_When_UserIsAuthorized() {
+        // Arrange
+        int postId = 1;
+        User user = createMockUser();
+        Post post = new Post();
+        post.setCreatedBy(user);
+        Mockito.when(mockRepository.get(postId)).thenReturn(post);
+
+        // Act
+        service.delete(user, postId);
+
+        // Assert
+        Mockito.verify(mockRepository).delete(post);
+    }
+
+    @Test
+    public void delete_Should_ThrowAuthorizationException_When_UserIsNotAuthorized() {
+        // Arrange
+        int postId = 1;
+        User user = createMockUser();
+        Post post = new Post();
+        User user1 = createMockUser();
+        user1.setId(2);
+        post.setCreatedBy(user1);
+        Mockito.when(mockRepository.get(postId)).thenReturn(post);
+
+        // Act, Assert
+        Assertions.assertThrows(AuthorizationException.class, () -> service.delete(user, postId));
+    }
+
+    @Test
+    public void removeLike_Should_RemoveLike_When_UserHasLiked() {
+        // Arrange
+        int postId = 1;
+        User user = createMockUser();
+        Post post = new Post();
+        post.setId(postId);
+        Like like = new Like();
+        like.setCreatedBy(user);
+        like.setPost(post);
+
+        Mockito.when(mockRepository.get(postId)).thenReturn(post);
+        Mockito.when(mockRepository.hasUserLikedPost(post, user)).thenReturn(true);
+        Mockito.when(mockRepository.getLikeByPostAndUser(post, user)).thenReturn(like);
+
+        // Act
+        service.removeLike(user, postId);
+
+        // Assert
+        Mockito.verify(mockRepository, Mockito.times(1)).removeLike(like);
+    }
+
+    @Test
+    public void removeLike_Should_ThrowAuthorizationException_When_UserHasNotLiked() {
+        // Arrange
+        int postId = 1;
+        User user = createMockUser();
+        Post post = new Post();
+        post.setId(postId);
+        Mockito.when(mockRepository.get(postId)).thenReturn(post);
+        Mockito.when(mockRepository.hasUserLikedPost(post, user)).thenReturn(false);
+
+        // Act, Assert
+        Assertions.assertThrows(AuthorizationException.class, () -> service.removeLike(user, postId));
+    }
 }
 
 
