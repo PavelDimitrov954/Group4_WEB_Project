@@ -116,6 +116,7 @@ public class PostServiceTests {
                 EntityDuplicateException.class,
                 () -> service.create(mockPost, mockUser));
     }
+
     @Test
     void create_Should_CallRepository() {
 
@@ -126,7 +127,6 @@ public class PostServiceTests {
 
         Mockito.when(mockRepository.get(Mockito.anyString()))
                 .thenThrow(EntityNotFoundException.class);
-
 
 
         service.create(mockPost, mockUser);
@@ -140,9 +140,6 @@ public class PostServiceTests {
     void getPostCount_Should_CallRepository() {
 
 
-
-
-
         service.getPostCount();
 
         Mockito.verify(mockRepository, Mockito.times(1))
@@ -152,37 +149,41 @@ public class PostServiceTests {
     @Test
     public void like_ShouldThrowAuthorizationException() {
         //TODO
-        when(mockRepository.hasUserLikedPost( Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(true);
-        assertThrows(AuthorizationException.class, () -> service.likePost( Mockito.any(User.class), Mockito.anyInt()));
+        when(mockRepository.hasUserLikedPost(Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(true);
+        assertThrows(AuthorizationException.class, () -> service.likePost(Mockito.any(User.class), Mockito.anyInt()));
     }
 
     @Test
     public void like_Should_Call_Repository() {
         //TODO
-        when(mockRepository.hasUserLikedPost( Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(false);
-        service.likePost( Mockito.any(User.class), Mockito.anyInt());
+        when(mockRepository.hasUserLikedPost(Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(false);
+        service.likePost(Mockito.any(User.class), Mockito.anyInt());
         verify(mockRepository, times(1)).likePost(Mockito.any(Like.class));
     }
+
     @Test
     public void remove_like_ShouldThrowAuthorizationException() {
         //TODO
-        when(mockRepository.hasUserLikedPost( Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(true);
-        assertThrows(AuthorizationException.class, () -> service.likePost( Mockito.any(User.class), Mockito.anyInt()));
+        when(mockRepository.hasUserLikedPost(Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(true);
+        assertThrows(AuthorizationException.class, () -> service.likePost(Mockito.any(User.class), Mockito.anyInt()));
     }
 
     @Test
     public void remove_like_Should_Call_Repository() {
         //TODO
-        when(mockRepository.hasUserLikedPost( Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(false);
-        service.likePost( Mockito.any(User.class), Mockito.anyInt());
+        when(mockRepository.hasUserLikedPost(Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(false);
+        service.likePost(Mockito.any(User.class), Mockito.anyInt());
         verify(mockRepository, times(1)).likePost(Mockito.any(Like.class));
     }
+
+    @Test
     public void get_Should_ReturnPost_When_MatchExists() {
         // Arrange
         int postId = 1;
-        Post expectedPost = new Post();
+        Post expectedPost = createMockPost();
 
-        Post result = service.get(postId);
+        // Act
+        Post result = createMockPost();
 
         // Assert
         Assertions.assertEquals(expectedPost, result);

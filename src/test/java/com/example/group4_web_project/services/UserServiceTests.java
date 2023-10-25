@@ -61,9 +61,6 @@ public class UserServiceTests {
     }
 
 
-
-
-
     @Test
     public void update_Should_ThrowAuthorizationException() {
 
@@ -91,14 +88,12 @@ public class UserServiceTests {
     void getUserById_Should_CallRepository() {
 
 
-
-
-
         service.get(Mockito.anyInt());
 
         Mockito.verify(mockRepository, Mockito.times(1))
                 .get(Mockito.anyInt());
     }
+
     @Test
     public void update_ShouldUpdateUserByAdmin() {
         User adminUser = Helpers.createMockAdmin();
@@ -128,6 +123,7 @@ public class UserServiceTests {
 
         assertThrows(AuthorizationException.class, () -> service.update(unauthorizedUser, mockUser));
     }
+
     @Test
     public void update_ShouldThrowIllegalArgumentException() {
         User mockUser = Helpers.createMockUser();
@@ -136,8 +132,10 @@ public class UserServiceTests {
         invalidUser.setUsername("asd");
 
         assertThrows(AuthorizationException.class, () -> service.update(invalidUser, mockUser));
+    }
+
     @Test
-    void getUserCount_Should_Return_CountOfUsers() {
+    public void getUserCount_Should_Return_CountOfUsers() {
         // Arrange
         Mockito.when(mockRepository.getUserCount())
                 .thenReturn(10);
@@ -152,7 +150,7 @@ public class UserServiceTests {
     }
 
     @Test
-    void get_Should_Return_UserWithUsername() {
+    public void get_Should_Return_UserWithUsername() {
         // Arrange
         String username = "testUser";
         User mockUser = createMockUser();
@@ -169,7 +167,7 @@ public class UserServiceTests {
     }
 
     @Test
-    void blockUser_Should_BlockUser() {
+    public void blockUser_Should_BlockUser() {
         // Arrange
         User mockUser = createMockUser();
 
@@ -182,7 +180,7 @@ public class UserServiceTests {
     }
 
     @Test
-    void unblockUser_Should_UnblockUser() {
+    public void unblockUser_Should_UnblockUser() {
         // Arrange
         User mockUser = createMockUser();
         mockUser.setBlocked(true);
@@ -195,3 +193,4 @@ public class UserServiceTests {
         Assertions.assertFalse(mockUser.isBlocked());
     }
 }
+
