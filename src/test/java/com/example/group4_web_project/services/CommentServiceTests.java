@@ -17,6 +17,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.group4_web_project.Helpers.createMockComment;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -75,5 +77,28 @@ public class CommentServiceTests {
 
         User unauthorizedUser = Helpers.createMockUser();
         assertThrows(AuthorizationException.class, () -> commentService.update(unauthorizedUser, comment));
+    }
+    @Test
+    public void delete_ShouldThrowAuthorizationException() {
+        Comment comment = Helpers.createMockComment();
+        when(mockRepository.get(comment.getId())).thenReturn(comment);
+
+        User unauthorizedUser = Helpers.createMockUser();
+        unauthorizedUser.setId(123);
+        assertThrows(AuthorizationException.class, () -> commentService.delete(unauthorizedUser, comment.getId()));
+    }
+    @Test
+    public void delete_Should_CallRepository() {
+        User creatorUser = Helpers.createMockUser();
+        Comment comment = Helpers.createMockComment();
+        comment.setCreatedBy(creatorUser);
+
+
+        when(mockRepository.get(comment.getId())).thenReturn(comment);
+        service.delete(creatorUser, comment.getId());
+
+        Mockito.verify(mockRepository, Mockito.times(1))
+                .delete(comment);
+
     }
 }

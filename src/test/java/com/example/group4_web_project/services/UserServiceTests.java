@@ -1,6 +1,8 @@
 package com.example.group4_web_project.services;
 
+import com.example.group4_web_project.Helpers;
 import com.example.group4_web_project.exceptions.AuthorizationException;
+import com.example.group4_web_project.models.Comment;
 import com.example.group4_web_project.models.FilterOptions;
 import com.example.group4_web_project.models.FilterOptionsUser;
 import com.example.group4_web_project.models.User;
@@ -15,6 +17,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.group4_web_project.Helpers.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests {
@@ -81,4 +86,55 @@ public class UserServiceTests {
                 () -> service.update(mockUser, mockUserForUpdate));
     }
 
+
+    @Test
+    void getUserById_Should_CallRepository() {
+
+
+
+
+
+        service.get(Mockito.anyInt());
+
+        Mockito.verify(mockRepository, Mockito.times(1))
+                .get(Mockito.anyInt());
+    }
+    @Test
+    public void update_ShouldUpdateUserByAdmin() {
+        User adminUser = Helpers.createMockAdmin();
+        User mockUser = Helpers.createMockUser();
+
+
+        assertDoesNotThrow(() -> service.update(adminUser, mockUser));
+        verify(mockRepository, times(1)).update(Mockito.any(User.class));
+    }
+
+    @Test
+    public void update_ShouldUpdateUserByCreator() {
+        //User adminUser = Helpers.createMockAdmin();
+        User mockUser = Helpers.createMockUser();
+
+
+        assertDoesNotThrow(() -> service.update(mockUser, mockUser));
+        verify(mockRepository, times(1)).update(Mockito.any(User.class));
+    }
+
+    @Test
+    public void update_ShouldThrowAuthorizationException() {
+        User mockUser = Helpers.createMockUser();
+        User unauthorizedUser = Helpers.createMockUser();
+        unauthorizedUser.setId(123);
+        unauthorizedUser.setUsername("asd");
+
+        assertThrows(AuthorizationException.class, () -> service.update(unauthorizedUser, mockUser));
+    }
+    @Test
+    public void update_ShouldThrowIllegalArgumentException() {
+        User mockUser = Helpers.createMockUser();
+        User invalidUser = Helpers.createMockUser();
+        invalidUser.setId(123);
+        invalidUser.setUsername("asd");
+
+        assertThrows(AuthorizationException.class, () -> service.update(invalidUser, mockUser));
+    }
 }
