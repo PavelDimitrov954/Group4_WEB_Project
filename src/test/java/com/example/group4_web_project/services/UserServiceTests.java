@@ -2,10 +2,13 @@ package com.example.group4_web_project.services;
 
 import com.example.group4_web_project.Helpers;
 import com.example.group4_web_project.exceptions.AuthorizationException;
+import com.example.group4_web_project.exceptions.EntityDuplicateException;
+import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.Comment;
 import com.example.group4_web_project.models.FilterOptions;
 import com.example.group4_web_project.models.FilterOptionsUser;
 import com.example.group4_web_project.models.User;
+import com.example.group4_web_project.repositories.AdminPhoneNumberRepository;
 import com.example.group4_web_project.repositories.PostRepository;
 import com.example.group4_web_project.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -26,6 +29,7 @@ public class UserServiceTests {
 
     @Mock
     UserRepository mockRepository;
+
 
     @InjectMocks
     UserServiceImpl service;
@@ -191,6 +195,75 @@ public class UserServiceTests {
         // Assert
         Mockito.verify(mockRepository, Mockito.times(1)).update(mockUser);
         Assertions.assertFalse(mockUser.isBlocked());
+    }
+
+    @Test
+    public void register_ShouldThrowEntityDuplicateException() {
+        User mockUser = Helpers.createMockUser();
+
+        Mockito.when(mockRepository.get(mockUser.getUsername()))
+                .thenReturn(mockUser);
+
+        assertThrows(EntityDuplicateException.class, () -> service.register(mockUser));
+    }
+
+    @Test
+    void register_Should_CallRepository() {
+
+        User user = Helpers.createMockUser();
+        Mockito.when(mockRepository.get(user.getUsername()))
+                .thenThrow(EntityNotFoundException.class);
+        service.register(user);
+
+        Mockito.verify(mockRepository, Mockito.times(1)).register(user);
+    }
+
+    @Test
+    public void makeUserAdmin_ShouldThrowAuthorizationException() {
+        User mockUser = Helpers.createMockUser();
+        User mockAdmin = Helpers.createMockUser();
+
+        assertThrows(AuthorizationException.class, () -> service.makeUserAdmin(mockAdmin,mockUser.getId()," "));
+    }
+
+    @Test
+    public void makeUserAdmin_ShouldThrowEntityDuplicateException() {
+        User mockUser = Helpers.createMockAdmin();
+        User mockAdmin = Helpers.createMockAdmin();
+
+        Mockito.when(mockRepository.get(mockUser.getId()))
+                .thenReturn(mockUser);
+
+        assertThrows(EntityDuplicateException.class, () -> service.makeUserAdmin(mockAdmin,mockUser.getId()," "));
+    }
+
+    @Test
+    void makeUserAdmin_Should_CallRepository() {
+
+        User mockUser = Helpers.createMockUser();
+        User mockAdmin = Helpers.createMockAdmin();
+
+        Mockito.when(mockRepository.get(mockUser.getId()))
+                .thenReturn(mockUser);
+
+        service.makeUserAdmin(mockAdmin,mockUser.getId(),null);
+
+        Mockito.verify(mockRepository, Mockito.times(1)).update(mockUser);
+    }
+
+    @Test
+    void makeUserAdmin_Should_CallRepository_When_AdminHavePhoneNumber() {
+
+        User mockUser = Helpers.createMockUser();
+        User mockAdmin = Helpers.createMockAdmin();
+        String phoneNumber = "1234567";
+
+        Mockito.when(mockRepository.get(mockUser.getId()))
+                .thenReturn(mockUser);
+
+        service.makeUserAdmin(mockAdmin,mockUser.getId(),phoneNumber);
+
+        Mockito.verify(mockRepository, Mockito.times(1)).update(mockUser);
     }
 }
 
