@@ -78,6 +78,8 @@ public class PostRepositoryImpl implements PostRepository {
             }
 
             queryString.append(generateOrderBy(filterOptions));
+            System.out.println(queryString);
+
             Query<Post> query = session.createQuery(queryString.toString(), Post.class);
                 
                 query.setProperties(params);
@@ -254,12 +256,13 @@ public class PostRepositoryImpl implements PostRepository {
         String orderBy = "";
        // System.out.println(filterOptions.getSortBy().get());
         switch (filterOptions.getSortBy().get()) {
-            case "post_id":
-                orderBy = "id";
+            case "date":
+                orderBy = "createDate";
                 break;
             default:
                 return "";
         }
+
 
         orderBy = String.format(" order by %s", orderBy);
 

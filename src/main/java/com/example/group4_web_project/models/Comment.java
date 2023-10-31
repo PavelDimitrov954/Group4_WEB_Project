@@ -1,8 +1,10 @@
 package com.example.group4_web_project.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -26,6 +28,8 @@ public class Comment {
 
     @NotEmpty
     @Column(name = "create_date")
+    @DateTimeFormat()
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
 
     public Comment() {
