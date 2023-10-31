@@ -37,6 +37,7 @@ public class PostMapper {
         Post post = new Post();
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
+        post.setCreateDate(postDto.getCreateDate());
 
         return post;
 

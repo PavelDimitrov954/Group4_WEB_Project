@@ -1,0 +1,90 @@
+
+
+body {
+
+
+    padding-top: 0px;
+    padding-bottom: 600px;
+    font-family: "Helvetica",
+    sans-serif;
+    margin: 0;
+}
+
+ .contact{
+   background-image: url("../images/indexPic1.jpg");
+  -o-background-size:800px ;
+
+height: 70%;
+width: 100%;
+
+}
+
+
+
+
+nav {
+    background: #BB0000;
+}
+
+nav ul {
+    text-align: right;
+    margin: 0;
+    padding: 10px;
+
+}
+nav ul li {
+    display: inline-block;
+
+}
+
+nav ul li a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    font-style: italic;
+
+}
+
+footer {
+    background: #BB0000;
+    text-align: center;
+    color: white;
+    padding: 8px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+
+    margin: 0;
+
+}
+
+
+
+
+.welcome {
+    color: #5a7c8a;
+    text-align: center;
+    width: 60%;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

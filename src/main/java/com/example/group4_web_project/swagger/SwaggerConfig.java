@@ -1,3 +1,5 @@
+package com.example.group4_web_project.swagger;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;

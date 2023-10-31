@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -28,12 +31,11 @@ public class Post {
     @Column(name = "content")
     private String content;
 
-    @Column(name="likes")
-    @NotNull
-    private Integer likes;
-    @Column(name="comments_count")
-    @NotNull
-    private Integer commentsCount;
+
+
+
+
+    private LocalDateTime createDate;
     @Transient
     private List<Comment> comments;
     @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
@@ -85,13 +87,9 @@ public class Post {
         this.content = content;
     }
 
-    public int getLikes() {
-        return likes;
-    }
 
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
+
+
 
     public List<Comment> getComments() {
         return comments;
@@ -101,12 +99,16 @@ public class Post {
         this.comments = comments;
     }
 
-    public int getCommentsCount() {
-        return commentsCount;
+
+
+
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
     }
 
-    public void setCommentsCount(int commentsCount) {
-        this.commentsCount = commentsCount;
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
     }
 
     public Set<Tag> getTags() {

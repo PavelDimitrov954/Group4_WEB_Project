@@ -26,3 +26,4 @@ public interface UserService {
     void delete(int id, User user);     // Borko
     void unblockUser(User user);        // Pavel
 }
+
