@@ -3,6 +3,7 @@ package com.example.group4_web_project.repositories;
 import com.example.group4_web_project.models.FilterOptions;
 import com.example.group4_web_project.models.Like;
 import com.example.group4_web_project.models.Post;
+import com.example.group4_web_project.models.Tag;
 import com.example.group4_web_project.models.User;
 
 import java.util.List;
@@ -20,12 +21,12 @@ public interface PostRepository {
     void create(Post post); // Borko DONE
 
     void update(Post post);  // Monika
-
     void delete(Post post);    // Pavel DONE
     void likePost(Like like);
     void removeLike(Like like);
     boolean hasUserLikedPost(Post post, User user);
     Like getLikeByPostAndUser(Post post, User user);
-
+    void addTagToPost(int postId, Tag tag);
+    void removeTagFromPost(int postId, Tag tag);
     long getLikesCount(Post post);
 }

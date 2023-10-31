@@ -2,6 +2,7 @@ package com.example.group4_web_project.services;
 
 import com.example.group4_web_project.models.FilterOptions;
 import com.example.group4_web_project.models.Post;
+import com.example.group4_web_project.models.Tag;
 import com.example.group4_web_project.models.User;
 import org.hibernate.type.descriptor.jdbc.TinyIntAsSmallIntJdbcType;
 
@@ -21,4 +22,6 @@ public interface PostService {
     int getPostCount();         // Borko
     void likePost(User user, int postId);//TODO
     void removeLike(User user, int postId);//TODO
+    void addTagToPost(int postId, Tag tag);
+    void removeTagFromPost(int postId, String tagName);
 }

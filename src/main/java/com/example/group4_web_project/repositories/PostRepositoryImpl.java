@@ -52,7 +52,6 @@ public class PostRepositoryImpl implements PostRepository {
                 queryString.append(" desc");
             }
             Query<Post> query = session.createQuery(queryString.toString());
-//
 
                 query.setProperties(params);
                 return query.list();
@@ -218,6 +217,32 @@ public class PostRepositoryImpl implements PostRepository {
 
 
             return result;
+        }
+    }
+
+    @Override
+    public void addTagToPost(int postId, Tag tag) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Post post = session.get(Post.class, postId);
+            if (post != null) {
+                post.getTags().add(tag);
+                session.merge(post);
+            }
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public void removeTagFromPost(int postId, Tag tag) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Post post = session.get(Post.class, postId);
+            if (post != null) {
+                post.getTags().remove(tag);
+                session.merge(post);
+            }
+            session.getTransaction().commit();
         }
     }
 

@@ -5,9 +5,11 @@ import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.FilterOptions;
 import com.example.group4_web_project.models.Like;
+import com.example.group4_web_project.models.Tag;
 import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.repositories.CommentRepository;
 import com.example.group4_web_project.repositories.PostRepository;
+import com.example.group4_web_project.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.group4_web_project.models.Post;
@@ -21,11 +23,14 @@ public class PostServiceImpl implements PostService {
     public static final String INVALID_AUTHORIZATION_DELETE = "IOnly  creator or admin can delete a post.";
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final TagRepository tagRepository;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, CommentRepository commentRepository) {
+    public PostServiceImpl(PostRepository postRepository, CommentRepository commentRepository,
+                           TagRepository tagRepository) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
+        this.tagRepository = tagRepository;
     }
 
     public List<Post> get(FilterOptions filterOptions) {
@@ -131,6 +136,48 @@ public class PostServiceImpl implements PostService {
 
 //        long count = postRepository.getLikesCount(post);
 //        System.out.println(count);
+    }
+
+    @Override
+    public void addTagToPost(int postId, Tag tag) {
+        Post post = postRepository.get(postId);
+
+        if (post == null) {
+            throw new EntityNotFoundException("Post", postId);
+        }
+
+        Tag existingTag = tagRepository.get(tag.getName());
+        if (existingTag == null) {
+            tagRepository.create(tag);
+            existingTag = tag;
+        } else {
+            tag = existingTag;
+        }
+
+        if (!post.getTags().contains(tag)) {
+            post.getTags().add(tag);
+            postRepository.update(post);
+        }
+    }
+
+
+
+
+
+    @Override
+    public void removeTagFromPost(int postId, String tagName) {
+        Post post = postRepository.get(postId);
+        if (post == null) {
+            throw new EntityNotFoundException("Post", postId);
+        }
+
+        post.getTags().remove(tagName);
+        postRepository.update(post);
+
+        int postsUsingTag = tagRepository.countPostsUsingTag(tagName);
+        if (postsUsingTag == 0) {
+            tagRepository.delete(tagRepository.get(tagName));
+        }
     }
 
 

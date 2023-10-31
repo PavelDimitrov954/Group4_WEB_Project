@@ -1,11 +1,16 @@
 package com.example.group4_web_project.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-
+import java.util.Set;
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -24,14 +29,21 @@ public class Post {
     private String content;
 
     @Column(name="likes")
-    private int likes;
+    @NotNull
+    private Integer likes;
     @Column(name="comments_count")
-    private int commentsCount;
-
-
+    @NotNull
+    private Integer commentsCount;
     @Transient
     private List<Comment> comments;
-
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    @JsonManagedReference
+    private Set<Tag> tags = new HashSet<>();
 
     public Post() {
     }
@@ -96,6 +108,25 @@ public class Post {
     public void setCommentsCount(int commentsCount) {
         this.commentsCount = commentsCount;
     }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+        tag.getPosts().add(this);
+    }
+
+    public void removeTag(Tag tag) {
+        this.tags.remove(tag);
+        tag.getPosts().remove(this);
+    }
+
 
     @Override
     public boolean equals(Object o) {
