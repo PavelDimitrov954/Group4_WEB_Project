@@ -139,42 +139,7 @@ public class PostRestController {
         return postService.getPostCount();
     }
 
-    //    @PostMapping("/{postId}/tags")
-//    public ResponseEntity<String> addTagToPost(@RequestHeader HttpHeaders headers,
-//                                               @PathVariable int postId, @RequestBody TagDto tagDto) {
-//        try {
-//            User user = authenticationHelper.tryGetUser(headers);
-//            Tag tag = tagMapper.fromDto(tagDto);
-//            postService.addTagToPost(postId, tag);
-//            return new ResponseEntity<>("Tag added successfully", HttpStatus.OK);
-//        } catch (EntityNotFoundException e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-//        } catch (EntityDuplicateException e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-//        } catch (AuthorizationException e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-//
-//    @DeleteMapping("/{postId}/tags/{tagName}")
-//    public ResponseEntity<String> removeTagFromPost(@RequestHeader HttpHeaders headers,
-//                                                    @PathVariable int postId, @PathVariable String tagName) {
-//        try {
-//            User user = authenticationHelper.tryGetUser(headers);
-//            postService.removeTagFromPost(postId, tagName.toLowerCase());
-//            return new ResponseEntity<>("Tag removed successfully", HttpStatus.OK);
-//        } catch (EntityNotFoundException e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-//        } catch (EntityDuplicateException e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-//        } catch (AuthorizationException e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+
 
     @PostMapping("/{postId}/tags")
     public ResponseEntity<String> addTagToPost(@RequestHeader HttpHeaders headers,

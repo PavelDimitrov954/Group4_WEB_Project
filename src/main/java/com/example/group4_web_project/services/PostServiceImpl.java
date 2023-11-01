@@ -52,7 +52,6 @@ public class PostServiceImpl implements PostService {
     }
 
 
-
     @Override
     public void create(Post post, User user) {
         boolean duplicateExists = true;
@@ -65,7 +64,6 @@ public class PostServiceImpl implements PostService {
         if (duplicateExists) {
             throw new EntityDuplicateException("Post", "title", post.getTitle());
         }
-
 
 
         post.setCreatedBy(user);
@@ -111,7 +109,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void likePost(User user, int postId) {
         Post post = postRepository.get(postId);
-        if (postRepository.hasUserLikedPost(post, user)){
+        if (postRepository.hasUserLikedPost(post, user)) {
             throw new AuthorizationException("User has already liked this post!");
         } else {
             Like like = new Like();
@@ -126,10 +124,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public void removeLike(User user, int postId) {
         Post post = postRepository.get(postId);
-        if (!postRepository.hasUserLikedPost(post, user)){
+        if (!postRepository.hasUserLikedPost(post, user)) {
             throw new AuthorizationException("User has not liked this post!");
         } else {
-            Like like = postRepository.getLikeByPostAndUser(post,user);
+            Like like = postRepository.getLikeByPostAndUser(post, user);
             postRepository.removeLike(like);
         }
 
@@ -153,21 +151,16 @@ public class PostServiceImpl implements PostService {
             tagRepository.create(tag);
             post.addTag(tag);
 
-        }
-        else {
-            System.out.println(post.getTags().contains(existingTag));
+        } else {
+
             if (!post.getTags().contains(existingTag)) {
                 post.addTag(existingTag);
-            }
-            else {
+            } else {
                 throw new EntityDuplicateException("Post", "tag", tag.getName());
             }
         }
         postRepository.update(post);
     }
-
-
-
 
 
     @Override
@@ -183,14 +176,8 @@ public class PostServiceImpl implements PostService {
         Tag tag = tagRepository.get(tagName);
 
         Set<Tag> tags = post.getTags();
-       System.out.println( tags.contains(tag));
-       System.out.println(tagName);
         tags.remove(tag);
-
-        System.out.println( tags.contains(tag));
         post.setTags(tags);
-
-
 
         postRepository.update(post);
 
