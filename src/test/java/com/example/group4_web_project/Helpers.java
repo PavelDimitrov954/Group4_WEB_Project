@@ -30,6 +30,7 @@ public class Helpers {
         mockPost.setContent("MockContent");
         mockPost.setCreatedBy(createMockUser());
 
+
         return mockPost;
     }
 
@@ -82,6 +83,16 @@ public class Helpers {
         dto.setFirstName("MockFirstNameDto");
         dto.setEmail("mock@user.com");
         return dto;
+    }
+
+    public static Like createMockLike() {
+        var mockLike = new Like();
+       mockLike.setCreatedBy(createMockUser());
+       mockLike.setPost(createMockPost());
+       mockLike.setId(1);
+
+
+        return mockLike;
     }
 
 

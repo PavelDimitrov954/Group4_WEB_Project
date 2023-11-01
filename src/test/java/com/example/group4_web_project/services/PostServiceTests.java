@@ -146,35 +146,8 @@ public class PostServiceTests {
                 .getPostCount();
     }
 
-    @Test
-    public void like_ShouldThrowAuthorizationException() {
-        //TODO
-        when(mockRepository.hasUserLikedPost(Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(true);
-        assertThrows(AuthorizationException.class, () -> service.likePost(Mockito.any(User.class), Mockito.anyInt()));
-    }
 
-    @Test
-    public void like_Should_Call_Repository() {
-        //TODO
-        when(mockRepository.hasUserLikedPost(Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(false);
-        service.likePost(Mockito.any(User.class), Mockito.anyInt());
-        verify(mockRepository, times(1)).likePost(Mockito.any(Like.class));
-    }
 
-    @Test
-    public void remove_like_ShouldThrowAuthorizationException() {
-        //TODO
-        when(mockRepository.hasUserLikedPost(Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(true);
-        assertThrows(AuthorizationException.class, () -> service.likePost(Mockito.any(User.class), Mockito.anyInt()));
-    }
-
-    @Test
-    public void remove_like_Should_Call_Repository() {
-        //TODO
-        when(mockRepository.hasUserLikedPost(Mockito.any(Post.class), Mockito.any(User.class))).thenReturn(false);
-        service.likePost(Mockito.any(User.class), Mockito.anyInt());
-        verify(mockRepository, times(1)).likePost(Mockito.any(Like.class));
-    }
 
     @Test
     public void get_Should_ReturnPost_When_MatchExists() {
@@ -254,6 +227,38 @@ public class PostServiceTests {
 
         // Act, Assert
         Assertions.assertThrows(AuthorizationException.class, () -> service.removeLike(user, postId));
+    }
+
+    @Test
+    public void likeLike_Should_EntityDuplicateException_When_UserLikeThisPost() {
+        // Arrange
+        User user = createMockUser();
+        Post post = createMockPost();
+
+
+        service.likePost(user,post.getId());
+
+        Mockito.when(mockRepository.get(post.getId())).thenReturn(post);
+        Mockito.when(mockRepository.hasUserLikedPost(post,user)).thenReturn(true);
+       Assertions.assertThrows(EntityDuplicateException.class, () -> service.likePost(user,post.getId()));
+
+    }
+
+    @Test
+    void likePost_CallRepository() {
+
+        Post post = createMockPost();
+        User user=createMockUser();
+
+
+
+        Mockito.when(mockRepository.get(post.getId())).thenReturn(post);
+        Mockito.when(mockRepository.hasUserLikedPost(post,user)).thenReturn(false);
+
+        service.likePost(user,post.getId());
+
+        Mockito.verify(mockRepository, Mockito.times(1)).likePost(Mockito.any(Like.class));
+
     }
 }
 

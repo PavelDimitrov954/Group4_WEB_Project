@@ -110,7 +110,7 @@ public class PostServiceImpl implements PostService {
     public void likePost(User user, int postId) {
         Post post = postRepository.get(postId);
         if (postRepository.hasUserLikedPost(post, user)) {
-            throw new AuthorizationException("User has already liked this post!");
+            throw new EntityDuplicateException("User has already liked this post!");
         } else {
             Like like = new Like();
             like.setCreatedBy(user);
