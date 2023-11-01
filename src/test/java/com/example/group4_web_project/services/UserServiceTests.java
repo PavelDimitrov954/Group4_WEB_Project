@@ -265,5 +265,26 @@ public class UserServiceTests {
 
         Mockito.verify(mockRepository, Mockito.times(1)).update(mockUser);
     }
+    @Test
+    public void delete_ShouldThrowAuthorizationException() {
+        User mockUser = Helpers.createMockUser();
+        when(mockRepository.get(mockUser.getId())).thenReturn(mockUser);
+
+        User unauthorizedUser = Helpers.createMockUser();
+        unauthorizedUser.setId(123);
+        assertThrows(AuthorizationException.class, () -> service.delete(mockUser.getId(), unauthorizedUser));
+    }
+
+    @Test
+    public void delete_Should_CallRepository() {
+        User mockUser = Helpers.createMockUser();
+
+        when(mockRepository.get(mockUser.getId())).thenReturn(mockUser);
+        service.delete(mockUser.getId(), mockUser);
+
+        Mockito.verify(mockRepository, Mockito.times(1))
+                .delete(mockUser);
+
+    }
 }
 

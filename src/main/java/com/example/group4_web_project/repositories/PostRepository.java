@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PostRepository {
 
-    List<Post> get(FilterOptions filterOptions);  // Borko TODO
+    List<Post> get(FilterOptions filterOptions);  // Borko
 
     Post get(int id);   // Monika
 
