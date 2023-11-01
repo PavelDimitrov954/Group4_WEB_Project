@@ -155,8 +155,12 @@ public class PostServiceImpl implements PostService {
 
         }
         else {
-            if (!post.getTags().contains(tag)) {
+            System.out.println(post.getTags().contains(existingTag));
+            if (!post.getTags().contains(existingTag)) {
                 post.addTag(existingTag);
+            }
+            else {
+                throw new EntityDuplicateException("Post", "tag", tag.getName());
             }
         }
         postRepository.update(post);
@@ -167,8 +171,12 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public void removeTagFromPost(int postId, String tagName) {
+    public void removeTagFromPost(int postId, String tagName, User user) {
         Post post = postRepository.get(postId);
+
+        if (!user.isAdmin() && !post.getCreatedBy().equals(user)) {
+            throw new AuthorizationException("User not authorized to remove tags from this post");
+        }
         if (post == null) {
             throw new EntityNotFoundException("Post", postId);
         }

@@ -202,10 +202,8 @@ public class PostRestController {
                                                     @PathVariable int postId, @PathVariable String tagName) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            if (!user.isAdmin()) {
-                throw new AuthorizationException("User not authorized to remove tags from this post");
-            }
-            postService.removeTagFromPost(postId, tagName.toLowerCase());
+
+            postService.removeTagFromPost(postId, tagName.toLowerCase(), user);
             return new ResponseEntity<>("Tag removed successfully", HttpStatus.NO_CONTENT);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

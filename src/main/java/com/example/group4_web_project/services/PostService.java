@@ -22,5 +22,5 @@ public interface PostService {
     void likePost(User user, int postId);//TODO
     void removeLike(User user, int postId);//TODO
     void addTagToPost(int postId, Tag tag, User user);
-    void removeTagFromPost(int postId, String tagName);
+    void removeTagFromPost(int postId, String tagName, User user);
 }
