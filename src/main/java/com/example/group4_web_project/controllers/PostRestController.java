@@ -175,16 +175,15 @@ public class PostRestController {
 //            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 //    }
+
     @PostMapping("/{postId}/tags")
     public ResponseEntity<String> addTagToPost(@RequestHeader HttpHeaders headers,
                                                @PathVariable int postId, @RequestBody TagDto tagDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            if (!user.isAdmin()) {
-                throw new AuthorizationException("User not authorized to add tags to this post");
-            }
+
             Tag tag = tagMapper.fromDto(tagDto);
-            postService.addTagToPost(postId, tag);
+            postService.addTagToPost(postId, tag, user);
             return new ResponseEntity<>("Tag added successfully", HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -196,6 +195,7 @@ public class PostRestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @DeleteMapping("/{postId}/tags/{tagName}")
     public ResponseEntity<String> removeTagFromPost(@RequestHeader HttpHeaders headers,

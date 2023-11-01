@@ -9,7 +9,7 @@ public interface TagService {
 
     Tag get(String name);
 
-    void create(Tag tag);
+    void create(Tag tag, int postId);
 
     void delete(Tag tag);
 }

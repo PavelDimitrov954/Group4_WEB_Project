@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -29,11 +30,9 @@ public class Post {
     private String content;
 
 
-
-
-      @Column(name = "create_date")
-      @DateTimeFormat()
-      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "create_date")
+    @DateTimeFormat()
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
     @Transient
     @JsonIgnore
@@ -88,9 +87,6 @@ public class Post {
     }
 
 
-
-
-
     public List<Comment> getComments() {
         return comments;
     }
@@ -98,9 +94,6 @@ public class Post {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
-
-
-
 
 
     public LocalDateTime getCreateDate() {
@@ -126,7 +119,7 @@ public class Post {
 
     public void removeTag(Tag tag) {
         this.tags.remove(tag);
-        tag.getPosts().remove(this);
+       // tag.getPosts().remove(this);
     }
 
 

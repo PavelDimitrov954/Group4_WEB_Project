@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.example.group4_web_project.models.Post;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -137,25 +138,28 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void addTagToPost(int postId, Tag tag) {
+    public void addTagToPost(int postId, Tag tag, User user) {
         Post post = postRepository.get(postId);
 
         if (post == null) {
             throw new EntityNotFoundException("Post", postId);
         }
+        if (!user.isAdmin() && !user.getUsername().equals(post.getCreatedBy().getUsername())) {
+            throw new AuthorizationException("User not authorized to add tags to this post");
+        }
 
         Tag existingTag = tagRepository.get(tag.getName());
         if (existingTag == null) {
             tagRepository.create(tag);
-            existingTag = tag;
-        } else {
-            tag = existingTag;
-        }
+            post.addTag(tag);
 
-        if (!post.getTags().contains(tag)) {
-            post.getTags().add(tag);
-            postRepository.update(post);
         }
+        else {
+            if (!post.getTags().contains(tag)) {
+                post.addTag(existingTag);
+            }
+        }
+        postRepository.update(post);
     }
 
 
@@ -168,8 +172,18 @@ public class PostServiceImpl implements PostService {
         if (post == null) {
             throw new EntityNotFoundException("Post", postId);
         }
+        Tag tag = tagRepository.get(tagName);
 
-        post.getTags().remove(tagName);
+        Set<Tag> tags = post.getTags();
+       System.out.println( tags.contains(tag));
+       System.out.println(tagName);
+        tags.remove(tag);
+
+        System.out.println( tags.contains(tag));
+        post.setTags(tags);
+
+
+
         postRepository.update(post);
 
         int postsUsingTag = tagRepository.countPostsUsingTag(tagName);

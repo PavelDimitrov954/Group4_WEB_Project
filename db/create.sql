@@ -76,9 +76,14 @@ CREATE TABLE post_tags
 (
     post_id INT,
     tag_id  INT,
-    PRIMARY KEY (post_id, tag_id),
-    FOREIGN KEY (post_id) REFERENCES posts (post_id),
-    FOREIGN KEY (tag_id) REFERENCES tags (tag_id)
+
+    constraint posts_post_id_fk
+        foreign key (post_id) references posts (post_id),
+
+    constraint tags_tags_id_fk
+        foreign key (tag_id) references tags (tag_id)
+
+
 );
 
 

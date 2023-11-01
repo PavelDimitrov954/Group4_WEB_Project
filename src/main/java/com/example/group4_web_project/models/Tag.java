@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "tags")
@@ -22,7 +19,7 @@ public class Tag {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Post> posts = new HashSet<>();
 
@@ -63,5 +60,19 @@ public class Tag {
 
     public void removePost(Post post) {
         this.posts.remove(post);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tag tag = (Tag) o;
+        return id == tag.id && Objects.equals(name, tag.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

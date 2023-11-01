@@ -29,4 +29,6 @@ public interface PostRepository {
     void addTagToPost(int postId, Tag tag);
     void removeTagFromPost(int postId, Tag tag);
     long getLikesCount(Post post);
+
+
 }
