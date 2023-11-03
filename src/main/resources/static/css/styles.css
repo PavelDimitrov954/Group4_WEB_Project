@@ -11215,3 +11215,17 @@ a.nav {
 .label-error {
   color: red
 }
+
+.post-section {
+  margin-top: 20px;
+}
+
+.post {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.post h4 {
+  margin-top: 0;
+}

@@ -250,6 +250,22 @@ public class PostRepositoryImpl implements PostRepository {
         }
     }
 
+    @Override
+    public List<Post> findTopCommentedPosts(int limit) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("SELECT p FROM Post p ORDER BY SIZE(p.comments) DESC", Post.class)
+                .setMaxResults(limit)
+                .list();
+    }
+
+    @Override
+    public List<Post> findMostRecentPosts(int limit) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("SELECT p FROM Post p ORDER BY p.createDate DESC", Post.class)
+                .setMaxResults(limit)
+                .list();
+    }
+
     private String generateOrderBy(FilterOptions filterOptions) {
         if (filterOptions.getSortBy().isEmpty()) {
             return "";

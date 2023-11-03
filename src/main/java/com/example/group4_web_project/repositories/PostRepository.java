@@ -29,6 +29,6 @@ public interface PostRepository {
     void addTagToPost(int postId, Tag tag);
     void removeTagFromPost(int postId, Tag tag);
     long getLikesCount(Post post);
-
-
+    public List<com.example.group4_web_project.models.Post> findTopCommentedPosts(int limit);
+    public List<com.example.group4_web_project.models.Post> findMostRecentPosts(int limit);
 }

@@ -24,12 +24,27 @@
     </div>
 </header>
 
-
 <div class="body-content">
     <h2 th:text="#{home.welcome}">Welcome (design)!</h2>
     <h2 th:text="${session.currentUser}" th:if="${isAuthenticated}"></h2>
     <img src="../static/images/logo.png" th:src="@{/images/logo.png}" alt="Movie logo"/>
     <p>A beer a day keeps the doctor away!</p>
+
+    <div class="post-section">
+        <h3>Top Commented Posts</h3>
+        <div th:each="post : ${topCommentedPosts}" class="post">
+            <h4 th:text="${post.title}"></h4>
+            <p th:text="${post.content}"></p>
+        </div>
+    </div>
+
+    <div class="post-section">
+        <h3>Most Recent Posts</h3>
+        <div th:each="post : ${mostRecentPosts}" class="post">
+            <h4 th:text="${post.title}"></h4>
+            <p th:text="${post.content}"></p>
+        </div>
+    </div>
 </div>
 
 <footer th:fragment="footer">

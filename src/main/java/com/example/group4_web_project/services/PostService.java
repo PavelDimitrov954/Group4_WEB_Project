@@ -23,4 +23,6 @@ public interface PostService {
     void removeLike(User user, int postId);
     void addTagToPost(int postId, Tag tag, User user);
     void removeTagFromPost(int postId, String tagName, User user);
+    public List<com.example.group4_web_project.models.Post> getTopCommentedPosts(int limit);
+    public List<com.example.group4_web_project.models.Post> getMostRecentPosts(int limit);
 }

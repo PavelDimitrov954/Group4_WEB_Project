@@ -14,11 +14,11 @@ create table users
 
 create table posts
 (
-    post_id int auto_increment primary key,
-    title   varchar(256) not null,
-    content text(8192)   not null,
-    create_date datetime not null,
-    user_id int          not null,
+    post_id     int auto_increment primary key,
+    title       varchar(256) not null,
+    content     text(8192)   not null,
+    create_date datetime     not null,
+    user_id     int          not null,
     constraint posts_users_user_id_fk
         foreign key (user_id) references users (user_id)
             ON DELETE CASCADE
@@ -27,11 +27,11 @@ create table posts
 
 create table comments
 (
-    comment_id int auto_increment primary key,
-    content    varchar(256) not null,
-    create_date datetime not null,
-    user_id    int          not null,
-    post_id    int          not null,
+    comment_id  int auto_increment primary key,
+    content     varchar(256) not null,
+    create_date datetime     not null,
+    user_id     int          not null,
+    post_id     int          not null,
     constraint comments_users_user_id_fk
         foreign key (user_id) references users (user_id)
             ON DELETE CASCADE,
