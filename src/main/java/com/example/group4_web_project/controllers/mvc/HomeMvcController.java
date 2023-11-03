@@ -30,7 +30,7 @@ public class HomeMvcController {
 
     @GetMapping
     public String showHomePage() {
-        return "index";
+        return "HomeView";
     }
 
     @GetMapping("/about")
