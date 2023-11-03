@@ -1,14 +1,14 @@
 package com.example.group4_web_project.controllers.mvc;
 
 import com.example.group4_web_project.exceptions.AuthorizationException;
+import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.helpers.AuthenticationHelper;
 import com.example.group4_web_project.helpers.PostMapper;
-import com.example.group4_web_project.models.Comment;
-import com.example.group4_web_project.models.FilterDto;
-import com.example.group4_web_project.models.Post;
+import com.example.group4_web_project.models.*;
 import com.example.group4_web_project.services.CommentService;
 import com.example.group4_web_project.services.PostService;
+import com.example.group4_web_project.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -25,12 +25,14 @@ import java.util.List;
 public class PostMvcController {
 
     private final PostService postService;
+    private final UserService userService;
     private final CommentService commentService;
     private final PostMapper postMapper;
     private final AuthenticationHelper authenticationHelper;
 
-    public PostMvcController(PostService postService, CommentService commentService, PostMapper postMapper, AuthenticationHelper authenticationHelper) {
+    public PostMvcController(PostService postService, UserService userService, CommentService commentService, PostMapper postMapper, AuthenticationHelper authenticationHelper) {
         this.postService = postService;
+        this.userService = userService;
         this.commentService = commentService;
         this.postMapper = postMapper;
         this.authenticationHelper = authenticationHelper;
@@ -50,6 +52,34 @@ public class PostMvcController {
     @ModelAttribute("comments")
     public List<Comment> populateStyles() {
         return null;
+    }
+
+
+
+    @GetMapping("/new")
+    public String showNewPost(Model model) {
+        model.addAttribute("post", new PostDto());
+        return "NewPostView";
+    }
+    @PostMapping("/new")
+    public String handleNewPost(@Valid @ModelAttribute("post") PostDto post,
+                              BindingResult bindingResult,
+                              HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            return "NewPostView";
+        }
+
+        try {
+            Post p = postMapper.fromDto(post);
+            String username = (String) session.getAttribute("currentUser");
+            User user = userService.get(username);
+            postService.create(p, user);
+
+            return "redirect:/";
+        } catch (EntityDuplicateException e) {
+            bindingResult.rejectValue("title", "title_error", e.getMessage());
+            return "NewPostView";
+        }
     }
 
     @GetMapping

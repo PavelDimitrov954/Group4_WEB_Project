@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<form th:replace="~{HomeView.html :: head('Create Post')}"></form>
+
+
+<body>
+<form th:replace="~{HomeView.html :: header}"></form>
+
+<div class="body-content">
+    <h2>New Post</h2>
+    <form action="#" th:action="@{/posts/new}" th:object="${post}" method="post">
+        <label th:text="#{post.label.title}">Title</label>
+        <br/>
+        <input type="text" th:field="*{title}"/>
+        <label class="error" th:errors="*{title}">Title error placeholder</label>
+        <br/><br/>
+
+        <label th:text="#{post.label.content}">Content</label>
+        <br/>
+        <textarea type="text" th:field="*{content}"> </textarea>
+        <label class="error" th:errors="*{content}">Content error placeholder</label>
+        <br/><br/>
+
+        <input type="submit" value="Create"/>
+    </form>
+</div>
+
+<form th:replace="~{HomeView.html :: footer}"></form>
+</body>
+</html>
