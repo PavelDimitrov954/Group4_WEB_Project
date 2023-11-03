@@ -240,6 +240,7 @@ public class PostServiceTests {
 
         Mockito.when(mockRepository.get(post.getId())).thenReturn(post);
         Mockito.when(mockRepository.hasUserLikedPost(post,user)).thenReturn(true);
+
        Assertions.assertThrows(EntityDuplicateException.class, () -> service.likePost(user,post.getId()));
 
     }

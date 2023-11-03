@@ -19,8 +19,8 @@ public interface PostService {
     void delete(User user, int postId);     // Pavel
 
     int getPostCount();         // Borko
-    void likePost(User user, int postId);//TODO
-    void removeLike(User user, int postId);//TODO
+    void likePost(User user, int postId);
+    void removeLike(User user, int postId);
     void addTagToPost(int postId, Tag tag, User user);
     void removeTagFromPost(int postId, String tagName, User user);
 }
