@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<form th:replace="~{HomeView.html :: head('About')}"></form>
-<body>
-<form th:replace="~{HomeView.html :: header}"></form>
 
-<div class="body-content">
-    <h2>About the project</h2>
-    <p>
-        <b>BeerTag</b> is a social network for sharing experience about drinking beer, mainly craft ones.
-    </p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About MovieForum</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
+</head>
+
+<body>
+<div class="about-container">
+    <header class="about-header">
+        <img src="/static/assets/img/Image.jpg" th:src="@{/assets/img/Image.jpg}" alt="Movie collage">
+        <h1>About MovieForum</h1>
+    </header>
+
+    <section class="about-content">
+        <h2>Our Story</h2>
+        <p th:text="${story}">...</p>
+
+        <h2>Our Mission</h2>
+        <p th:text="${mission}">...</p>
+
+        <h2>What We Offer</h2>
+        <ul>
+            <li th:each="offer : ${offers}" th:text="${offer}">...</li>
+        </ul>
+    </section>
+
+    <section class="contact-section">
+        <h2>Contact Us</h2>
+        <p th:text="${contactInfo}">...</p>
+    </section>
 </div>
 
-<form th:replace="~{HomeView :: footer}"></form>
+<button id="backToTop" onclick="scrollToTop()">Back to Top</button>
+
+<script src="/static/js/script.js" th:src="@{/js/script.js}"></script>
 </body>
 </html>
