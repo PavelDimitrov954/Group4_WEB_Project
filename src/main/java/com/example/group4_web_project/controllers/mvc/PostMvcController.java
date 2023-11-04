@@ -1,6 +1,5 @@
 package com.example.group4_web_project.controllers.mvc;
 
-import com.example.group4_web_project.exceptions.AuthorizationException;
 import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.helpers.AuthenticationHelper;
@@ -83,19 +82,17 @@ public class PostMvcController {
     }
 
     @GetMapping
-    public String showAllBeers(@ModelAttribute("filterOptions") FilterDto filterDto, Model model) {
-//      FilterOptions filterOptions = new FilterOptions(
-//                filterDto.getName(),
-//                filterDto.getMinAbv(),
-//                filterDto.getMaxAbv(),
-//                filterDto.getStyleId(),
-//                filterDto.getSortBy(),
-//                filterDto.getSortOrder());
-//        List<Beer> beers = beerService.get(filterOptions);
-//        model.addAttribute("filterOptions", filterDto);
-//        model.addAttribute("beers", beers);
-//        return "BeersView";
-        return null;
+    public String showAllPost(@ModelAttribute("filterOptions") FilterDto filterDto, Model model) {
+   FilterOptions filterOptions = new FilterOptions(
+              filterDto.getTitle(),
+              filterDto.getCreatedByUserName(),
+              filterDto.getSortBy(),
+              filterDto.getSortOrder());
+       List<Post> posts = postService.get(filterOptions);
+       model.addAttribute("filterOptions", filterDto);
+       model.addAttribute("posts", posts);
+      return "PostsView";
+
     }
 
     @GetMapping("/{id}")
@@ -103,7 +100,7 @@ public class PostMvcController {
         try {
             Post post = postService.get(id);
             model.addAttribute("post", post);
-            return "PostView";
+            return "PostsView";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
@@ -111,47 +108,7 @@ public class PostMvcController {
         }
     }
 
-//    @GetMapping("/new")
-//    public String showNewBeerPage(Model model, HttpSession session) {
-//        try {
-//            authenticationHelper.tryGetCurrentUser(session);
-//        } catch (AuthorizationException e) {
-//            return "redirect:/auth/login";
-//        }
 //
-//        model.addAttribute("beer", new BeerDto());
-//        return "BeerCreateView";
-//    }
-//
-//    @PostMapping("/new")
-//    public String createBeer(@Valid @ModelAttribute("beer") BeerDto beerDto,
-//                             BindingResult bindingResult,
-//                             Model model,
-//                             HttpSession session) {
-//        User user;
-//        try {
-//            user = authenticationHelper.tryGetCurrentUser(session);
-//        } catch (AuthorizationException e) {
-//            return "redirect:/auth/login";
-//        }
-//
-//        if (bindingResult.hasErrors()) {
-//            return "BeerCreateView";
-//        }
-//
-//        try {
-//            Beer beer = beerMapper.fromDto(beerDto);
-//            beerService.create(beer, user);
-//            return "redirect:/beers";
-//        } catch (EntityNotFoundException e) {
-//            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
-//            model.addAttribute("error", e.getMessage());
-//            return "ErrorView";
-//        } catch (EntityDuplicateException e) {
-//            bindingResult.rejectValue("name", "duplicate_beer", e.getMessage());
-//            return "BeerCreateView";
-//        }
-//    }
 //
 //    @GetMapping("/{id}/update")
 //    public String showEditBeerPage(@PathVariable int id, Model model, HttpSession session) {

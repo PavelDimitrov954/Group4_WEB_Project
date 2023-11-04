@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.example.group4_web_project.models.Post;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -26,16 +27,38 @@ public class PostServiceImpl implements PostService {
     private final CommentRepository commentRepository;
     private final TagRepository tagRepository;
 
+    private final UserService userService;
+
     @Autowired
     public PostServiceImpl(PostRepository postRepository, CommentRepository commentRepository,
-                           TagRepository tagRepository) {
+                           TagRepository tagRepository, UserService userService) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.tagRepository = tagRepository;
+        this.userService = userService;
     }
 
     public List<Post> get(FilterOptions filterOptions) {
-        return postRepository.get(filterOptions);
+
+        if(filterOptions.getCreatedBy().isPresent()){
+            String username = filterOptions.getCreatedBy().get().trim();
+
+            if(!username.isEmpty()){
+
+
+                User user = userService.get(filterOptions.getCreatedBy().get());
+                filterOptions.setCreatedBy(Optional.ofNullable(Integer.toString(user.getId())));}
+
+            else {
+                filterOptions.setCreatedBy(Optional.empty());
+            }
+        }
+
+
+
+
+
+    return postRepository.get(filterOptions);
     }
 
     @Override
