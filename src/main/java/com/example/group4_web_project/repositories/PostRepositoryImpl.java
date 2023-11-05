@@ -39,6 +39,11 @@ public class PostRepositoryImpl implements PostRepository {
                     params.put("user_id", value);
                 });
 
+//                filterOptions.getTag().ifPresent(value -> {
+//                    filters.add("createdBy.id = :user_id");
+//                    params.put("user_id", value);
+//                });
+
 
             StringBuilder queryString = new StringBuilder("select comment.post from Comment comment right join comment.post post ");
             if (!filters.isEmpty()) {

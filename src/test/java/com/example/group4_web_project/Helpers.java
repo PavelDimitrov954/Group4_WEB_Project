@@ -48,7 +48,8 @@ public class Helpers {
                 "MockTitle",
                 "MockUsername",
                 "MockFirstName",
-                "desc"
+                "desc",
+                "comedy"
                 );
     }
 

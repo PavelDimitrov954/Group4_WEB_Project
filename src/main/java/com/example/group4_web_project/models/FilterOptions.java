@@ -9,11 +9,14 @@ public class FilterOptions {
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
 
-    public FilterOptions(String title, String createdBy, String sortBy, String sortOrder) {
+    private Optional<String> tag;
+
+    public FilterOptions(String title, String createdBy, String sortBy, String sortOrder,String tag) {
         this.title = Optional.ofNullable(title);
         this.createdBy = Optional.ofNullable(createdBy);
         this.sortBy = Optional.ofNullable(sortBy);
         this.sortOrder = Optional.ofNullable(sortOrder);
+        this.tag = Optional.ofNullable(sortOrder);
     }
 
     public Optional<String> getTitle() {
@@ -46,5 +49,13 @@ public class FilterOptions {
 
     public void setSortOrder(Optional<String> sortOrder) {
         this.sortOrder = sortOrder;
+    }
+
+    public Optional<String> getTag() {
+        return tag;
+    }
+
+    public void setTag(Optional<String> tag) {
+        this.tag = tag;
     }
 }

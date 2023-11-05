@@ -1,11 +1,14 @@
 package com.example.group4_web_project.controllers.mvc;
 
+
+import com.example.group4_web_project.exceptions.AuthorizationException;
 import com.example.group4_web_project.exceptions.EntityDuplicateException;
+
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.helpers.AuthenticationHelper;
 import com.example.group4_web_project.helpers.PostMapper;
 import com.example.group4_web_project.models.*;
-import com.example.group4_web_project.services.CommentService;
+
 import com.example.group4_web_project.services.PostService;
 import com.example.group4_web_project.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +19,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 
@@ -25,15 +30,17 @@ public class PostMvcController {
 
     private final PostService postService;
     private final UserService userService;
-    private final CommentService commentService;
+
     private final PostMapper postMapper;
     private final AuthenticationHelper authenticationHelper;
 
-    public PostMvcController(PostService postService, UserService userService, CommentService commentService, PostMapper postMapper, AuthenticationHelper authenticationHelper) {
+
+    public PostMvcController(PostService postService, UserService userService, PostMapper postMapper, AuthenticationHelper authenticationHelper) {
         this.postService = postService;
         this.userService = userService;
-        this.commentService = commentService;
+
         this.postMapper = postMapper;
+
         this.authenticationHelper = authenticationHelper;
     }
 
@@ -87,7 +94,8 @@ public class PostMvcController {
               filterDto.getTitle(),
               filterDto.getCreatedByUserName(),
               filterDto.getSortBy(),
-              filterDto.getSortOrder());
+              filterDto.getSortOrder(),
+           filterDto.getTag());
        List<Post> posts = postService.get(filterOptions);
        model.addAttribute("filterOptions", filterDto);
        model.addAttribute("posts", posts);
@@ -95,18 +103,39 @@ public class PostMvcController {
 
     }
 
-    @GetMapping("/{id}")
-    public String showSingleBeer(@PathVariable int id, Model model) {
-        try {
+   @GetMapping("/{id}")
+    public String showSinglePost(@PathVariable int id, Model model) {
+         try {
             Post post = postService.get(id);
-            model.addAttribute("post", post);
-            return "PostsView";
+           model.addAttribute("post", post);
+           return "Post";
+       } catch (EntityNotFoundException e) {
+          model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+         model.addAttribute("error", e.getMessage());
+           return "ErrorView";}
+   }
+
+   @GetMapping("/{id}/like")
+   public String likePost(@PathVariable int id,
+                        HttpSession session) {
+
+
+       try {
+           User user = authenticationHelper.tryGetCurrentUser(session);
+
+
+
+           postService.likePost(user, id);
+          return "redirect:/posts/{id}";
+
         } catch (EntityNotFoundException e) {
-            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
-            model.addAttribute("error", e.getMessage());
-            return "ErrorView";
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+       } catch (AuthorizationException e) {
+           throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
-    }
+   }
 
 //
 //
@@ -166,28 +195,32 @@ public class PostMvcController {
 //        }
 //    }
 //
-//    @GetMapping("/{id}/delete")
-//    public String deleteBeer(@PathVariable int id, Model model, HttpSession session) {
-//        User user;
-//        try {
-//            user = authenticationHelper.tryGetCurrentUser(session);
-//        } catch (AuthorizationException e) {
-//            return "redirect:/auth/login";
-//        }
-//
-//        try {
-//            beerService.delete(id, user);
-//            return "redirect:/beers";
-//        } catch (EntityNotFoundException e) {
-//            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
-//            model.addAttribute("error", e.getMessage());
-//            return "ErrorView";
-//        } catch (AuthorizationException e) {
-//            model.addAttribute("statusCode", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-//            model.addAttribute("error", e.getMessage());
-//            return "ErrorView";
-//        }
-//    }
+    @GetMapping("/{id}/delete")
+    public String deleteBeer(@PathVariable int id, Model model, HttpSession session) {
+        User user;
+        try {
+            user = authenticationHelper.tryGetCurrentUser(session);
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
+        }
+
+        try {
+
+            postService.delete(user,id);
+            return "redirect:/posts";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        } catch (AuthorizationException e) {
+            model.addAttribute("statusCode", HttpStatus.UNAUTHORIZED.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
+    }
+
+
+
 }
 
 

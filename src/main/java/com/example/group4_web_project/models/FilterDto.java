@@ -9,6 +9,7 @@ public class FilterDto {
     private String sortBy;
     private String sortOrder;
 
+    private String tag;
 
     public FilterDto() {
     }
@@ -43,5 +44,13 @@ public class FilterDto {
 
     public void setSortOrder(String sortOrder) {
         this.sortOrder = sortOrder;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }
