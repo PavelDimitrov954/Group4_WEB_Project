@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<form th:replace="~{HomeView.html :: head('About')}"></form>
 
 <head>
     <meta charset="UTF-8">
@@ -9,6 +10,7 @@
 </head>
 
 <body>
+<form th:replace="~{HomeView.html :: header}"></form>
 <div class="about-container">
     <header class="about-header">
         <img src="/static/assets/img/Image.jpg" th:src="@{/assets/img/Image.jpg}" alt="Movie collage">

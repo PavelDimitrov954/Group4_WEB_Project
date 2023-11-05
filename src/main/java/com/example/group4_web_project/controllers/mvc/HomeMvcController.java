@@ -40,6 +40,7 @@ public class HomeMvcController {
 
         model.addAttribute("topCommentedPosts", topCommentedPosts);
         model.addAttribute("mostRecentPosts", mostRecentPosts);
+        model.addAttribute("title", "Home");
 
         return "HomeView";
     }
