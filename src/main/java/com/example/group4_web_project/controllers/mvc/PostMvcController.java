@@ -104,15 +104,24 @@ public class PostMvcController {
     }
 
    @GetMapping("/{id}")
-    public String showSinglePost(@PathVariable int id, Model model) {
+    public String showSinglePost(@PathVariable int id, Model model, HttpSession session) {
          try {
             Post post = postService.get(id);
            model.addAttribute("post", post);
+                model.addAttribute("likeCount", postService.getLikesCount(post));
+               User user = authenticationHelper.tryGetCurrentUser(session);
+               model.addAttribute("hasUserLikedPost", postService.hasUserLikedPost(post, user));
+
+
            return "Post";
        } catch (EntityNotFoundException e) {
           model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
          model.addAttribute("error", e.getMessage());
-           return "ErrorView";}
+           return "ErrorView";
+         }
+         catch (AuthorizationException e) {
+           return "Post";
+         }
    }
 
    @GetMapping("/{id}/like")
@@ -134,7 +143,7 @@ public class PostMvcController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
        } catch (AuthorizationException e) {
            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
+       }
    }
 
 //

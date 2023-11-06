@@ -130,6 +130,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public long getLikesCount(Post post) {
+        return postRepository.getLikesCount(post);
+    }
+
+    @Override
     public void likePost(User user, int postId) {
         Post post = postRepository.get(postId);
         if (postRepository.hasUserLikedPost(post, user)) {
@@ -142,6 +147,11 @@ public class PostServiceImpl implements PostService {
         }
 //        long count = postRepository.getLikesCount(post);
 //        System.out.println(count);
+    }
+
+    @Override
+    public boolean hasUserLikedPost(Post post, User user) {
+        return postRepository.hasUserLikedPost(post, user);
     }
 
     @Override
