@@ -30,7 +30,7 @@ public class CommentMapper {
         comment.setCreatedBy(userRepository.get(userId));
         comment.setCreateDate(commentDto.getCreateDate());
         //System.out.println();
-        comment.setPost(postRepository.get(commentDto.getPostId()));
+       // comment.setPost(postRepository.get(commentDto.getPostId()));
 
         return comment;
     }

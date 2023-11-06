@@ -38,7 +38,7 @@ public class CommentRestController {
 
 
     @PostMapping()
-    public void create(@RequestHeader HttpHeaders headers, @RequestBody @Valid CommentDto commentDto) {
+    public void create(@RequestHeader HttpHeaders headers, @RequestBody CommentDto commentDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             Comment comment = commentMapper.createFromDto(user.getId(), commentDto);

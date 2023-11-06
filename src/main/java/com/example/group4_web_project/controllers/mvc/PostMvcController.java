@@ -6,9 +6,11 @@ import com.example.group4_web_project.exceptions.EntityDuplicateException;
 
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.helpers.AuthenticationHelper;
+import com.example.group4_web_project.helpers.CommentMapper;
 import com.example.group4_web_project.helpers.PostMapper;
 import com.example.group4_web_project.models.*;
 
+import com.example.group4_web_project.services.CommentService;
 import com.example.group4_web_project.services.PostService;
 import com.example.group4_web_project.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,16 +32,20 @@ public class PostMvcController {
 
     private final PostService postService;
     private final UserService userService;
+    private final CommentService commentService;
 
     private final PostMapper postMapper;
+    private final  CommentMapper commentMapper;
     private final AuthenticationHelper authenticationHelper;
 
 
-    public PostMvcController(PostService postService, UserService userService, PostMapper postMapper, AuthenticationHelper authenticationHelper) {
+    public PostMvcController(PostService postService, UserService userService, CommentService commentService, PostMapper postMapper, CommentMapper commentMapper, AuthenticationHelper authenticationHelper) {
         this.postService = postService;
         this.userService = userService;
+        this.commentService = commentService;
 
         this.postMapper = postMapper;
+        this.commentMapper = commentMapper;
 
         this.authenticationHelper = authenticationHelper;
     }
@@ -109,6 +115,15 @@ public class PostMvcController {
             Post post = postService.get(id);
            model.addAttribute("post", post);
                model.addAttribute("likeCount", postService.getLikesCount(post));
+               try {
+                   List<Comment> comments = commentService.getByPostId(id);
+                   model.addAttribute("comments", comments);
+                   model.addAttribute("hasComments",true);
+               }catch (EntityNotFoundException e){
+                   model.addAttribute("hasComments", false);
+               }
+
+
                User user = authenticationHelper.tryGetCurrentUser(session);
                model.addAttribute("hasUserLikedPost", postService.hasUserLikedPost(post, user));
              model.addAttribute("hasModifyPermissions", postService.checkForModifyPermissions(user, post));
@@ -132,8 +147,6 @@ public class PostMvcController {
        try {
            User user = authenticationHelper.tryGetCurrentUser(session);
 
-
-
            postService.likePost(user, id);
           return "redirect:/posts/{id}";
 
@@ -146,64 +159,64 @@ public class PostMvcController {
        }
    }
 
-//
-//
-//    @GetMapping("/{id}/update")
-//    public String showEditBeerPage(@PathVariable int id, Model model, HttpSession session) {
-//        try {
-//            authenticationHelper.tryGetCurrentUser(session);
-//        } catch (AuthorizationException e) {
-//            return "redirect:/auth/login";
-//        }
-//
-//        try {
-//            Beer beer = beerService.get(id);
-//            BeerDto beerDto = beerMapper.toDto(beer);
-//            model.addAttribute("beerId", id);
-//            model.addAttribute("beer", beerDto);
-//            return "BeerUpdateView";
-//        } catch (EntityNotFoundException e) {
-//            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
-//            model.addAttribute("error", e.getMessage());
-//            return "ErrorView";
-//        }
-//    }
-//
-//    @PostMapping("/{id}/update")
-//    public String updateBeer(@PathVariable int id,
-//                             @Valid @ModelAttribute("beer") BeerDto dto,
-//                             BindingResult bindingResult,
-//                             Model model,
-//                             HttpSession session) {
-//        User user;
-//        try {
-//            user = authenticationHelper.tryGetCurrentUser(session);
-//        } catch (AuthorizationException e) {
-//            return "redirect:/auth/login";
-//        }
-//
-//        if (bindingResult.hasErrors()) {
-//            return "BeerUpdateView";
-//        }
-//
-//        try {
-//            Beer beer = beerMapper.fromDto(id, dto);
-//            beerService.update(beer, user);
-//            return "redirect:/beers";
-//        } catch (EntityNotFoundException e) {
-//            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
-//            model.addAttribute("error", e.getMessage());
-//            return "ErrorView";
-//        } catch (EntityDuplicateException e) {
-//            bindingResult.rejectValue("name", "duplicate_beer", e.getMessage());
-//            return "BeerUpdateView";
-//        } catch (AuthorizationException e) {
-//            model.addAttribute("statusCode", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-//            model.addAttribute("error", e.getMessage());
-//            return "ErrorView";
-//        }
-//    }
-//
+
+
+    @GetMapping("/{id}/comment")
+    public String showCreateCommentPage(@PathVariable int id, Model model, HttpSession session) {
+        try {
+            authenticationHelper.tryGetCurrentUser(session);
+            model.addAttribute("comment", new CommentDto());
+            return "CommentView";
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
+        }
+
+        catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
+    }
+
+    @PostMapping("/{id}/comment")
+    public String addComment(@PathVariable int id,
+                             @Valid @ModelAttribute("comment") CommentDto dto,
+                             BindingResult bindingResult,
+                             Model model,
+                             HttpSession session) {
+        User user;
+
+        try {
+            user = authenticationHelper.tryGetCurrentUser(session);
+
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "CommentView";
+        }
+
+        try {
+            Comment comment = commentMapper.createFromDto(user.getId(),dto);
+            comment.setPost(postService.get(id));
+            System.out.println(comment.getContent());
+            commentService.create(comment);
+            return "redirect:/posts/{id}/comment";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        } catch (EntityDuplicateException e) {
+            bindingResult.rejectValue("name", "duplicate_beer", e.getMessage());
+            return "CommentView";
+        } catch (AuthorizationException e) {
+            model.addAttribute("statusCode", HttpStatus.UNAUTHORIZED.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
+    }
+
     @GetMapping("/{id}/delete")
     public String deleteBeer(@PathVariable int id, Model model, HttpSession session) {
         User user;

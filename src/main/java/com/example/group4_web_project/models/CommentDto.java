@@ -36,9 +36,7 @@ public class CommentDto {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
+
 
 
 }

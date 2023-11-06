@@ -20,6 +20,30 @@
         <p class="margin12" th:text="${'Content'  + ': ' + post.content} "></p>
         <p class="margin12" th:text="${'Create By '  + ': ' + post.getCreatedBy().email}"></p>
         <p class="margin12" th:text="${'Like '  + ': ' + likeCount}"></p>
+
+        </div>
+        <div class="table" th:if ="${hasComments}">
+            <div class="header">
+                <div class="cell" th:text="${'Comment name'}"  >Comment name</div>
+                <div class="cell" th:text="${'Create by'}">Create by</div>
+
+            </div>
+            <div class="row" th:each="comment : ${comments}">
+                <div class="cell">
+                    <a href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${comment.content}" >Comment</a>
+
+                </div>
+
+                <div class="cell">
+
+                    <a href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${comment.getCreatedBy().email}">Create by</a>
+                </div>
+
+
+            </div>
+        </div>
+
+
     </div>
     <h3 th:if="${isAuthenticated}">
         <!--    <a href="#" th:href="@{/beers/{id}/update(id=${beer.id})}">Update</a>-->
@@ -30,11 +54,13 @@
 
          <a href="#" th:unless="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Like</a>
         <a href="#" th:if="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Remove Like</a>
+        <a href="#"  th:href="@{__${requestURI}__/comment}">Add comment</a>
 
        <!-- <a href="#" th:href="@{__${requestURI}__/like}">Like</a>-->
 
     </h3>
-</div>
+
+
 
 
 

@@ -6,6 +6,8 @@ import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.repositories.CommentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -47,5 +49,10 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.delete(comment);
 
+    }
+
+    @Override
+    public List<Comment> getByPostId(int id) {
+        return commentRepository.getByPostId(id);
     }
 }

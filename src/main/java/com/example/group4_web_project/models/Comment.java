@@ -28,8 +28,8 @@ public class Comment {
 
     @NotEmpty
     @Column(name = "create_date")
-    @DateTimeFormat()
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+   // @DateTimeFormat()
+   // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
 
     public Comment() {
