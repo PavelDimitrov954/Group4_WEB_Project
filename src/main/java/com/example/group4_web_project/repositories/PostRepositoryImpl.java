@@ -40,8 +40,7 @@ public class PostRepositoryImpl implements PostRepository {
                 });
 
 //                filterOptions.getTag().ifPresent(value -> {
-//                    filters.add("createdBy.id = :user_id");
-//                    params.put("user_id", value);
+//
 //                });
 
 
