@@ -6,9 +6,9 @@
 <body>
 <form th:replace="~{HomeView.html :: header}"></form>
 
-<div class="body-content">
+<div th:fragment="post-form()" class="body-content">
     <h2>New Post</h2>
-    <form action="#" th:action="@{/posts/new}" th:object="${post}" method="post">
+    <form action="#" th:action="@{__${requestURI}__}" th:object="${post}" method="post">
         <label th:text="#{post.label.title}">Title</label>
         <br/>
         <input type="text" th:field="*{title}"/>
@@ -21,7 +21,7 @@
         <label class="error" th:errors="*{content}">Content error placeholder</label>
         <br/><br/>
 
-        <input type="submit" value="Create"/>
+        <input type="submit" value="Save"/>
     </form>
 </div>
 

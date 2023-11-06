@@ -75,8 +75,8 @@ public class PostMvcController {
     }
     @PostMapping("/new")
     public String handleNewPost(@Valid @ModelAttribute("post") PostDto post,
-                              BindingResult bindingResult,
-                              HttpSession session) {
+                                BindingResult bindingResult,
+                                HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "NewPostView";
         }
@@ -96,68 +96,68 @@ public class PostMvcController {
 
     @GetMapping
     public String showAllPost(@ModelAttribute("filterOptions") FilterDto filterDto, Model model) {
-   FilterOptions filterOptions = new FilterOptions(
-              filterDto.getTitle(),
-              filterDto.getCreatedByUserName(),
-              filterDto.getSortBy(),
-              filterDto.getSortOrder(),
-           filterDto.getTag());
-       List<Post> posts = postService.get(filterOptions);
-       model.addAttribute("filterOptions", filterDto);
-       model.addAttribute("posts", posts);
-      return "PostsView";
+        FilterOptions filterOptions = new FilterOptions(
+                filterDto.getTitle(),
+                filterDto.getCreatedByUserName(),
+                filterDto.getSortBy(),
+                filterDto.getSortOrder(),
+                filterDto.getTag());
+        List<Post> posts = postService.get(filterOptions);
+        model.addAttribute("filterOptions", filterDto);
+        model.addAttribute("posts", posts);
+        return "PostsView";
 
     }
 
-   @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public String showSinglePost(@PathVariable int id, Model model, HttpSession session) {
-         try {
+        try {
             Post post = postService.get(id);
-           model.addAttribute("post", post);
-               model.addAttribute("likeCount", postService.getLikesCount(post));
-               try {
-                   List<Comment> comments = commentService.getByPostId(id);
-                   model.addAttribute("comments", comments);
-                   model.addAttribute("hasComments",true);
-               }catch (EntityNotFoundException e){
-                   model.addAttribute("hasComments", false);
-               }
+            model.addAttribute("post", post);
+            model.addAttribute("likeCount", postService.getLikesCount(post));
+            try {
+                List<Comment> comments = commentService.getByPostId(id);
+                model.addAttribute("comments", comments);
+                model.addAttribute("hasComments",true);
+            }catch (EntityNotFoundException e){
+                model.addAttribute("hasComments", false);
+            }
 
 
-               User user = authenticationHelper.tryGetCurrentUser(session);
-               model.addAttribute("hasUserLikedPost", postService.hasUserLikedPost(post, user));
-             model.addAttribute("hasModifyPermissions", postService.checkForModifyPermissions(user, post));
+            User user = authenticationHelper.tryGetCurrentUser(session);
+            model.addAttribute("hasUserLikedPost", postService.hasUserLikedPost(post, user));
+            model.addAttribute("hasModifyPermissions", postService.checkForModifyPermissions(user, post));
 
-           return "Post";
-       } catch (EntityNotFoundException e) {
-          model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
-         model.addAttribute("error", e.getMessage());
-           return "ErrorView";
-         }
-         catch (AuthorizationException e) {
-           return "Post";
-         }
-   }
+            return "Post";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
+        catch (AuthorizationException e) {
+            return "Post";
+        }
+    }
 
-   @GetMapping("/{id}/like")
-   public String likePost(@PathVariable int id,
-                        HttpSession session) {
+    @GetMapping("/{id}/like")
+    public String likePost(@PathVariable int id,
+                           HttpSession session) {
 
 
-       try {
-           User user = authenticationHelper.tryGetCurrentUser(session);
+        try {
+            User user = authenticationHelper.tryGetCurrentUser(session);
 
-           postService.likePost(user, id);
-          return "redirect:/posts/{id}";
+            postService.likePost(user, id);
+            return "redirect:/posts/{id}";
 
         } catch (EntityNotFoundException e) {
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-       } catch (AuthorizationException e) {
-           throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-       }
-   }
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
 
 
 
@@ -217,6 +217,61 @@ public class PostMvcController {
         }
     }
 
+    @GetMapping("/{id}/update")
+    public String showEditBeerPage(@PathVariable int id, Model model, HttpSession session) {
+        try {
+            authenticationHelper.tryGetCurrentUser(session);
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
+        }
+
+        try {
+            Post post = postService.get(id);
+            PostDto postDto = postMapper.toDto(post);
+            model.addAttribute("postId", id);
+            model.addAttribute("post", postDto);
+            return "UpdatePostView";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
+    }
+
+    @PostMapping("/{id}/update")
+    public String updateBeer(@PathVariable int id,
+                             @Valid @ModelAttribute("post") PostDto dto,
+                             BindingResult bindingResult,
+                             Model model,
+                             HttpSession session) {
+        User user;
+        try {
+            user = authenticationHelper.tryGetCurrentUser(session);
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "UpdatePostView";
+        }
+
+        try {
+            Post post = postMapper.fromDto(id, dto);
+            postService.update(user, post);
+            return "redirect:/posts";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        } catch (EntityDuplicateException e) {
+            bindingResult.rejectValue("title", "duplicate_post", e.getMessage());
+            return "UpdatePostView";
+        } catch (AuthorizationException e) {
+            model.addAttribute("statusCode", HttpStatus.UNAUTHORIZED.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
+    }
     @GetMapping("/{id}/delete")
     public String deleteBeer(@PathVariable int id, Model model, HttpSession session) {
         User user;
@@ -244,5 +299,4 @@ public class PostMvcController {
 
 
 }
-
 

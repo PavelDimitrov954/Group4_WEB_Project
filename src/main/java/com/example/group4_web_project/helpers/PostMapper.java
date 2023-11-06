@@ -42,6 +42,12 @@ public class PostMapper {
         return post;
 
     }
-
+    public PostDto toDto(Post post){
+       PostDto postDto = new PostDto();
+       postDto.setTitle(post.getTitle());
+       postDto.setContent(post.getContent());
+       postDto.setCreateDate(post.getCreateDate());
+       return  postDto;
+    }
 
 }

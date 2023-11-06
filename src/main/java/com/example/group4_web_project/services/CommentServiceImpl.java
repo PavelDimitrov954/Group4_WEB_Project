@@ -6,6 +6,7 @@ import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.repositories.CommentRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,6 +23,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void create(Comment comment) {
+       // comment.setCreateDate(LocalDateTime.now());
         commentRepository.create(comment);
     }
 

@@ -98,7 +98,10 @@ public class PostServiceImpl implements PostService {
     public void update(User user, Post post) {
         boolean duplicateExists = true;
         try {
-            postRepository.get(post.getTitle());
+            Post existingPost = postRepository.get(post.getTitle());
+            if (existingPost.getId() == post.getId()) {
+                duplicateExists = false;
+            }
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }

@@ -26,8 +26,9 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @NotEmpty
     @Column(name = "create_date")
+    @DateTimeFormat()
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
    // @DateTimeFormat()
    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
