@@ -123,6 +123,15 @@ public class PostServiceImpl implements PostService {
 
     }
 
+    @Override
+    public boolean checkForModifyPermissions(User user, Post post) {
+
+
+        return user.getId() == post.getCreatedBy().getId() || user.isAdmin();
+
+
+    }
+
 
     @Override
     public int getPostCount() {

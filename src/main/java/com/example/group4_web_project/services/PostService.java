@@ -20,6 +20,7 @@ public interface PostService {
 
     int getPostCount();         // Borko
     long getLikesCount(Post post);
+    boolean checkForModifyPermissions(User user, Post post);
     void likePost(User user, int postId);
     boolean hasUserLikedPost(Post post, User user);
     void removeLike(User user, int postId);

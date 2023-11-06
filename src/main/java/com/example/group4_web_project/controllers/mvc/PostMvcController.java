@@ -108,10 +108,10 @@ public class PostMvcController {
          try {
             Post post = postService.get(id);
            model.addAttribute("post", post);
-                model.addAttribute("likeCount", postService.getLikesCount(post));
+               model.addAttribute("likeCount", postService.getLikesCount(post));
                User user = authenticationHelper.tryGetCurrentUser(session);
                model.addAttribute("hasUserLikedPost", postService.hasUserLikedPost(post, user));
-
+             model.addAttribute("hasModifyPermissions", postService.checkForModifyPermissions(user, post));
 
            return "Post";
        } catch (EntityNotFoundException e) {
