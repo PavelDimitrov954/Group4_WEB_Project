@@ -147,6 +147,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> getByCreator(User user) {
+        return postRepository.getByCreator(user);
+    }
+
+    @Override
     public void likePost(User user, int postId) {
         Post post = postRepository.get(postId);
         if (postRepository.hasUserLikedPost(post, user)) {

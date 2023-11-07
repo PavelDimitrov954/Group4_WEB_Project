@@ -11,6 +11,7 @@ import java.util.List;
 public interface PostRepository {
 
     List<Post> get(FilterOptions filterOptions);  // Borko
+    List<Post> getByCreator(User user);
 
     Post get(int id);   // Monika
 
