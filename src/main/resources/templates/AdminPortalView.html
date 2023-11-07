@@ -4,11 +4,66 @@
 <body>
 <form th:replace="~{HomeView.html :: header}"></form>
 <div class="body-content">
-    <h2 th:text="#{admin.welcome}">Welcome (design)!</h2>
+    <h2  th:text= "${'Welcome!'}" ></h2>
     <h2 th:text="${session.currentUser}" th:if="${isAuthenticated}"></h2>
-    <img src="../static/images/logo.png" th:src="@{/images/logo.png}" alt="BeerTag logo"/>
-    <p>A beer a day keeps the doctor away!</p>
+
+
 </div>
+<div class="body-content">
+    <form action="#" th:action="@{/admin}" method="get" th:object="${filterOptions}">
+        <label th:text="#{'Filter Options'}">Filter Options</label>
+        <br/><br/>
+
+
+        <input  type="text" placeholder="username" th:field="*{username}" value="" />
+
+
+        <input type="text" placeholder="email" th:field="*{email}" value="" />
+
+        <input type="text" placeholder="firstName" th:field="*{firstName}" value="" />
+
+
+
+
+        <input type="submit" value="Search"/>
+    </form>
+
+    <div th:if="${users.isEmpty()}">
+        <h2 th:text="#{'No Users'}">No Users</h2>
+    </div>
+    <div th:unless="${users.isEmpty()}">
+        <h2 th:text="${'All Users'}">All Users</h2>
+
+        <div class="table">
+            <div class="header">
+                <div class="cell" th:text="${'Username'}"  >Username</div>
+                <div class="cell" th:text="${'Email'}">Email</div>
+                <div class="cell" th:text="${'First Name'}">First Name</div>
+
+
+            </div>
+            <div class="row" th:each="user : ${users}">
+                <div class="cell">
+                    <a href="#" th:href="@{/admin/{id}(id=${user.id})}" th:text="${user.username}" >Username</a>
+
+                </div>
+                <div class="cell">
+                    <p href="#" th:href="@{/admin/{id}(id=${user.id})}" th:text="${user.email}" >Email</p>
+
+                </div>
+                <div class="cell">
+                    <p href="#" th:href="@{/admin/{id}(id=${user.id})}" th:text="${user.firstName}" >First Name</p>
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <form th:replace="~{HomeView.html :: footer}"></form>
 </body>

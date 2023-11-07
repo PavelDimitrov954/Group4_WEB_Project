@@ -51,17 +51,6 @@ public class HomeMvcController {
         return "About";
     }
 
-    @GetMapping("/admin")
-    public String showAdminPortal(HttpSession session, Model model) {
-        try {
-            User user = authenticationHelper.tryGetCurrentUser(session);
-            if (user.isAdmin()) {
-                return "AdminPortalView";
-            }
-            return "AccessDeniedView";
-        } catch (AuthorizationException e) {
-            return "redirect:/auth/login";
-        }
-    }
+
 }
 

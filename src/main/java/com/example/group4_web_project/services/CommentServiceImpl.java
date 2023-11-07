@@ -57,4 +57,14 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getByPostId(int id) {
         return commentRepository.getByPostId(id);
     }
+
+    @Override
+    public Comment get(int id) {
+        return commentRepository.get(id);
+    }
+
+    @Override
+    public boolean checkForModifyPermissionsComment(User user, Comment comment) {
+        return comment.getCreatedBy().equals(user) || user.isAdmin();
+    }
 }

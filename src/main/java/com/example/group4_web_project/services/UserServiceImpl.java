@@ -14,6 +14,7 @@ import com.example.group4_web_project.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,6 +41,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> get(FilterOptionsUser filterOptionsUser) {
+
+
+        String firstName = filterOptionsUser.getFirstName().toString().trim();
+        String email = filterOptionsUser.getEmail().toString().trim();
+        String username = filterOptionsUser.getUsername().toString().trim();
+
+        if(firstName.isEmpty()){
+
+            filterOptionsUser.setFirstName(Optional.empty());
+        }
+        if(email.isEmpty()){
+
+            filterOptionsUser.setEmail(Optional.empty());
+        }
+        if(username.isEmpty()){
+
+            filterOptionsUser.setUsername(Optional.empty());
+        }
+
         return userRepository.get(filterOptionsUser);
     }
 

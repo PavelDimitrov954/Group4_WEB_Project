@@ -1,10 +1,12 @@
 package com.example.group4_web_project.models;
 
 
+import jakarta.validation.constraints.NotEmpty;
+
 import java.time.LocalDateTime;
 
 public class CommentDto {
-
+    @NotEmpty
     private String content;
 
     private LocalDateTime createDate;

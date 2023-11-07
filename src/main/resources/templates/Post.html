@@ -19,6 +19,7 @@
         <p class="margin12" th:text="${'Title'  + ': ' + post.title} "></p>
         <p class="margin12" th:text="${'Content'  + ': ' + post.content} "></p>
         <p class="margin12" th:text="${'Create By '  + ': ' + post.getCreatedBy().email}"></p>
+        <p class="margin12" th:text="${'Create Date '  + ': ' + post.getCreateDate()}"></p>
         <p class="margin12" th:text="${'Like '  + ': ' + likeCount}"></p>
 
         </div>
@@ -26,18 +27,24 @@
             <div class="header">
                 <div class="cell" th:text="${'Comment name'}"  >Comment name</div>
                 <div class="cell" th:text="${'Create by'}">Create by</div>
+                <div class="cell" th:text="${'Create date'}">Create date</div>
 
             </div>
             <div class="row" th:each="comment : ${comments}">
                 <div class="cell">
-                    <a href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${comment.content}" >Comment</a>
+                    <a href="#" th:href="@{/posts/{id}/comment/{commentId} (id=${post.id} , commentId=${comment.id})}" th:text="${comment.content}" >Comment</a>
 
                 </div>
 
                 <div class="cell">
 
-                    <a href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${comment.getCreatedBy().email}">Create by</a>
+                    <p href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${comment.getCreatedBy().email}">Create by</p>
                 </div>
+                <div class="cell">
+
+                    <p href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${comment.getCreateDate()}">Create date</p>
+                </div>
+
 
 
             </div>
@@ -54,7 +61,7 @@
 
          <a href="#" th:unless="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Like</a>
         <a href="#" th:if="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Remove Like</a>
-        <a href="#"  th:href="@{__${requestURI}__/comment}">Add comment</a>
+        <a href="#"  th:href="@{__${requestURI}__/AddComment}">Add comment</a>
 
        <!-- <a href="#" th:href="@{__${requestURI}__/like}">Like</a>-->
 

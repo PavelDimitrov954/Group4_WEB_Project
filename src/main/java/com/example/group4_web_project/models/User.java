@@ -40,6 +40,8 @@ public class User {
     private Boolean isBlocked;
 
     public User() {
+
+        isBlocked = false;
     }
 
     public int getId() {

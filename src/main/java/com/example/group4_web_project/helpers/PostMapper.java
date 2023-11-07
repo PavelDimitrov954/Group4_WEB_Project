@@ -18,17 +18,11 @@ public class PostMapper {
     }
 
     public Post fromDto(int postID, PostDto postDto) {
-
         Post post = postRepository.get(postID);
+       post.setContent(postDto.getContent());
+       post.setTitle(postDto.getTitle());
 
-        Post postToUpdate = new Post();
-        postToUpdate.setId(postID);
-        postToUpdate.setCreatedBy(post.getCreatedBy());
-        postToUpdate.setContent(postDto.getContent());
-        postToUpdate.setTitle(postDto.getTitle());
-
-
-        return postToUpdate;
+       return post;
 
     }
 

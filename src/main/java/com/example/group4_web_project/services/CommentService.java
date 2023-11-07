@@ -14,4 +14,6 @@ public interface CommentService {
     void delete(User user, int id); // Borko
 
     List<Comment> getByPostId(int id);
+    Comment get(int id);
+    boolean checkForModifyPermissionsComment(User user, Comment comment);
 }

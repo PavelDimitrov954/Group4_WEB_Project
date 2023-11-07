@@ -53,16 +53,19 @@ public class UserRepositoryImpl implements UserRepository {
             filterOptionsUser.getUsername().ifPresent(value -> {
                 filters.add("username like :username");
                 params.put("username", String.format("%%%s%%", value));
+
             });
 
             filterOptionsUser.getEmail().ifPresent(value -> {
                 filters.add(" email like :email ");
                 params.put("email", String.format("%%%s%%",value));
+
             });
 
             filterOptionsUser.getFirstName().ifPresent(value -> {
                 filters.add(" first_name like :first_name");
                 params.put("first_name", String.format("%%%s%%", value));
+
             });
 
             StringBuilder queryString = new StringBuilder();
@@ -72,8 +75,13 @@ public class UserRepositoryImpl implements UserRepository {
                 queryString.append(" where ").append(String.join(" and ", filters ));
             }
 
+            System.out.println(queryString.toString());
+            params.values().stream().forEach(e-> System.out.println(e + "1"));
             Query<User> query = session.createQuery(queryString.toString(),User.class);
+
             query.setProperties(params);
+
+
             return query.list();
         }
 
