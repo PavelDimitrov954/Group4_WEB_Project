@@ -207,7 +207,7 @@ public class PostMvcController {
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
         } catch (EntityDuplicateException e) {
-            bindingResult.rejectValue("name", "duplicate_beer", e.getMessage());
+            bindingResult.rejectValue("name", "duplicate_post", e.getMessage());
             return "AddComment";
         } catch (AuthorizationException e) {
             model.addAttribute("statusCode", HttpStatus.UNAUTHORIZED.getReasonPhrase());
@@ -253,7 +253,7 @@ public class PostMvcController {
     }
 
     @GetMapping("/{id}/update")
-    public String showEditBeerPage(@PathVariable int id, Model model, HttpSession session) {
+    public String showEditPostPage(@PathVariable int id, Model model, HttpSession session) {
         try {
             authenticationHelper.tryGetCurrentUser(session);
         } catch (AuthorizationException e) {
@@ -274,7 +274,7 @@ public class PostMvcController {
     }
 
     @PostMapping("/{id}/update")
-    public String updateBeer(@PathVariable int id,
+    public String updatePost(@PathVariable int id,
                              @Valid @ModelAttribute("post") PostDto dto,
                              BindingResult bindingResult,
                              Model model,
@@ -310,7 +310,7 @@ public class PostMvcController {
         }
     }
     @GetMapping("/{id}/delete")
-    public String deleteBeer(@PathVariable int id, Model model, HttpSession session) {
+    public String deletePost(@PathVariable int id, Model model, HttpSession session) {
         User user;
         try {
             user = authenticationHelper.tryGetCurrentUser(session);
