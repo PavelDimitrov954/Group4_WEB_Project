@@ -2,6 +2,8 @@ package com.example.group4_web_project.models;
 
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PostDto {
 
@@ -9,6 +11,7 @@ public class PostDto {
 
     private String content;
     private LocalDateTime createDate;
+    private Set<String> tagNames = new HashSet<>();
 
     public PostDto() {
         this.createDate = LocalDateTime.now();
@@ -33,6 +36,14 @@ public class PostDto {
 
     public LocalDateTime getCreateDate() {
         return createDate;
+    }
+
+    public Set<String> getTagNames() {
+        return tagNames;
+    }
+
+    public void setTagNames(Set<String> tagNames) {
+        this.tagNames = tagNames;
     }
 
     public void setCreateDate(LocalDateTime createDate) {

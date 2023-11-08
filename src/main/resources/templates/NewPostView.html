@@ -20,6 +20,14 @@
         <textarea type="text" th:field="*{content}"> </textarea>
         <label class="error" th:errors="*{content}">Content error placeholder</label>
         <br/><br/>
+        <div class="form-group">
+            <label for="tags">Tags</label>
+            <br/>
+            <input type="text" id="tags" name="tags" th:value="${post.tagNames}" placeholder="Enter tags separated by commas"/>
+            <small id="tagsHelp" class="form-text text-muted">Add tags to your post, separated by commas.</small>
+        </div>
+        <br/><br/>
+
 
         <input type="submit" value="Save"/>
     </form>
