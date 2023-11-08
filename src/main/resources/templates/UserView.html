@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<form th:replace="~{HomeView.html :: head('User')}"></form>
+<body>
+<div class="body-content">
+    <div th:style="text-align">
+        <form th:replace="~{HomeView.html :: header}"></form>
+        <h1>User</h1>
+        <p>asd</p>
+        <p class="margin12" th:text="${'Username'  + ': ' + user.username} "></p>
+        <p class="margin12" th:text="${'First Name'  + ': ' + user.firstName} "></p>
+        <p class="margin12" th:text="${'Last Name'  + ': ' + user.lastName} "></p>
+        <p class="margin12" th:text="${'Email'  + ': ' + user.email} "></p>
+        <!--  TODO UPDATE DELETE USER -->
+        <form th:replace="~{PostsView.html :: posts}"></form>
+        <form th:replace="~{HomeView.html :: footer}"></form>
+    </div>
+</div>
+</body>
+</html>
