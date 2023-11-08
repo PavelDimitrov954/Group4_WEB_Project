@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Repository
@@ -50,21 +47,29 @@ public class UserRepositoryImpl implements UserRepository {
             List<String> filters = new ArrayList<>();
             Map<String, Object> params = new HashMap<>();
 
+
             filterOptionsUser.getUsername().ifPresent(value -> {
-                filters.add("username like :username");
-                params.put("username", String.format("%%%s%%", value));
+
+                    filters.add(" username like :username");
+                    params.put("username", String.format("%%%s%%", value.trim()));
+
+
 
             });
 
+
+
             filterOptionsUser.getEmail().ifPresent(value -> {
-                filters.add(" email like :email ");
-                params.put("email", String.format("%%%s%%",value));
+
+                    filters.add(" email like :email ");
+                    params.put("email", String.format("%%%s%%",value.trim()));
 
             });
 
             filterOptionsUser.getFirstName().ifPresent(value -> {
-                filters.add(" first_name like :first_name");
-                params.put("first_name", String.format("%%%s%%", value));
+
+                    filters.add(" firstName like :firstName ");
+                    params.put("firstName", String.format("%%%s%%",value.trim()));
 
             });
 

@@ -32,21 +32,21 @@ public class AdminMvcController {
 
 
 
-    @GetMapping("")
-    public String showUser(@ModelAttribute("filterOptions") FilterDtoUser filterDtoUser, HttpSession session,Model model) {
+    @GetMapping()
+    public String showUser(@ModelAttribute("filterOptions")  FilterDtoUser filterDtoUser, HttpSession session,Model model) {
         try {
             User user = authenticationHelper.tryGetCurrentUser(session);
-            System.out.println("USER");
-            System.out.println(user.isAdmin());
+
             if (user.isAdmin()) {
-                FilterOptionsUser filterOptionsUser = new FilterOptionsUser(
-                        filterDtoUser.getUsername(),
+                FilterOptionsUser filterOptionsUser = new FilterOptionsUser(filterDtoUser.getUsername(),
                         filterDtoUser.getEmail(),
                         filterDtoUser.getFirstName());
-                System.out.println("FILTER");
+
+
+
 
                 List<User> users = userService.get(filterOptionsUser);
-                System.out.println("USER SERVICE");
+
                 model.addAttribute("filterOptions", filterDtoUser);
                 model.addAttribute("users", users);
                 return "AdminPortalView";

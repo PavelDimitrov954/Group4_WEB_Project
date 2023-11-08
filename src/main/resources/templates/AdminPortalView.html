@@ -11,25 +11,25 @@
 </div>
 <div class="body-content">
     <form action="#" th:action="@{/admin}" method="get" th:object="${filterOptions}">
-        <label th:text="#{'Filter Options'}">Filter Options</label>
+        <label th:text="${'Filter Options'}">Filter Options</label>
         <br/><br/>
 
-
-        <input  type="text" placeholder="username" th:field="*{username}" value="" />
-
-
-        <input type="text" placeholder="email" th:field="*{email}" value="" />
-
-        <input type="text" placeholder="firstName" th:field="*{firstName}" value="" />
+<div>
+        <input  type="text" placeholder="username" th:field="*{username}"  />
 
 
+        <input type="text" placeholder="email" th:field="*{email}"  />
 
+        <input type="text" placeholder="firstName" th:field="*{firstName}"  />
+
+
+</div>
 
         <input type="submit" value="Search"/>
     </form>
 
     <div th:if="${users.isEmpty()}">
-        <h2 th:text="#{'No Users'}">No Users</h2>
+        <h2 th:text="${'No Users'}">No Users</h2>
     </div>
     <div th:unless="${users.isEmpty()}">
         <h2 th:text="${'All Users'}">All Users</h2>
@@ -44,7 +44,7 @@
             </div>
             <div class="row" th:each="user : ${users}">
                 <div class="cell">
-                    <a href="#" th:href="@{/admin/{id}(id=${user.id})}" th:text="${user.username}" >Username</a>
+                    <a href="#" th:href="@{/users/current}" th:text="${user.username}" >Username</a>
 
                 </div>
                 <div class="cell">

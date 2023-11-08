@@ -43,22 +43,6 @@ public class UserServiceImpl implements UserService {
     public List<User> get(FilterOptionsUser filterOptionsUser) {
 
 
-        String firstName = filterOptionsUser.getFirstName().toString().trim();
-        String email = filterOptionsUser.getEmail().toString().trim();
-        String username = filterOptionsUser.getUsername().toString().trim();
-
-        if(firstName.isEmpty()){
-
-            filterOptionsUser.setFirstName(Optional.empty());
-        }
-        if(email.isEmpty()){
-
-            filterOptionsUser.setEmail(Optional.empty());
-        }
-        if(username.isEmpty()){
-
-            filterOptionsUser.setUsername(Optional.empty());
-        }
 
         return userRepository.get(filterOptionsUser);
     }

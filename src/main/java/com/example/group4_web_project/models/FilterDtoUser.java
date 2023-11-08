@@ -1,6 +1,5 @@
 package com.example.group4_web_project.models;
 
-import java.util.Optional;
 
 public class FilterDtoUser {
     private String username;
