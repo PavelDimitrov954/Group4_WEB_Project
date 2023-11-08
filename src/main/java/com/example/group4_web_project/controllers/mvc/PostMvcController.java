@@ -55,13 +55,25 @@ public class PostMvcController {
     public boolean populateIsAuthenticated(HttpSession session) {
         return session.getAttribute("currentUser") != null;
     }
+    @ModelAttribute("isBlocked")
+    public boolean populateIsBlocked(HttpSession session) {
+        try{
+            User user = authenticationHelper.tryGetCurrentUser(session);
+            return user.isBlocked();
+        }
+        catch (AuthorizationException e){
+            return false;
+        }
 
+
+    }
     @ModelAttribute("requestURI")
     public String requestURI(final HttpServletRequest request) {
         return request.getRequestURI();
     }
 
-    @ModelAttribute("comments")
+    @ModelAttribute(
+            "comments")
     public List<Comment> populateStyles() {
         return null;
     }

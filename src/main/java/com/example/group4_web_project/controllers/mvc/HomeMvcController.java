@@ -33,6 +33,19 @@ public class HomeMvcController {
         return session.getAttribute("currentUser") != null;
     }
 
+    @ModelAttribute("isBlocked")
+    public boolean populateIsBlocked(HttpSession session) {
+        try{
+            User user = authenticationHelper.tryGetCurrentUser(session);
+            return user.isBlocked();
+        }
+        catch (AuthorizationException e){
+            return false;
+        }
+
+
+    }
+
     @GetMapping
     public String showHomePage(Model model) {
         List<com.example.group4_web_project.models.Post> topCommentedPosts = postService.getTopCommentedPosts(10);

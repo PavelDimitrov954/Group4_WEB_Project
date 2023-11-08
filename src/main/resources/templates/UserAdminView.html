@@ -17,6 +17,7 @@
     <a href="#"  th:unless="${user.isAdmin() || user.isBlocked()}" th:href="@{/users/current/{id}/blocked(id=${user.id})} ">Blocked user</a>
     <a href="#" th:if="${user.isBlocked()}" th:href="@{/users/current/{id}/unblocked(id=${user.id})} ">Un Blocked user</a>
     <a href="#" th:unless="${user.isAdmin()}" th:href="@{/users/current/{id}/makeAdmin (id =${user.id})}">Make admin</a>
+    <a href="#" th:unless="${user.isAdmin()}" th:href="@{/users/current/{id}/delete (id =${user.id})}">Delete user </a>
 
     <!-- TODO UPDATE DELETE USER -->
     <form th:replace="~{PostsView.html :: posts}"></form>

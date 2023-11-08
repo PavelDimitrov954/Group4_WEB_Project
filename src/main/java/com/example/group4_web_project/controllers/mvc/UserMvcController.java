@@ -131,12 +131,30 @@ public class UserMvcController {
     public String makeUserAdmin( Model model, @PathVariable int id, HttpSession session) {
         try{
            User admin =   authenticationHelper.tryGetCurrentUser(session);
-           System.out.println("Hello" + id);
 
-
-
-            userService.makeUserAdmin(admin,id,null);
+           userService.makeUserAdmin(admin,id,null);
             return "redirect:/users/current/{id}";
+
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
+
+
+    }
+    @GetMapping("/current/{id}/delete")
+    public String delete( Model model, @PathVariable int id, HttpSession session) {
+        try{
+            User user =   authenticationHelper.tryGetCurrentUser(session);
+
+            if(user.getId()!=id && user.isAdmin()){
+                System.out.println(user.getUsername());
+                userService.delete(id, user);
+                return "redirect:/admin";
+            }
+            session.removeAttribute("currentUser");
+            userService.delete(id, user);
+            return "redirect:/";
 
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
