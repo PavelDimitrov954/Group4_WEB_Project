@@ -11,7 +11,10 @@
         <p class="margin12" th:text="${'First Name'  + ': ' + user.firstName} "></p>
         <p class="margin12" th:text="${'Last Name'  + ': ' + user.lastName} "></p>
         <p class="margin12" th:text="${'Email'  + ': ' + user.email} "></p>
-        <!--  TODO UPDATE DELETE USER -->
+
+
+
+       <!-- TODO UPDATE DELETE USER -->
         <form th:replace="~{PostsView.html :: posts}"></form>
         <form th:replace="~{HomeView.html :: footer}"></form>
     </div>

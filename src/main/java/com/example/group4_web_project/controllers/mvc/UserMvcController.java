@@ -40,6 +40,18 @@ public class UserMvcController {
         return session.getAttribute("currentUser") != null;
     }
 
+    @ModelAttribute("isAdmin")
+    public boolean populateIsAdmin(HttpSession session){
+        try {
+            User user = authenticationHelper.tryGetCurrentUser(session);
+            if(user.isAdmin()){
+                return true;
+            }
+            return false;
+        }catch (AuthorizationException e){
+            return false;
+        }
+    }
     @ModelAttribute("requestURI")
     public String requestURI(final HttpServletRequest request) {
         return request.getRequestURI();
@@ -47,13 +59,85 @@ public class UserMvcController {
 
 
     @GetMapping("/current")
-    public String showUserInfo(@RequestHeader HttpHeaders headers, Model model, HttpSession session) {
+    public String showUserInfo(Model model, HttpSession session) {
         try{
            User user = authenticationHelper.tryGetCurrentUser(session);
             List<Post> userPosts = postService.getByCreator(user);
             model.addAttribute("user", user);
             model.addAttribute("posts", userPosts);
             return "UserView";
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
+
+
+    }
+    @GetMapping("/current/{id}")
+    public String showUserInfoAdmin(Model model,@PathVariable int id,HttpSession session) {
+        try{
+            authenticationHelper.tryGetCurrentUser(session);
+            User user = userService.get(id);
+            List<Post> userPosts = postService.getByCreator(user);
+            model.addAttribute("user", user);
+            model.addAttribute("posts", userPosts);
+            return "UserAdminView";
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
+
+
+    }
+
+
+    @GetMapping("/current/{id}/blocked")
+    public String blocked( Model model,@PathVariable int id, HttpSession session) {
+        try{
+
+          User user = userService.get(id);
+
+
+
+            userService.blockUser(user);
+
+
+            return "redirect:/users/current/{id}";
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+        @GetMapping("/current/{id}/unblocked")
+        public String Unblocked( Model model,@PathVariable int id, HttpSession session) {
+            try{
+
+                User user = userService.get(id);
+
+
+
+                userService.unblockUser(user);
+
+
+                return "redirect:/users/current/{id}";
+            } catch (AuthorizationException e) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+            }
+
+
+
+    }
+    @GetMapping("/current/{id}/makeAdmin")
+    public String makeUserAdmin( Model model, @PathVariable int id, HttpSession session) {
+        try{
+           User admin =   authenticationHelper.tryGetCurrentUser(session);
+           System.out.println("Hello" + id);
+
+
+
+            userService.makeUserAdmin(admin,id,null);
+            return "redirect:/users/current/{id}";
+
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }

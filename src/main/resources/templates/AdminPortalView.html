@@ -44,7 +44,7 @@
             </div>
             <div class="row" th:each="user : ${users}">
                 <div class="cell">
-                    <a href="#" th:href="@{/users/current}" th:text="${user.username}" >Username</a>
+                    <a href="#" th:href="@{/users/current/{id}(id=${user.id})}" th:text="${user.username}" >Username</a>
 
                 </div>
                 <div class="cell">
