@@ -39,7 +39,9 @@ public class CommentMapper {
 
         Comment comment = commentRepository.get(commentId);
         comment.setContent(commentDto.getContent());
+        comment.setCreateDate(commentDto.getCreateDate());
         return comment;
     }
+
 
 }

@@ -27,8 +27,10 @@
 
 
 
-       <!-- TODO UPDATE DELETE USER -->
-        <a href="#"  th:href="@{/users/{id}/delete (id =${user.id})}">Delete  </a>
+
+        <a href="#"  th:href="@{/users/{id}/update (id =${user.id})}">Update  </a>
+        <a href="#"  th:href="@{/users/current/{id}/delete (id =${user.id})}">Delete  </a>
+
         <form th:replace="~{PostsView.html :: posts}"></form>
         <form th:replace="~{HomeView.html :: footer}"></form>
     </div>

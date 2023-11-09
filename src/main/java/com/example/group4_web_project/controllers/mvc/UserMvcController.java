@@ -7,6 +7,10 @@ import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.helpers.AuthenticationHelper;
 import com.example.group4_web_project.models.*;
 import com.example.group4_web_project.repositories.AdminPhoneNumberRepository;
+import com.example.group4_web_project.helpers.UserMapper;
+import com.example.group4_web_project.models.Post;
+import com.example.group4_web_project.models.User;
+import com.example.group4_web_project.models.UserDto;
 import com.example.group4_web_project.services.PostService;
 import com.example.group4_web_project.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,14 +32,17 @@ public class UserMvcController {
 
     private final UserService userService;
     private final PostService postService;
+    private final UserMapper userMapper;
     private final AuthenticationHelper authenticationHelper;
     private final AdminPhoneNumberRepository adminPhoneNumberRepository;
 
 
     @Autowired
-    public UserMvcController(UserService userService, PostService postService, AuthenticationHelper authenticationHelper, AdminPhoneNumberRepository adminPhoneNumberRepository) {
+    public UserMvcController(UserService userService, PostService postService, UserMapper userMapper, AuthenticationHelper authenticationHelper, AdminPhoneNumberRepository adminPhoneNumberRepository) {
+
         this.userService = userService;
         this.postService = postService;
+        this.userMapper = userMapper;
         this.authenticationHelper = authenticationHelper;
         this.adminPhoneNumberRepository = adminPhoneNumberRepository;
     }
@@ -236,6 +243,48 @@ public class UserMvcController {
 
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}/update")
+    public String updateUser( Model model, @PathVariable int id, HttpSession session) {
+        try{
+            authenticationHelper.tryGetCurrentUser(session);
+            User user = userService.get(id);
+            UserDto userDto = userMapper.toDto(user);
+
+            model.addAttribute("user", userDto);
+            return "UpdateUserView";
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
+
+
+    }
+
+    @PostMapping("/{id}/update")
+    public String updateUser(@Valid @ModelAttribute("user") UserDto userDto,@PathVariable int id,
+                                 BindingResult bindingResult,  HttpSession session) {
+
+        if (bindingResult.hasErrors()) {
+            return "UpdateUserView";
+        }
+
+
+
+        try {
+///TODO fix email validation and password
+            authenticationHelper.tryGetCurrentUser(session);
+            User user = userService.get(id);
+            User updatedUser = userMapper.fromDto(userDto);
+            updatedUser.setId(user.getId());
+
+            userService.update(user, updatedUser);
+            return "redirect:/";
+        } catch (EntityDuplicateException e) {
+            bindingResult.rejectValue("username", "username_error", e.getMessage());
+            return "UpdateUserView";
         }
     }
 }

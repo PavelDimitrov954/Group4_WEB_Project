@@ -7,7 +7,7 @@
 <div th:fragment="user_form(submit)" class="body-content">
     <h2>Register</h2>
 
-    <form action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
+    <form action="#" th:action="@{__${requestURI}__}" th:object="${user}" method="post">
         <label th:text="#{user.label.username}">Username</label>
         <br/>
         <input type="text" th:field="*{username}"/>
@@ -20,10 +20,6 @@
         <label class="error" th:errors="*{password}">Password error placeholder</label>
         <br/><br/>
 
-        <label th:text="#{user.label.password-confirm}">Confirm Password</label>
-        <br/>
-        <input type="password" th:field="*{passwordConfirm}"/>
-        <label class="error" th:errors="*{passwordConfirm}">Password confirm error placeholder</label>
         <br/><br/>
 
         <label th:text="#{user.label.first-name}">First Name</label>
@@ -44,7 +40,7 @@
         <label class="error" th:errors="*{email}">Email error placeholder</label>
         <br/><br/>
 
-        <input th:text="${submit}" type="submit" value="Register"/>
+        <input th:text="${submit}" type="submit" value="Update"/>
     </form>
 </div>
 

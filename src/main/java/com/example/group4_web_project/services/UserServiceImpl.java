@@ -81,6 +81,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user, User upddateUser) {
+        System.out.println(user.getId() );
+        System.out.println(upddateUser.getId());
         if (user.getId() != upddateUser.getId() && !user.isAdmin()) {
             throw new AuthorizationException(INVALID_AUTHORIZATION);
         } else if (!user.getUsername().equals(upddateUser.getUsername())) {

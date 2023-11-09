@@ -277,6 +277,60 @@ public class PostMvcController {
         }
     }
 
+
+    @GetMapping("/{id}/comment/{commentId}/update")
+    public String updaetComment(Model model, @PathVariable int id, @PathVariable int commentId,HttpSession session) {
+        try{
+            authenticationHelper.tryGetCurrentUser(session);
+
+            Comment comment = commentService.get(commentId);
+            model.addAttribute("comment", comment);
+            return "UpdateCommentView";
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
+    }
+
+
+
+
+
+
+
+
+    @PostMapping("/{id}/comment/{commentId}/update")
+    public String updateUser(@Valid @ModelAttribute("comment") CommentDto commentDto,@PathVariable int id,@PathVariable int commentId,
+                             BindingResult bindingResult,  HttpSession session) {
+
+        if (bindingResult.hasErrors()) {
+            return "UpdateCommentView";
+        }
+
+
+
+        try {
+///TODO fix email validation and password
+            User user = authenticationHelper.tryGetCurrentUser(session);
+
+            Comment comment = commentMapper.updateFromDto(commentId, commentDto);
+            commentService.update(user, comment);
+            return "redirect:/";
+        } catch (EntityDuplicateException e) {
+            bindingResult.rejectValue("username", "username_error", e.getMessage());
+            return "UpdateCommentView";
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     @GetMapping("/{id}/update")
     public String showEditPostPage(@PathVariable int id, Model model, HttpSession session) {
         try {

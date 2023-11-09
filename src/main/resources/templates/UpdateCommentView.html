@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<form th:replace="~{HomeView.html :: head('Update Comment')}"></form>
+
+
+<body>
+<form th:replace="~{HomeView.html :: header}"></form>
+<form th:replace="~{AddComment.html :: comment_form('Update Comment')}"></form>
+
+<form th:replace="~{HomeView.html :: footer}"></form>
+</body>
+</html>

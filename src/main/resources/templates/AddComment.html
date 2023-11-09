@@ -6,7 +6,7 @@
 <body>
 <form th:replace="~{HomeView.html :: header}"></form>
 
-<div class="body-content">
+<div th:fragment="comment_form(submit)" class="body-content">
   <h2>Comment</h2>
   <form action="#" th:action="@{__${requestURI}__}" th:object="${comment}" method="post">
     <label th:text="${'Content'}">Content</label>
@@ -16,7 +16,7 @@
 
 
 
-    <input type="submit" value="Add comment"/>
+    <input th:text="${submit}" type="submit" value="Add comment"/>
   </form>
 </div>
 
