@@ -3,10 +3,7 @@ package com.example.group4_web_project.services;
 import com.example.group4_web_project.exceptions.AuthorizationException;
 import com.example.group4_web_project.exceptions.EntityDuplicateException;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
-import com.example.group4_web_project.models.Comment;
-import com.example.group4_web_project.models.FilterOptionsUser;
-import com.example.group4_web_project.models.Post;
-import com.example.group4_web_project.models.User;
+import com.example.group4_web_project.models.*;
 import com.example.group4_web_project.repositories.AdminPhoneNumberRepository;
 import com.example.group4_web_project.repositories.CommentRepository;
 import com.example.group4_web_project.repositories.PostRepository;
@@ -138,5 +135,18 @@ public class UserServiceImpl implements UserService {
     public void unblockUser(User user) {
         user.setBlocked(false);
         userRepository.update(user);
+    }
+
+    @Override
+    public void addPhoneNumber(AdminPhoneNumber adminPhoneNumber) {
+        adminPhoneNumberRepository.addPhoneNumber(adminPhoneNumber);
+    }
+
+    @Override
+    public void deletePhoneNumber(User user) {
+        AdminPhoneNumber adminPhoneNumber = adminPhoneNumberRepository.GetAdminPhoneNumber(user);
+
+        adminPhoneNumberRepository.delete(adminPhoneNumber);
+
     }
 }

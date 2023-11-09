@@ -1,5 +1,6 @@
 package com.example.group4_web_project.services;
 
+import com.example.group4_web_project.models.AdminPhoneNumber;
 import com.example.group4_web_project.models.FilterOptionsUser;
 import com.example.group4_web_project.models.User;
 
@@ -25,5 +26,8 @@ public interface UserService {
     void blockUser(User user);      // Pavel
     void delete(int id, User user);     // Borko
     void unblockUser(User user);        // Pavel
+    public void addPhoneNumber(AdminPhoneNumber adminPhoneNumber);
+
+    void deletePhoneNumber(User user);
 }
 

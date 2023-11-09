@@ -243,7 +243,22 @@ public class PostServiceImpl implements PostService {
 
         postRepository.removeTagsFromPost(post.getId());
 
-        Arrays.stream(tagNames).forEach(tagName ->addTagToPost(post.getId(),tagName,user));
+       // Arrays.stream(tagNames).forEach(tagName ->addTagToPost(post.getId(),tagName,user));
+
+        Set<Tag>tags = new HashSet<>();
+        for ( String name:tagNames) {
+            try {
+                Tag tag = tagRepository.get(name);
+                tags.add(tag);
+            }catch (EntityNotFoundException e){
+                Tag tag = new Tag(name);
+                tagRepository.create(tag);
+                tags.add(tag);
+            }
+
+        }
+        post.setTags(tags);
+        postRepository.update(post);
 
     }
 

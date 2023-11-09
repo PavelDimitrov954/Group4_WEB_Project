@@ -14,7 +14,9 @@ public class AdminPhoneNumber {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne(targetEntity = User.class,cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+
+   // @OneToOne(targetEntity = User.class,cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 

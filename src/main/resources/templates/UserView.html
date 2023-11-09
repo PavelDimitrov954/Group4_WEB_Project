@@ -11,19 +11,24 @@
         <p class="margin12" th:text="${'First Name'  + ': ' + user.firstName} "></p>
         <p class="margin12" th:text="${'Last Name'  + ': ' + user.lastName} "></p>
         <p class="margin12" th:text="${'Email'  + ': ' + user.email} "></p>
-        <div th:if="${isAdmin}">
-            <input type="text" />
+        <p class="margin12" th:if="${isPhoneNumber}" th:text="${'Phone number'  + ': ' + AdminPhoneNumber.getPhoneNumber()} "></p>
+
+            <form th:if="${user.isAdmin()}"  th:unless="${isPhoneNumber}" action="#" th:action="@{/users/current}" th:object="${adminPhoneNumber}" method="post">
+
+                <input type="text" th:field="*{phoneNumber}"/>
+                <br/><br/>
+
+                <input type="submit" value="Add phone number"/>
+            </form>
 
 
 
-            <br/><br/>
+            <a href="#"  th:if="${user.isAdmin() && isPhoneNumber}" th:href="@{/users/{id}/deleteNumber (id=${user.id})}">Delete phone number</a>
 
-            <input type="submit" value="Add phone number"/>
-        </div>
 
 
        <!-- TODO UPDATE DELETE USER -->
-        <a href="#"  th:href="@{/users/current/{id}/delete (id =${user.id})}">Delete  </a>
+        <a href="#"  th:href="@{/users/{id}/delete (id =${user.id})}">Delete  </a>
         <form th:replace="~{PostsView.html :: posts}"></form>
         <form th:replace="~{HomeView.html :: footer}"></form>
     </div>
