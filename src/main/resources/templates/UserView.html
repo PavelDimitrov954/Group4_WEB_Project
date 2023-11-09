@@ -11,7 +11,15 @@
         <p class="margin12" th:text="${'First Name'  + ': ' + user.firstName} "></p>
         <p class="margin12" th:text="${'Last Name'  + ': ' + user.lastName} "></p>
         <p class="margin12" th:text="${'Email'  + ': ' + user.email} "></p>
+        <div th:if="${isAdmin}">
+            <input type="text" />
 
+
+
+            <br/><br/>
+
+            <input type="submit" value="Add phone number"/>
+        </div>
 
 
        <!-- TODO UPDATE DELETE USER -->

@@ -106,8 +106,8 @@ public class PostMvcController {
                 String[] tagArray = tagNames.split("\\s*,\\s*");
                 for (String tagName : tagArray) {
                     if (!tagName.isEmpty()) {
-                        Tag tag = new Tag(tagName);
-                        postService.addTagToPost(p.getId(), tag, user);
+
+                        postService.addTagToPost(p.getId(), tagName, user);
                     }
                 }
             }
@@ -324,7 +324,7 @@ public class PostMvcController {
         try {
             Post post = postMapper.fromDto(id, dto);
 
-            postService.update(user, post);
+           // postService.update(user, post);
             if (tagNames != null && !tagNames.trim().isEmpty()) {
                 String[] tagArray = tagNames.split("\\s*,\\s*");
                 postService.updateTags(post, tagArray, user);

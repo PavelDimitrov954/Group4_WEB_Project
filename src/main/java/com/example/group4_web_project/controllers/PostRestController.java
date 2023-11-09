@@ -149,7 +149,7 @@ public class PostRestController {
             User user = authenticationHelper.tryGetUser(headers);
 
             Tag tag = tagMapper.fromDto(tagDto);
-            postService.addTagToPost(postId, tag, user);
+            postService.addTagToPost(postId, tag.getName(), user);
             return new ResponseEntity<>("Tag added successfully", HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -169,7 +169,8 @@ public class PostRestController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
 
-            postService.removeTagFromPost(postId, tagName.toLowerCase(), user);
+
+           // postService.removeTagFromPost(postId, tagName.toLowerCase(), user);
             return new ResponseEntity<>("Tag removed successfully", HttpStatus.NO_CONTENT);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

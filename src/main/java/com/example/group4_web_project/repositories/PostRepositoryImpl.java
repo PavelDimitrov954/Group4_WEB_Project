@@ -2,16 +2,14 @@ package com.example.group4_web_project.repositories;
 
 import com.example.group4_web_project.models.*;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
@@ -255,12 +253,12 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public void removeTagFromPost(int postId, Tag tag) {
+    public void removeTagsFromPost(int postId) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Post post = session.get(Post.class, postId);
             if (post != null) {
-                post.getTags().remove(tag);
+                post.setTags(new HashSet<>());
                 session.merge(post);
             }
             session.getTransaction().commit();

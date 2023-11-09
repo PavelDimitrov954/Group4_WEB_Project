@@ -7,6 +7,7 @@ import com.example.group4_web_project.models.Tag;
 import com.example.group4_web_project.models.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PostRepository {
 
@@ -28,7 +29,7 @@ public interface PostRepository {
     boolean hasUserLikedPost(Post post, User user);
     Like getLikeByPostAndUser(Post post, User user);
     void addTagToPost(int postId, Tag tag);
-    void removeTagFromPost(int postId, Tag tag);
+    void removeTagsFromPost(int postId);
     long getLikesCount(Post post);
     public List<com.example.group4_web_project.models.Post> findTopCommentedPosts(int limit);
     public List<com.example.group4_web_project.models.Post> findMostRecentPosts(int limit);
