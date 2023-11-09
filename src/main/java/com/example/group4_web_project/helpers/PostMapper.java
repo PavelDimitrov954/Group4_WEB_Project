@@ -17,7 +17,6 @@ public class PostMapper {
 
     public PostMapper(UserRepository userRepository, PostRepository postRepository, TagRepository tagRepository) {
         this.postRepository = postRepository;
-        this.tagRepository = tagRepository;
     }
 
     public Post fromDto(int postID, PostDto postDto) {
