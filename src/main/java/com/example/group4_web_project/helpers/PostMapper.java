@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Component
 public class PostMapper {
     private final PostRepository postRepository;
-    private final TagRepository tagRepository;
 
     public PostMapper(UserRepository userRepository, PostRepository postRepository, TagRepository tagRepository) {
         this.postRepository = postRepository;
@@ -35,8 +34,6 @@ public class PostMapper {
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         post.setCreateDate(postDto.getCreateDate());
-        post.setTags(convertTagNamesToTags(postDto.getTagNames()));
-
         return post;
     }
 
@@ -46,18 +43,5 @@ public class PostMapper {
         postDto.setContent(post.getContent());
         postDto.setCreateDate(post.getCreateDate());
         return postDto;
-    }
-
-    public Set<Tag> convertTagNamesToTags(Set<String> tagNames) {
-        return tagNames.stream()
-                .map(name -> {
-                    Tag tag = tagRepository.get(name.toLowerCase());
-                    if (tag == null) {
-                        tag = new Tag(name.toLowerCase());
-                        tagRepository.create(tag); // Use create() to persist the new Tag
-                    }
-                    return tag;
-                })
-                .collect(Collectors.toSet());
     }
 }

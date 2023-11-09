@@ -8,12 +8,10 @@
 <div class="body-content">
     <h2 th:text="${post.title}">Post Title</h2>
     <div th:style="text-align">
-        <div  th:each="tag : ${post.getTags()}">
-            <div >
-                <a href="#"  th:text="${tag.name}" >Post</a>
-
-            </div>
-        </div>
+        <span>Tags:</span>
+        <span th:each="tag, iterStat : ${post.getTags()}">
+    <a href="#" th:text="${tag.name}"></a><span th:if="${!iterStat.last}">, </span>
+</span>
 
 
         <p class="margin12" th:text="${'Title'  + ': ' + post.title} "></p>

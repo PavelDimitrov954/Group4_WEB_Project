@@ -25,6 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/posts")
@@ -83,10 +84,12 @@ public class PostMvcController {
     @GetMapping("/new")
     public String showNewPost(Model model) {
         model.addAttribute("post", new PostDto());
+        model.addAttribute("tag", new TagDto());
         return "NewPostView";
     }
     @PostMapping("/new")
     public String handleNewPost(@Valid @ModelAttribute("post") PostDto post,
+                                @RequestParam("tagNames") String tagNames,
                                 BindingResult bindingResult,
                                 HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -98,6 +101,16 @@ public class PostMvcController {
             String username = (String) session.getAttribute("currentUser");
             User user = userService.get(username);
             postService.create(p, user);
+
+            if (tagNames != null && !tagNames.trim().isEmpty()) {
+                String[] tagArray = tagNames.split("\\s*,\\s*");
+                for (String tagName : tagArray) {
+                    if (!tagName.isEmpty()) {
+                        Tag tag = new Tag(tagName);
+                        postService.addTagToPost(p.getId(), tag, user);
+                    }
+                }
+            }
 
             return "redirect:/";
         } catch (EntityDuplicateException e) {
@@ -289,6 +302,7 @@ public class PostMvcController {
     public String updatePost(@PathVariable int id,
                              @Valid @ModelAttribute("post") PostDto dto,
                              BindingResult bindingResult,
+                             @RequestParam("tagNames") String tagNames,
                              Model model,
                              HttpSession session) {
         User user;
@@ -299,6 +313,11 @@ public class PostMvcController {
         }
 
         if (bindingResult.hasErrors()) {
+            Post existingPost = postService.get(id);
+            String existingTagNames = existingPost.getTags().stream()
+                    .map(Tag::getName)
+                    .collect(Collectors.joining(", "));
+            model.addAttribute("existingTagNames", existingTagNames);
             return "UpdatePostView";
         }
 
@@ -306,6 +325,10 @@ public class PostMvcController {
             Post post = postMapper.fromDto(id, dto);
 
             postService.update(user, post);
+            if (tagNames != null && !tagNames.trim().isEmpty()) {
+                String[] tagArray = tagNames.split("\\s*,\\s*");
+                postService.updateTags(post, tagArray, user);
+            }
 
             return "redirect:/posts";
         } catch (EntityNotFoundException e) {

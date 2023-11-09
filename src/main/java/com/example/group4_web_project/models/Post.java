@@ -119,7 +119,7 @@ public class Post {
 
     public void removeTag(Tag tag) {
         this.tags.remove(tag);
-       // tag.getPosts().remove(this);
+        tag.getPosts().remove(this);
     }
 
 

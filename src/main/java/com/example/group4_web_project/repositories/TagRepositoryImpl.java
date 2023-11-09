@@ -1,5 +1,6 @@
 package com.example.group4_web_project.repositories;
 
+import com.example.group4_web_project.exceptions.EntityNotFoundException;
 import com.example.group4_web_project.models.Tag;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -32,9 +33,15 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public Tag get(String name) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from Tag where lower(name) = :name", Tag.class)
+            Tag tag = session.createQuery("from Tag where lower(name) = :name", Tag.class)
                     .setParameter("name", name.toLowerCase())
                     .uniqueResult();
+
+            if (tag == null) {
+                throw new EntityNotFoundException("Tag", 1);
+            }
+
+            return tag;
         }
     }
 

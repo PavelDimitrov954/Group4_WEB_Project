@@ -19,7 +19,7 @@ public class Tag {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Post> posts = new HashSet<>();
 
@@ -53,15 +53,6 @@ public class Tag {
     public void setPosts(Set<Post> posts) {
         this.posts = posts;
     }
-
-    public void addPost(Post post) {
-        this.posts.add(post);
-    }
-
-    public void removePost(Post post) {
-        this.posts.remove(post);
-    }
-
 
     @Override
     public boolean equals(Object o) {

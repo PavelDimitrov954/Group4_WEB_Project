@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.group4_web_project.models.Post;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -196,20 +194,20 @@ public class PostServiceImpl implements PostService {
             throw new AuthorizationException("User not authorized to add tags to this post");
         }
 
-        Tag existingTag = tagRepository.get(tag.getName());
-        if (existingTag == null) {
+        Tag existingTag;
+        try {
+            existingTag = tagRepository.get(tag.getName());
+        } catch (EntityNotFoundException e) {
             tagRepository.create(tag);
-            post.addTag(tag);
-
-        } else {
-
-            if (!post.getTags().contains(existingTag)) {
-                post.addTag(existingTag);
-            } else {
-                throw new EntityDuplicateException("Post", "tag", tag.getName());
-            }
+            existingTag = tag; // After creation, use the new tag
         }
-        postRepository.update(post);
+
+        if (!post.getTags().contains(existingTag)) {
+            post.addTag(existingTag);
+            postRepository.update(post);
+        } else {
+            throw new EntityDuplicateException("Post", "tag", tag.getName());
+        }
     }
 
 
@@ -236,6 +234,59 @@ public class PostServiceImpl implements PostService {
             tagRepository.delete(tagRepository.get(tagName));
         }
     }
+
+    @Override
+    public void updateTags(Post post, String[] tagNames, User user) {
+        // Check for permissions first
+        checkModifyPermissions(post.getId(), user);
+
+        // Get current tags of the post
+        Set<Tag> currentTags = post.getTags();
+
+        // Convert the tag array to a set for easier comparison
+        Set<String> newTagNames = new HashSet<>(Arrays.asList(tagNames));
+
+        // Prepare a set to keep track of tags to remove
+        Set<Tag> tagsToRemove = new HashSet<>();
+
+        // Identify tags that need to be removed
+        for (Tag tag : currentTags) {
+            if (!newTagNames.contains(tag.getName())) {
+                tagsToRemove.add(tag);
+            } else {
+                // If the tag is still in use, remove it from the set of new tags to avoid re-adding it
+                newTagNames.remove(tag.getName());
+            }
+        }
+
+        // Remove tags that are no longer needed
+        for (Tag tagToRemove : tagsToRemove) {
+            removeTagFromPost(post.getId(), tagToRemove.getName(), user);
+        }
+
+        // Add new tags
+        for (String tagName : newTagNames) {
+            // Ignore empty tags resulting from multiple commas
+            if (!tagName.trim().isEmpty()) {
+                try {
+                    // Check if the tag already exists
+                    Tag existingTag = tagRepository.get(tagName);
+                    // If the tag exists and is not already associated with the post, associate it
+                    if (!currentTags.contains(existingTag)) {
+                        post.addTag(existingTag);
+                    }
+                } catch (EntityNotFoundException e) {
+                    // If the tag doesn't exist, create a new one and associate it
+                    Tag newTag = new Tag(tagName);
+                    addTagToPost(post.getId(), newTag, user);
+                }
+            }
+        }
+
+        // Update the post with the modified tags
+        postRepository.update(post);
+    }
+
 
 
     private void checkModifyPermissions(int postId, User user) {
