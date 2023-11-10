@@ -61,7 +61,7 @@ public class HomeMvcController {
         model.addAttribute("postCount", postCount);
         model.addAttribute("title", "Home");
 
-        return "HomeView";
+        return "index";
     }
 
     @GetMapping("/about")
