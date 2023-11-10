@@ -12,7 +12,8 @@
     <div>
         <h3>
             <a href="#" th:href="@{/}" th:text="#{navigation.home} + ' | '">Home</a>
-            <a href="/templates/PostsView.html" th:if="${isAuthenticated}" th:href="@{/posts}" th:text="#{navigation.all-posts} + ' | '">Browse all posts</a>
+            <a href="/templates/PostsView.html" th:if="${isAuthenticated}" th:href="@{/posts}"
+               th:text="#{navigation.all-posts} + ' | '">Browse all posts</a>
             <a href="#" th:if="${isAuthenticated}" || th:unless="${isBlocked}" th:href="@{/posts/new}"
                th:text="#{navigation.create-post} + ' | '">Create Post</a>
             <a href="#" th:href="@{/about}" th:text="#{navigation.about} + ' | '">About</a>
@@ -26,24 +27,30 @@
 </header>
 
 <div class="body-content">
-    <h2 th:text="#{home.welcome}">Welcome (design)!</h2>
+    <h2 th:text="#{home.welcome}">Welcome to Movie Forum!</h2>
+    <p>Discover, Discuss, and Delve into the World of Movies</p>
     <h2 th:text="${session.currentUser}" th:if="${isAuthenticated}"></h2>
-    <img src="../static/images/logo.png" th:src="@{/images/logo.png}" alt="Movie logo"/>
-    <p>Welcome!</p>
-
-    <div class="post-section">
-        <h3>Top Commented Posts</h3>
-        <div th:each="post : ${topCommentedPosts}" class="post">
-            <a href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}" >Post</a>
-            <p th:text="${post.content}"></p>
-        </div>
+    <img src="../static/assets/img/logo.png" th:src="@{/assets/img/logo.png}" alt="Movie logo"/>
+    <div>
+        <h3>Our Community in Numbers</h3>
+        <p>Number of Users: <span th:text="${userCount}">0</span></p>
+        <p>Number of Posts: <span th:text="${postCount}">0</span></p>
     </div>
+    <div class="posts-container">
+        <div class="post-section">
+            <h3>Top Commented Posts</h3>
+            <div th:each="post : ${topCommentedPosts}" class="post">
+                <a href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">Post</a>
+                <p th:text="${post.content}"></p>
+            </div>
+        </div>
 
-    <div class="post-section">
-        <h3>Most Recent Posts</h3>
-        <div th:each="post : ${mostRecentPosts}" class="post">
-            <a href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}" >Post</a>
-            <p th:text="${post.content}"></p>
+        <div class="post-section">
+            <h3>Most Recent Posts</h3>
+            <div th:each="post : ${mostRecentPosts}" class="post">
+                <a href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">Post</a>
+                <p th:text="${post.content}"></p>
+            </div>
         </div>
     </div>
 </div>

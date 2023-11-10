@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     private final CommentRepository commentRepository;
 
-    private final  PostRepository postRepository;
+    private final PostRepository postRepository;
 
     private final AdminPhoneNumberRepository adminPhoneNumberRepository;
 
@@ -34,11 +34,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
-
     @Override
     public List<User> get(FilterOptionsUser filterOptionsUser) {
-
 
 
         return userRepository.get(filterOptionsUser);
@@ -46,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User get(String username) {
-    return userRepository.get(username);
+        return userRepository.get(username);
     }
 
     @Override
@@ -55,23 +52,29 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Override
     public void register(User user) {
         boolean duplicateExists = true;
+        boolean emailExists = true;
         try {
             userRepository.get(user.getUsername());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
 
-        if (duplicateExists) {
-            throw new EntityDuplicateException("User", "username", user.getUsername());
+        try {
+            userRepository.getByEmail(user.getEmail());
+        } catch (EntityNotFoundException e) {
+            emailExists = false;
         }
 
-        else{
+        if (duplicateExists) {
+            throw new EntityDuplicateException("User", "username", user.getUsername());
+        } else if (emailExists) {
+            throw new EntityDuplicateException("Email", "email name", user.getEmail());
+        } else {
             userRepository.register(user);
-       }
+        }
     }
 
     @Override
@@ -81,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user, User upddateUser) {
-        System.out.println(user.getId() );
+        System.out.println(user.getId());
         System.out.println(upddateUser.getId());
         if (user.getId() != upddateUser.getId() && !user.isAdmin()) {
             throw new AuthorizationException(INVALID_AUTHORIZATION);
@@ -91,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.update(upddateUser);
     }
-    
+
     @Override
     public void makeUserAdmin(User adminUser, int userId, String phoneNumber) {
         if (!adminUser.isAdmin()) {
@@ -124,7 +127,6 @@ public class UserServiceImpl implements UserService {
 
 
         userRepository.delete(deleteUsed);
-
 
 
     }

@@ -13,6 +13,7 @@ public interface UserRepository {
 
     List<User> get(FilterOptionsUser filterOptionsUser);
     User get(String username);
+    User getByEmail(String email);
 
     int getUserCount();
 

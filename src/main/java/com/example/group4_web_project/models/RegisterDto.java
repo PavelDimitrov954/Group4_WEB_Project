@@ -2,7 +2,11 @@ package com.example.group4_web_project.models;
 
 
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public class RegisterDto extends LoginDto {
 
@@ -10,12 +14,15 @@ public class RegisterDto extends LoginDto {
     private String passwordConfirm;
 
     @NotEmpty(message = "First name can't be empty")
+    @Size(min = 4, max = 32, message = "First name should be between 4 and 32 symbols")
     private String firstName;
 
     @NotEmpty(message = "Last name can't be empty")
+    @Size(min = 4, max = 32, message = "Last name should be between 4 and 32 symbols")
     private String lastName;
 
-    @NotEmpty(message = "Email can't be empty")
+    @NotEmpty(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
 
     public String getPasswordConfirm() {

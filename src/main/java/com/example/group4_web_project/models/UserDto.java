@@ -10,7 +10,6 @@ import java.util.Objects;
 
 public class UserDto {
 
-    @Size(min = 4, max = 32, message = "Username should be between 4 and 32 symbols")
     private String username;
 
     private String password;
@@ -18,7 +17,6 @@ public class UserDto {
     private String firstName;
 
     private String lastName;
-    @Email(message = "Invalid email format")
     private String email;
 
 

@@ -5,6 +5,7 @@ import com.example.group4_web_project.exceptions.AuthorizationException;
 import com.example.group4_web_project.helpers.AuthenticationHelper;
 import com.example.group4_web_project.models.User;
 import com.example.group4_web_project.services.PostService;
+import com.example.group4_web_project.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,11 +22,13 @@ public class HomeMvcController {
 
     private final AuthenticationHelper authenticationHelper;
     private final PostService postService;
+    private final UserService userService;
 
     @Autowired
-    public HomeMvcController(AuthenticationHelper authenticationHelper, PostService postService) {
+    public HomeMvcController(AuthenticationHelper authenticationHelper, PostService postService, UserService userService) {
         this.authenticationHelper = authenticationHelper;
         this.postService = postService;
+        this.userService = userService;
     }
 
     @ModelAttribute("isAuthenticated")
@@ -35,11 +38,10 @@ public class HomeMvcController {
 
     @ModelAttribute("isBlocked")
     public boolean populateIsBlocked(HttpSession session) {
-        try{
+        try {
             User user = authenticationHelper.tryGetCurrentUser(session);
             return user.isBlocked();
-        }
-        catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             return false;
         }
 
@@ -50,20 +52,21 @@ public class HomeMvcController {
     public String showHomePage(Model model) {
         List<com.example.group4_web_project.models.Post> topCommentedPosts = postService.getTopCommentedPosts(10);
         List<com.example.group4_web_project.models.Post> mostRecentPosts = postService.getMostRecentPosts(10);
+        long userCount = userService.getUserCount();
+        long postCount = postService.getPostCount();
 
         model.addAttribute("topCommentedPosts", topCommentedPosts);
         model.addAttribute("mostRecentPosts", mostRecentPosts);
+        model.addAttribute("userCount", userCount);
+        model.addAttribute("postCount", postCount);
         model.addAttribute("title", "Home");
 
         return "HomeView";
     }
 
-
     @GetMapping("/about")
     public String showAboutPage() {
         return "About";
     }
-
-
 }
 

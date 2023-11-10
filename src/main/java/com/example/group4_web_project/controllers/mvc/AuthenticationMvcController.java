@@ -96,7 +96,12 @@ public class AuthenticationMvcController {
             userService.register(user);
             return "redirect:/auth/login";
         } catch (EntityDuplicateException e) {
-            bindingResult.rejectValue("username", "username_error", e.getMessage());
+            String exceptionMessage = e.getMessage();
+            if (exceptionMessage != null && exceptionMessage.contains("email")) {
+                bindingResult.rejectValue("email", "email_error", exceptionMessage);
+            } else if (exceptionMessage != null && exceptionMessage.contains("username")) {
+                bindingResult.rejectValue("username", "username_error", exceptionMessage);
+            } 
             return "RegisterView";
         }
     }

@@ -89,8 +89,8 @@ public class PostMvcController {
     }
     @PostMapping("/new")
     public String handleNewPost(@Valid @ModelAttribute("post") PostDto post,
-                                @RequestParam("tagNames") String tagNames,
                                 BindingResult bindingResult,
+                                @RequestParam("tagNames") String tagNames,
                                 HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "NewPostView";

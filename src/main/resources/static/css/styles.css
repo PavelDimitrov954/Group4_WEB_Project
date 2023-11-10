@@ -12932,3 +12932,33 @@ h2 {
 #backToTop:hover {
     background-color: #555;
 }
+.posts-container {
+    display: flex;
+    justify-content: space-between; /* Adjusts the space between the two sections */
+}
+
+.post-section {
+    flex: 1; /* Each section takes up equal space */
+    margin: 10px; /* Optional: adds some space around each section */
+}
+.about-header img {
+    max-width: 100%;
+    height: auto;
+}
+.welcome-banner {
+    background: url('/path-to-banner-image.jpg') no-repeat center center/cover;
+    text-align: center;
+    color: white;
+    padding: 30px;
+}
+
+.posts-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.post-section {
+    flex-basis: 48%; /* Adjust as necessary */
+    margin: 10px;
+}
