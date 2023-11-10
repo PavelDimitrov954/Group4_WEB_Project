@@ -73,11 +73,7 @@ public class PostMvcController {
         return request.getRequestURI();
     }
 
-    @ModelAttribute(
-            "comments")
-    public List<Comment> populateStyles() {
-        return null;
-    }
+
 
 
 
