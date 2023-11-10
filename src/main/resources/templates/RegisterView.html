@@ -9,7 +9,6 @@
     <header class="masthead">
         <div class="container">
             <div class="masthead-subheading" th:text="${'Regiset'}">Register!</div>
-
             <form action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
                 <label th:text="#{user.label.username}">Username</label>
                 <br/>
