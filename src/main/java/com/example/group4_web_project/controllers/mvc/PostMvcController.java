@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -136,7 +137,10 @@ public class PostMvcController {
             Post post = postService.get(id);
             model.addAttribute("post", post);
             model.addAttribute("hasTags", !post.getTags().isEmpty());
-            model.addAttribute("tags", post.getTags());
+            List<Tag> tags = new ArrayList<>();
+            tags.addAll(post.getTags());
+            model.addAttribute("tags", tags);
+            //System.out.println(tags.size());
             model.addAttribute("likeCount", postService.getLikesCount(post));
             try {
                 List<Comment> comments = commentService.getByPostId(id);
@@ -308,7 +312,7 @@ public class PostMvcController {
 
 
         try {
-///TODO fix email validation and password
+
             User user = authenticationHelper.tryGetCurrentUser(session);
 
             Comment comment = commentMapper.updateFromDto(commentId, commentDto);
@@ -376,12 +380,12 @@ public class PostMvcController {
         try {
             Post post = postMapper.fromDto(id, dto);
 
-           // postService.update(user, post);
+
             if (tagNames != null && !tagNames.trim().isEmpty()) {
                 String[] tagArray = tagNames.split("\\s*,\\s*");
                 postService.updateTags(post, tagArray, user);
             }
-
+            postService.update(user, post);
             return "redirect:/posts";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());

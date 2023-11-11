@@ -17,12 +17,14 @@
                             <!-- Project details-->
                             <h2 class="text-uppercase" th:text="${post.title}">Post Title</h2>
                             <p th:text="${'Content'  + ': ' + post.content} "></p>
-<!--                         TODO   FIX tags and post update-->
-<!--                            <div th:if="${hasTags}">-->
-<!--                                    <span>Tags:</span>-->
-<!--                            <span th:each="tag : ${tags}"></span>-->
-<!--                                <a href="#" th:text="${tag.name}"></a><span th:if="${!iterStat.last}">, </span>-->
-<!--                            </div>-->
+                            <h3 th:if="${hasTags}">TAgs</h3>
+                            <div th:if="${hasTags}">
+
+                                <span>Tags:</span>
+                                <div th:each="tag: ${tags}">
+                                <a href="#" th:text="${tag.name}"></a>
+                                </div>
+                            </div>
 
 
                             <ul class="list-inline">
