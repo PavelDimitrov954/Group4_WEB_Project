@@ -9,31 +9,31 @@
 <div class="body-content">
     <form action="#" th:action="@{/posts}" method="get" th:object="${filterOptions}" class="mb-3">
         <div class="form-row">
-            <div class="col-sm-2">
+            <div class="col-md-2">
                 <input type="text" class="form-control mb-2" placeholder="Post title" th:field="*{title}" value=""/>
             </div>
-            <div class="col-sm-2">
+            <div class="col-md-2">
                 <input type="text" class="form-control mb-2" placeholder="Username" th:field="*{createdByUserName}"
                        value=""/>
             </div>
-            <div class="col-sm-2">
+            <div class="col-md-2">
                 <input type="text" class="form-control mb-2" placeholder="Tag post" th:field="*{tag}" value=""/>
             </div>
-            <div class="col-sm-2">
+            <div class="col-md-2">
                 <select class="form-control mb-2" th:field="*{sortBy}">
                     <option value="">Sort By</option>
                     <option value="commentCount">Comments</option>
                     <option value="date">Create date</option>
                 </select>
             </div>
-            <div class="col-sm-2">
+            <div class="col-md-2">
                 <select class="form-control mb-2" th:field="*{sortOrder}">
                     <option value="">Sort Order</option>
                     <option value="asc">Ascending</option>
                     <option value="desc">Descending</option>
                 </select>
             </div>
-            <div class="col-sm-2">
+            <div class="col-md-2">
                 <button type="submit" class="btn btn-primary mb-2">Search</button>
             </div>
         </div>

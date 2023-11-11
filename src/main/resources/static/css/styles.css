@@ -10826,7 +10826,7 @@ header.masthead {
   color: #fff;
   background-image: url("../assets/img/12345.png");
   background-repeat: no-repeat;
-  background-attachment: scroll;
+  background-attachment: fixed;
   background-position: center center;
   background-size: cover;
 }
@@ -11208,7 +11208,7 @@ section#contact form#contactForm :-ms-input-placeholder {
 
 .form-row {
   flex-wrap: nowrap;
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
 
