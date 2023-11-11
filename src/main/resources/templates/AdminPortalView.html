@@ -12,18 +12,18 @@
                 <label th:text="${'Filter Options'}">Filter Users</label>
                 <br/><br/>
 
-                <div>
-                    <input placeholder="username" th:field="*{username}" type="text"/>
+                <div class="form-row">
+                    <input  class="form-control mb-2" placeholder="username" th:field="*{username}" type="text"/>
 
 
-                    <input placeholder="email" th:field="*{email}" type="text"/>
+                    <input class="form-control mb-2" placeholder="email" th:field="*{email}" type="text"/>
 
-                    <input placeholder="firstName" th:field="*{firstName}" type="text"/>
+                    <input class="form-control mb-2" placeholder="firstName" th:field="*{firstName}" type="text"/>
 
 
                 </div>
 
-                <input type="submit" value="Search"/>
+                <input type="submit" class="btn btn-primary mb-2" value="Search"/>
             </form>
 
             <div th:if="${users.isEmpty()}">
@@ -32,30 +32,22 @@
             <div th:unless="${users.isEmpty()}">
                 <h2 th:text="${'All Users'}">All Users</h2>
 
-                <div class="table">
+                <div class="form-row">
                     <div class="header">
                         <div class="cell" th:text="${'Username'}">Username</div>
                         <div class="cell" th:text="${'Email'}">Email</div>
                         <div class="cell" th:text="${'First Name'}">First Name</div>
-
-
                     </div>
                     <div class="row" th:each="user : ${users}">
                         <div class="cell">
                             <a href="#" th:href="@{/users/{id}(id=${user.id})}" th:text="${user.username}">Username</a>
-
                         </div>
                         <div class="cell">
                             <p  href="#" th:href="@{/admin/{id}(id=${user.id})}" th:text="${user.email}">Email</p>
-
                         </div>
                         <div class="cell">
-                            <p  href="#" th:href="@{/admin/{id}(id=${user.id})}" th:text="${user.firstName}">First
-                                Name</p>
-
+                            <p  href="#" th:href="@{/admin/{id}(id=${user.id})}" th:text="${user.firstName}">First name</p>
                         </div>
-
-
                     </div>
                 </div>
             </div>

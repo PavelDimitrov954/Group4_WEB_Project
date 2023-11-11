@@ -6,7 +6,7 @@
 <body id="page-top">
 <div th:replace="~{index.html :: nav}"></div>
 <header class="masthead">
-<div class="body-content">
+<div  th:fragment="posts" class="body-content">
     <form action="#" th:action="@{/posts}" method="get" th:object="${filterOptions}" class="mb-3">
         <div class="form-row">
             <div class="col-md-2">
@@ -38,7 +38,7 @@
             </div>
         </div>
     </form>
-    <div class="container mt-4">
+    <div    th:fragment="postsList" class="container mt-4">
         <div class="row">
             <!-- Loop to iterate over posts -->
             <div th:each="post, iterStat : ${posts}" class="col-md-4 mb-4">
@@ -60,7 +60,7 @@
 
 
                 <!-- Modal for the post -->
-                <div th:id="'portfolioModal' + ${iterStat.index}" class="portfolio-modal modal fade" tabindex="-1"
+                <div  th:id="'portfolioModal' + ${iterStat.index}" class="portfolio-modal modal fade" tabindex="-1"
                      role="dialog" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">

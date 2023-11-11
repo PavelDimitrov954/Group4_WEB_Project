@@ -118,13 +118,18 @@ public class UserMvcController {
             authenticationHelper.tryGetCurrentUser(session);
             User user = userService.get(id);
             List<Post> userPosts = postService.getByCreator(user);
+
             model.addAttribute("user", user);
             model.addAttribute("posts", userPosts);
             try {
 
                 AdminPhoneNumber adminPhoneNumber = adminPhoneNumberRepository.GetAdminPhoneNumber(user);
+
                 model.addAttribute("AdminPhoneNumber", adminPhoneNumber);
+
                 model.addAttribute("isPhoneNumberAdminView", true);
+
+
                 return "UserAdminView";
             } catch (EntityNotFoundException e){
                 model.addAttribute("isPhoneNumberAdminView", false);

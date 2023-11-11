@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<form th:replace="~{HomeView.html :: head('User')}"></form>
+<form th:replace="~{index.html :: head('User')}"></form>
 <body>
-<div class="body-content">
+<div th:replace="~{index.html :: nav}"></div>
+
+<header class="masthead">
+  <div class="container">
+    <div class="body-content">
   <div th:style="text-align">
-    <form th:replace="~{HomeView.html :: header}"></form>
     <h1>User</h1>
     <p>asd</p>
     <p class="margin12" th:text="${'Username'  + ': ' + user.username} "></p>
@@ -20,9 +23,13 @@
     <a href="#" th:unless="${user.isAdmin()}" th:href="@{/users/{id}/makeAdmin (id =${user.id})}">Make admin</a>
     <a href="#" th:unless="${user.isAdmin()}" th:href="@{/users/{id}/delete (id =${user.id})}">Delete user </a>
 
-    <form th:replace="~{PostsView.html :: posts}"></form>
-    <form th:replace="~{HomeView.html :: footer}"></form>
+    <form th:replace="~{PostsView.html :: postsList}"></form>
   </div>
 </div>
+  </div>
+</header>
+    <form th:replace="~{index.html :: footer}"></form>
+
+
 </body>
 </html>

@@ -33,7 +33,7 @@
                 <li class="nav-item"><a class="nav-link" href="/templates/PostsView.html" th:if="${isAuthenticated}"
                                         th:href="@{/posts}"
                                         th:text="#{navigation.all-posts}">All posts</a></li>
-                <li class="nav-item"><a class="nav-link" href="#about" th:text="#{navigation.about}">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#about" th:text="#{navigation.about}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" th:if="${isAuthenticated}" || th:unless="${isBlocked}"
                                         th:href="@{/posts/new}"
                                         th:text="#{navigation.create-post}">Create Post</a></li>
@@ -47,8 +47,8 @@
                                         th:href="@{/users/current}">Profile</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}">Logout</a>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
-                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#team">Team</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
 
             </ul>
         </div>
