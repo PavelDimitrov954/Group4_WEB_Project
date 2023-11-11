@@ -4,29 +4,55 @@
 
 
 <body>
-<form th:replace="~{HomeView.html :: header}"></form>
+<div th:replace = "~{index.html :: nav}"></div>
 
 <div th:fragment="post-form()" class="body-content">
-    <h2>New Post</h2>
-    <form action="#" th:action="@{__${requestURI}__}" th:object="${post}" method="post">
-        <label th:text="#{post.label.title}">Title</label>
-        <br/>
-        <input type="text" th:field="*{title}"/>
-        <label class="error" th:errors="*{title}">Title error placeholder</label>
-        <br/><br/>
 
-        <label th:text="#{post.label.content}">Content</label>
-        <br/>
-        <textarea type="text" th:field="*{content}"> </textarea>
-        <label class="error" th:errors="*{content}">Content error placeholder</label>
-        <br/><br/>
-        <label th:text="#{tag.label.name}">Tags</label>
-        <br/>
-        <input type="text" name="tagNames" placeholder="Enter tags, separated by commas"/>
-        <br/><br/>
+    <header class="masthead">
+        <div class="container">
+            <div class="masthead-subheading" th:text="${'Post'}">Post!</div>
+            <form action="#" th:action="@{__${requestURI}__}" th:object="${post}" method="post">
+                        <label th:text="#{post.label.title}">Title</label>
+                        <br/>
+                        <input type="text" th:field="*{title}"/>
+                        <label class="error" th:errors="*{title}">Title error placeholder</label>
+                        <br/><br/>
 
-        <input type="submit" value="Save"/>
-    </form>
+                        <label th:text="#{post.label.content}">Content</label>
+                        <br/>
+                        <textarea type="text" th:field="*{content}"> </textarea>
+                        <label class="error" th:errors="*{content}">Content error placeholder</label>
+                        <br/><br/>
+                        <label th:text="#{tag.label.name}">Tags</label>
+                        <br/>
+                        <input type="text" name="tagNames" placeholder="Enter tags, separated by commas"/>
+                        <br/><br/>
+
+                        <input type="submit" value="Save"/>
+            </form>
+
+        </div>
+    </header>
+<!--    <h2>New Post</h2>-->
+<!--    <form action="#" th:action="@{__${requestURI}__}" th:object="${post}" method="post">-->
+<!--        <label th:text="#{post.label.title}">Title</label>-->
+<!--        <br/>-->
+<!--        <input type="text" th:field="*{title}"/>-->
+<!--        <label class="error" th:errors="*{title}">Title error placeholder</label>-->
+<!--        <br/><br/>-->
+
+<!--        <label th:text="#{post.label.content}">Content</label>-->
+<!--        <br/>-->
+<!--        <textarea type="text" th:field="*{content}"> </textarea>-->
+<!--        <label class="error" th:errors="*{content}">Content error placeholder</label>-->
+<!--        <br/><br/>-->
+<!--        <label th:text="#{tag.label.name}">Tags</label>-->
+<!--        <br/>-->
+<!--        <input type="text" name="tagNames" placeholder="Enter tags, separated by commas"/>-->
+<!--        <br/><br/>-->
+
+<!--        <input type="submit" value="Save"/>-->
+<!--    </form>-->
 </div>
 
 <form th:replace="~{HomeView.html :: footer}"></form>

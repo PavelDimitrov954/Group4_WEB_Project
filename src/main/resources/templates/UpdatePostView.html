@@ -4,7 +4,7 @@
 <body>
 <div class="body-content">
   <div th:style="text-align">
-    <form th:replace="~{HomeView.html :: header}"></form>
+    <div th:replace = "~{index.html :: nav}"></div>
     <form th:replace="~{NewPostView.html :: post-form()}"></form>
     <form th:replace="~{HomeView.html :: footer}"></form>
   </div>
