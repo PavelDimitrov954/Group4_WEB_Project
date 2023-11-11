@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<form th:replace="~{index.html :: head('All Posts')}"></form>
+<body>
+<form th:replace="~{index.html :: header}"></form>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Loop to iterate over posts -->
+        <div th:each="post : ${posts}" class="col-md-4 mb-4">
+            <div class="card">
+                <img th:src="@{${post.imageUrl}}" class="card-img-top" alt="Post Image">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${post.title}">Post Title</h5>
+                    <p class="card-text" th:text="${post.content}">Post Content</p>
+                    <!-- Additional post details here -->
+                </div>
+            </div>
+        </div>
+        <!-- End loop -->
+    </div>
+</div>
+
+<form th:replace="~{index.html :: footer}"></form>
+</body>
+</html>

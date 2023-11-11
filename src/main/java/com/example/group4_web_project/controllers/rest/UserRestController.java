@@ -1,4 +1,4 @@
-package com.example.group4_web_project.controllers;
+package com.example.group4_web_project.controllers.rest;
 
 import com.example.group4_web_project.exceptions.AuthorizationException;
 import com.example.group4_web_project.exceptions.EntityDuplicateException;
