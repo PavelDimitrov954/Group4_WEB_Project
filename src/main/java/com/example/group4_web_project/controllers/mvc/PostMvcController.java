@@ -135,6 +135,8 @@ public class PostMvcController {
         try {
             Post post = postService.get(id);
             model.addAttribute("post", post);
+            model.addAttribute("hasTags", !post.getTags().isEmpty());
+            model.addAttribute("tags", post.getTags());
             model.addAttribute("likeCount", postService.getLikesCount(post));
             try {
                 List<Comment> comments = commentService.getByPostId(id);

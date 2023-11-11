@@ -3,67 +3,153 @@
 <form th:replace="~{HomeView.html :: head('Post')}"></form>
 
 
-<body>
-<form th:replace="~{HomeView.html :: header}"></form>
-<div class="body-content">
-    <h2 th:text="${post.title}">Post Title</h2>
-    <div th:style="text-align">
-        <span>Tags:</span>
-        <span th:each="tag, iterStat : ${post.getTags()}">
-    <a href="#" th:text="${tag.name}"></a><span th:if="${!iterStat.last}">, </span>
-</span>
+<body id="page-top">
+<!-- Navigation-->
+<div th:replace = "~{index.html :: nav}"></div>
+<header class="masthead">
+    <div class="container white-text">
+        <div class="modal-content white-text">
+
+            <div class="container white-text">
+                <div class="row justify-content-center white-text">
+                    <div class="col-lg-8">
+                        <div class="modal-body  white-text">
+                            <!-- Project details-->
+                            <h2 class="text-uppercase" th:text="${post.title}">Post Title</h2>
+                            <p th:text="${'Content'  + ': ' + post.content} "></p>
+<!--                         TODO   FIX tags and post update-->
+<!--                            <div th:if="${hasTags}">-->
+<!--                                    <span>Tags:</span>-->
+<!--                            <span th:each="tag : ${tags}"></span>-->
+<!--                                <a href="#" th:text="${tag.name}"></a><span th:if="${!iterStat.last}">, </span>-->
+<!--                            </div>-->
 
 
-        <p class="margin12" th:text="${'Title'  + ': ' + post.title} "></p>
-        <p class="margin12" th:text="${'Content'  + ': ' + post.content} "></p>
-        <p class="margin12" th:text="${'Create By '  + ': ' + post.getCreatedBy().email}"></p>
-        <p class="margin12" th:text="${'Create Date '  + ': ' + post.getCreateDate()}"></p>
-        <p class="margin12" th:text="${'Like '  + ': ' + likeCount}"></p>
+                            <ul class="list-inline">
+                                <li>
+                                    <strong>Author:</strong>
+                                     <p class="margin12" th:text="${post.getCreatedBy().email}"></p>
+                                </li>
+                                <li>
+                                    <strong>Create Date:</strong>
+                                    <p class="margin12" th:text="${post.getCreateDate()}"></p>
+                                </li>
+                                <li>
+                                    <strong>Likes:</strong>
+                                    <p class="margin12" th:text="${likeCount}"></p>
+                                </li>
+                            </ul>
 
-        </div>
-        <div class="table" th:if ="${hasComments}">
-            <div class="header">
-                <div class="cell" th:text="${'Comment name'}"  >Comment name</div>
-                <div class="cell" th:text="${'Create by'}">Create by</div>
-                <div class="cell" th:text="${'Create date'}">Create date</div>
+                                <h3 th:if="${isAuthenticated}">
+                                    <!--    <a href="#" th:href="@{/beers/{id}/update(id=${beer.id})}">Update</a>-->
+                                    <!--    <a href="#" th:href="@{/beers/{id}/delete(id=${beer.id})}">Delete</a>-->
+                                    <a href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}" th:href="@{__${requestURI}__/update}">Update</a>
+                                    <a href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}" th:href="@{__${requestURI}__/delete}">Delete</a>
 
+
+                                     <a href="#" th:unless="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Like</a>
+                                    <a href="#" th:if="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Remove Like</a>
+                                    <a href="#" th:unless="${isBlocked}" th:href="@{__${requestURI}__/AddComment}">Add comment</a>
+
+                                   <!-- <a href="#" th:href="@{__${requestURI}__/like}">Like</a>-->
+
+                                </h3>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row" th:each="comment : ${comments}">
-                <div class="cell">
-                    <a href="#" th:href="@{/posts/{id}/comment/{commentId} (id=${post.id} , commentId=${comment.id})}" th:text="${comment.content}" >Comment</a>
-
-                </div>
-
-                <div class="cell">
-
-                    <p href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${comment.getCreatedBy().email}">Create by</p>
-                </div>
-                <div class="cell">
-
-                    <p href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${comment.getCreateDate()}">Create date</p>
-                </div>
-
-
-
-            </div>
         </div>
+                </div>
 
+
+
+
+
+
+
+
+
+
+
+    <div th:if ="${hasComments}">
+    <div class="container1"  th:each="comment : ${comments}">
+        <div class="message-body">
+            <h6><a href="#" th:href="@{__${requestURI}__/comment/{commentId} (commentId=${comment.id})}" th:text="${comment.content}" >Comment</a></h6>
+            <p class="comment-author"  th:text="${comment.getCreatedBy().email}">Author</p>
+            <p class="comment-date" th:text="${comment.getCreateDate()}"> Create Date</p>
+        </div>
+    </div>
 
     </div>
-    <h3 th:if="${isAuthenticated}">
-        <!--    <a href="#" th:href="@{/beers/{id}/update(id=${beer.id})}">Update</a>-->
-        <!--    <a href="#" th:href="@{/beers/{id}/delete(id=${beer.id})}">Delete</a>-->
-        <a href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}" th:href="@{__${requestURI}__/update}">Update</a>
-        <a href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}" th:href="@{__${requestURI}__/delete}">Delete</a>
+
+                </div>
+    </div>
+</header>
 
 
-         <a href="#" th:unless="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Like</a>
-        <a href="#" th:if="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Remove Like</a>
-        <a href="#" th:unless="${isBlocked}" th:href="@{__${requestURI}__/AddComment}">Add comment</a>
 
-       <!-- <a href="#" th:href="@{__${requestURI}__/like}">Like</a>-->
 
-    </h3>
+
+
+<!--<div class="body-content">-->
+<!--    <h2 th:text="${post.title}">Post Title</h2>-->
+<!--    <div th:style="text-align">-->
+<!--        <span>Tags:</span>-->
+<!--        <span th:each="tag, iterStat : ${post.getTags()}">-->
+<!--    <a href="#" th:text="${tag.name}"></a><span th:if="${!iterStat.last}">, </span>-->
+<!--</span>-->
+
+
+<!--        <p class="margin12" th:text="${'Title'  + ': ' + post.title} "></p>-->
+<!--        <p class="margin12" th:text="${'Content'  + ': ' + post.content} "></p>-->
+<!--        <p class="margin12" th:text="${'Create By '  + ': ' + post.getCreatedBy().email}"></p>-->
+<!--        <p class="margin12" th:text="${'Create Date '  + ': ' + post.getCreateDate()}"></p>-->
+<!--        <p class="margin12" th:text="${'Like '  + ': ' + likeCount}"></p>-->
+
+<!--        </div>-->
+<!--        <div class="table" th:if ="${hasComments}">-->
+<!--            <div class="header">-->
+<!--                <div class="cell" th:text="${'Comment name'}"  >Comment name</div>-->
+<!--                <div class="cell" th:text="${'Create by'}">Create by</div>-->
+<!--                <div class="cell" th:text="${'Create date'}">Create date</div>-->
+
+<!--            </div>-->
+<!--            <div class="row" th:each="comment : ${comments}">-->
+<!--                <div class="cell">-->
+<!--                    <a href="#" th:href="@{/posts/{id}/comment/{commentId} (id=${post.id} , commentId=${comment.id})}" th:text="${comment.content}" >Comment</a>-->
+
+<!--                </div>-->
+
+<!--                <div class="cell">-->
+
+<!--                    <p href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${comment.getCreatedBy().email}">Create by</p>-->
+<!--                </div>-->
+<!--                <div class="cell">-->
+
+<!--                    <p href="#" th:href="@{/posts/{id}(id=${post.id})}" th:text="${comment.getCreateDate()}">Create date</p>-->
+<!--                </div>-->
+
+
+
+<!--            </div>-->
+<!--        </div>-->
+
+
+<!--    </div>-->
+<!--    <h3 th:if="${isAuthenticated}">-->
+<!--        &lt;!&ndash;    <a href="#" th:href="@{/beers/{id}/update(id=${beer.id})}">Update</a>&ndash;&gt;-->
+<!--        &lt;!&ndash;    <a href="#" th:href="@{/beers/{id}/delete(id=${beer.id})}">Delete</a>&ndash;&gt;-->
+<!--        <a href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}" th:href="@{__${requestURI}__/update}">Update</a>-->
+<!--        <a href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}" th:href="@{__${requestURI}__/delete}">Delete</a>-->
+
+
+<!--         <a href="#" th:unless="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Like</a>-->
+<!--        <a href="#" th:if="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Remove Like</a>-->
+<!--        <a href="#" th:unless="${isBlocked}" th:href="@{__${requestURI}__/AddComment}">Add comment</a>-->
+
+<!--       &lt;!&ndash; <a href="#" th:href="@{__${requestURI}__/like}">Like</a>&ndash;&gt;-->
+
+<!--    </h3>-->
 
 
 

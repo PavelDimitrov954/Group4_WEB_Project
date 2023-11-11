@@ -11213,5 +11213,51 @@ section#contact form#contactForm :-ms-input-placeholder {
 
 
 
+.white-text {
+  color: white;
+}
+.comment{
+  font-size: 20px;
+}
+.inf{
+  font-size: 10px;
+}
+
+
+/* Message box starts here */
+.container1 {
+  clear: both;
+  position: relative;
+
+  color: black;
+}
+
+
+.container1 .message-body {
+
+  width: 300px;
+  border: 1px solid #CCC;
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  padding: 6px 8px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  margin: auto;
+}
+
+.container1 .message-body p {
+  margin: 0;
+}
+
+.comment-author{
+
+}
+.comment-date{
+  float: right;
+  color: grey;
+}
+
 
 
