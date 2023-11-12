@@ -35,9 +35,7 @@
                 <li class="nav-item"><a class="nav-link" href="/templates/PostsView.html" th:if="${isAuthenticated}"
                                         th:href="@{/posts}"
                                         th:text="#{navigation.all-posts}">All posts</a></li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/#about}" href="/#about" th:text="#{navigation.about}">About</a>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="/#about" th:text="#{navigation.about}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" th:if="${isAuthenticated}" || th:unless="${isBlocked}"
                                         th:href="@{/posts/new}"
                                         th:text="#{navigation.create-post}">Create Post</a></li>
@@ -391,13 +389,5 @@
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 </header>
-<!-- Footer-->
-<footer th:fragment="footer" class="footer py-4">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-4 text-lg-start">© Copyright 2023 MovieForum. All rights reserved.</div>
-        </div>
-    </div>
-</footer>
 </body>
 </html>

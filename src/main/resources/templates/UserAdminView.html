@@ -7,22 +7,21 @@
 <header class="masthead">
   <div class="container">
     <div class="body-content">
-  <div th:style="text-align">
-    <h1>User</h1>
-    <p>asd</p>
-    <p class="margin12" th:text="${'Username'  + ': ' + user.username} "></p>
-    <p class="margin12" th:text="${'First Name'  + ': ' + user.firstName} "></p>
-    <p class="margin12" th:text="${'Last Name'  + ': ' + user.lastName} "></p>
-    <p class="margin12" th:text="${'Email'  + ': ' + user.email} "></p>
-    <p class="margin12"  th:text="${'IsAdmin'  + ': ' + user.isAdmin()} "></p>
-    <p class="margin12"  th:text="${'IsBlocked'  + ': ' + user.isBlocked()} "></p>
-    <p class="margin12" th:if="${isPhoneNumberAdminView}" th:text="${'Phone number'  + ': ' + AdminPhoneNumber.getPhoneNumber()} "></p>
-
+      <h1>User</h1>
+  <div class="container1" th:style="text-align">
+    <p class="message-body"  th:text="${'Username'  + ': ' + user.username} "></p>
+    <p class="message-body" th:text="${'First Name'  + ': ' + user.firstName} "></p>
+    <p class="message-body" th:text="${'Last Name'  + ': ' + user.lastName} "></p>
+    <p class="message-body" th:text="${'Email'  + ': ' + user.email} "></p>
+    <p class="message-body"  th:text="${'IsAdmin'  + ': ' + user.isAdmin()} "></p>
+    <p class="message-body"  th:text="${'IsBlocked'  + ': ' + user.isBlocked()} "></p>
+    <p class="message-body" th:if="${isPhoneNumberAdminView}" th:text="${'Phone number'  + ': ' + AdminPhoneNumber.getPhoneNumber()} "></p>
+ <h3>
     <a href="#"  th:unless="${user.isAdmin() || user.isBlocked()}" th:href="@{/users/{id}/blocked(id=${user.id})} ">Blocked user</a>
     <a href="#" th:if="${user.isBlocked()}" th:href="@{/users/{id}/unblocked(id=${user.id})} ">Un Blocked user</a>
     <a href="#" th:unless="${user.isAdmin()}" th:href="@{/users/{id}/makeAdmin (id =${user.id})}">Make admin</a>
     <a href="#" th:unless="${user.isAdmin()}" th:href="@{/users/{id}/delete (id =${user.id})}">Delete user </a>
-
+ </h3>
     <form th:replace="~{PostsView.html :: postsList}"></form>
   </div>
 </div>
