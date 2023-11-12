@@ -58,8 +58,11 @@ public class UserMapper {
         userDto.setEmail(user.getEmail());
         userDto.setUsername(user.getUsername());
         userDto.setPassword(user.getPassword());
+
         return  userDto;
     }
+
+
 
 }
 

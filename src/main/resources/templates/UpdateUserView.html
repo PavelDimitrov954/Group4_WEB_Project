@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<form th:replace="~{HomeView.html :: head('Register')}"></form>
+<form th:replace="~{index.html :: head('Update')}"></form>
 <body>
-<form th:replace="~{HomeView.html :: header}"></form>
+<div th:replace="~{index.html :: nav}"></div>
+<header class="masthead">
+    <div class="container">
 
 <div th:fragment="user_form(submit)" class="body-content">
-    <h2>Register</h2>
+    <h2>Update</h2>
 
     <form action="#" th:action="@{__${requestURI}__}" th:object="${user}" method="post">
         <label th:text="#{user.label.username}">Username</label>
@@ -40,10 +42,12 @@
         <label class="error" th:errors="*{email}">Email error placeholder</label>
         <br/><br/>
 
-        <input th:text="${submit}" type="submit" value="Update"/>
+        <input th:text="${submit}"  class="btn btn-primary mb-2" type="submit" value="Update"/>
     </form>
 </div>
+    </div>
+</header>
 
-<form th:replace="~{HomeView.html :: footer}"></form>
+<form th:replace="~{index.html :: footer}"></form>
 </body>
 </html>

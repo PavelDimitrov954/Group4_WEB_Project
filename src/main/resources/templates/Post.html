@@ -12,62 +12,64 @@
 
             <div class="container white-text">
                 <div class="row justify-content-center white-text">
+                    <h2   class="text-uppercase" th:text="${post.title}">Post Title</h2>
                     <div class="col-lg-8">
-                        <div class="modal-body  white-text">
+                        <div class="container1" th:style="text-align">
                             <!-- Project details-->
-                            <h2 class="text-uppercase" th:text="${post.title}">Post Title</h2>
-                            <p th:text="${'Content'  + ': ' + post.content} "></p>
-                            <h3 th:if="${hasTags}">TAgs</h3>
-                            <div th:if="${hasTags}">
 
-                                <span>Tags:</span>
+                            <p class="message-body" th:text="${'Content'  + ': ' + post.content} "></p>
+                            <h3  class="message-body"th:if="${hasTags}">TAgs</h3>
+                            <div class="message-body" th:if="${hasTags}">
+
+                                <span class="row justify-content-center white-text">Tags:</span>
                                 <div th:each="tag: ${tags}">
-                                    <a href="#" th:text="${tag.name}"></a>
+                                    <a class="message-body" href="#" th:text="${tag.name}"></a>
                                 </div>
                             </div>
 
 
                             <ul class="list-inline">
                                 <li>
-                                    <strong>Author:</strong>
-                                    <p class="margin12" th:text="${post.getCreatedBy().email}"></p>
+                                    <strong class="row justify-content-center white-text">Author:</strong>
+                                    <p  class="message-body" th:text="${post.getCreatedBy().email}"></p>
                                 </li>
                                 <li>
-                                    <strong>Create Date:</strong>
-                                    <p class="margin12" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                                    <strong class="row justify-content-center white-text">Create Date:</strong>
+                                    <p class="message-body" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
                                 </li>
 
                                 <li>
-                                    <strong>Likes:</strong>
-                                    <p class="margin12" th:text="${likeCount}"></p>
+                                    <strong class="row justify-content-center white-text">Likes:</strong>
+                                    <p class="message-body" th:text="${likeCount}"></p>
                                 </li>
                             </ul>
 
-                            <h3 th:if="${isAuthenticated}">
+                            <h5 class="container1" th:if="${isAuthenticated}">
                                 <!--    <a href="#" th:href="@{/beers/{id}/update(id=${beer.id})}">Update</a>-->
                                 <!--    <a href="#" th:href="@{/beers/{id}/delete(id=${beer.id})}">Delete</a>-->
-                                <a href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}"
+                                <a class="message-body" href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}"
                                    th:href="@{__${requestURI}__/update}">Update</a>
-                                <a href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}"
+                                <a class="message-body" href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}"
                                    th:href="@{__${requestURI}__/delete}">Delete</a>
 
 
-                                <a href="#" th:unless="${hasUserLikedPost}"
+                                <a class="message-body" href="#" th:unless="${hasUserLikedPost}"
                                    th:href="@{/posts/{id}/like(id=${post.id})}">Like</a>
-                                <a href="#" th:if="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Remove
+                                <a class="message-body"  href="#" th:if="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Remove
                                     Like</a>
-                                <a href="#" th:unless="${isBlocked}" th:href="@{__${requestURI}__/AddComment}">Add
+                                <a class="message-body" href="#" th:unless="${isBlocked}" th:href="@{__${requestURI}__/AddComment}">Add
                                     comment</a>
 
                                 <!-- <a href="#" th:href="@{__${requestURI}__/like}">Like</a>-->
 
-                            </h3>
+                            </h5>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <br/><br/>
 
 
     <div th:if="${hasComments}">

@@ -16,12 +16,13 @@
     <p class="message-body"  th:text="${'IsAdmin'  + ': ' + user.isAdmin()} "></p>
     <p class="message-body"  th:text="${'IsBlocked'  + ': ' + user.isBlocked()} "></p>
     <p class="message-body" th:if="${isPhoneNumberAdminView}" th:text="${'Phone number'  + ': ' + AdminPhoneNumber.getPhoneNumber()} "></p>
- <h3>
-    <a href="#"  th:unless="${user.isAdmin() || user.isBlocked()}" th:href="@{/users/{id}/blocked(id=${user.id})} ">Blocked user</a>
-    <a href="#" th:if="${user.isBlocked()}" th:href="@{/users/{id}/unblocked(id=${user.id})} ">Un Blocked user</a>
-    <a href="#" th:unless="${user.isAdmin()}" th:href="@{/users/{id}/makeAdmin (id =${user.id})}">Make admin</a>
-    <a href="#" th:unless="${user.isAdmin()}" th:href="@{/users/{id}/delete (id =${user.id})}">Delete user </a>
- </h3>
+ <h4>
+     <br/><br/>
+    <a href="#" class="message-body" th:unless="${user.isAdmin() || user.isBlocked()}" th:href="@{/users/{id}/blocked(id=${user.id})} ">Blocked user</a>
+    <a href="#" class="message-body" th:if="${user.isBlocked()}" th:href="@{/users/{id}/unblocked(id=${user.id})} ">Un Blocked user</a>
+    <a href="#" class="message-body" th:unless="${user.isAdmin()}" th:href="@{/users/{id}/makeAdmin (id =${user.id})}">Make admin</a>
+    <a href="#" class="message-body" th:unless="${user.isAdmin()}" th:href="@{/users/{id}/delete (id =${user.id})}">Delete user </a>
+ </h4>
     <form th:replace="~{PostsView.html :: postsList}"></form>
   </div>
 </div>

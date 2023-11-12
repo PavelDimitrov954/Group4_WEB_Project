@@ -7,7 +7,9 @@
     <meta name="author" content=""/>
     <title th:text="${title}">Default Title</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="/static/assets/img/favicon.ico"/>
+    <link rel="icon" type="image/png"  th:href="@{../static/favicon.ico}" href="/static/assets/img/favicon.ico">
+
+
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Google fonts-->
@@ -62,6 +64,11 @@
         <div class="masthead-subheading" th:text="#{home.welcome}">Welcome to Movie forum!</div>
         <div class="masthead-heading ">Discover, Discuss, and Delve into the World of Movies</div>
 
+    </div>
+    <div>
+        <h3>Our Community in Numbers</h3>
+        <h4>Number of Users: <span th:text="${userCount}">0</span></h4>
+        <h4>Number of Posts: <span th:text="${postCount}">0</span></h4>
     </div>
     <!-- Section for Top Commented Posts -->
     <section id="top-commented">

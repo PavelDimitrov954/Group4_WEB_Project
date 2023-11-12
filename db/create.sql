@@ -78,10 +78,12 @@ CREATE TABLE post_tags
     tag_id  INT,
 
     constraint posts_post_id_fk
-        foreign key (post_id) references posts (post_id),
+        foreign key (post_id) references posts (post_id)
+            ON DELETE CASCADE,
 
     constraint tags_tags_id_fk
         foreign key (tag_id) references tags (tag_id)
+            ON DELETE CASCADE
 
 
 );

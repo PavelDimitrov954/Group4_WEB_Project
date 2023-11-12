@@ -5,40 +5,31 @@
 <div th:replace="~{index.html :: nav}"></div>
 <header class="masthead">
     <div class="container">
-<div class="body-content">
-    <div th:style="text-align">
-
         <h1>User</h1>
-        <p>asd</p>
-        <p class="margin12" th:text="${'Username'  + ': ' + user.username} "></p>
-        <p class="margin12" th:text="${'First Name'  + ': ' + user.firstName} "></p>
-        <p class="margin12" th:text="${'Last Name'  + ': ' + user.lastName} "></p>
-        <p class="margin12" th:text="${'Email'  + ': ' + user.email} "></p>
-        <p class="margin12" th:if="${isPhoneNumber}" th:text="${'Phone number'  + ': ' + AdminPhoneNumber.getPhoneNumber()} "></p>
-
+    <div class="container1" th:style="text-align" >
+        <p class="message-body"  th:text="${'Username'  + ': ' + user.username} "></p>
+        <p class="message-body" th:text="${'First Name'  + ': ' + user.firstName} "></p>
+        <p class="message-body"  th:text="${'Last Name'  + ': ' + user.lastName} "></p>
+        <p class="message-body"  th:text="${'Email'  + ': ' + user.email} "></p>
+        <p class="message-body"  th:if="${isPhoneNumber}" th:text="${'Phone number'  + ': ' + AdminPhoneNumber.getPhoneNumber()} "></p>
+        <br/><br/>
             <form th:if="${user.isAdmin()}"  th:unless="${isPhoneNumber}" action="#" th:action="@{/users/current}" th:object="${adminPhoneNumber}" method="post">
 
                 <input type="text" th:field="*{phoneNumber}"/>
-                <br/><br/>
-
-                <input type="submit" value="Add phone number"/>
+                <input type="submit" class="btn btn-primary mb-2" value="Add phone number"/>
             </form>
 
-
-
+        <br/><br/>
+        <h5>
             <a class="message-body" href="#"  th:if="${user.isAdmin() && isPhoneNumber}" th:href="@{/users/{id}/deleteNumber (id=${user.id})}">Delete phone number</a>
-
-
-
-
         <a class="message-body" href="#"  th:href="@{/users/{id}/update (id =${user.id})}">Update  </a>
-        <a class="message-body" href="#"  th:href="@{/users/current/{id}/delete (id =${user.id})}">Delete  </a>
-
+        <a class="message-body" href="#"  th:href="@{/users/{id}/delete (id =${user.id})}">Delete  </a>
+        </h5>
         <form th:replace="~{PostsView.html :: postsList}"></form>
         <form th:replace="~{index.html :: footer}"></form>
     </div>
 </div>
-    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="/static/js/scripts.js" th:src="@{../static/js/scripts.js}"></script>

@@ -5,13 +5,15 @@
 <body id="page-top">
 <div th:replace="~{index.html :: nav}"></div>
 <header class="masthead">
-        <div class="container">
-            <div class="masthead-subheading" th:text="${'Comment'}">Comment</div>
-            <p th:text="${comment.getContent()}"></p>
-            <p th:text="${comment.createdBy.email}"></p>
-            <p th:text="${comment.createDate}"></p>
-            <a href="#" th:href="@{__${requestURI}__/update}" th:if="${ hasModifyPermissions}">Update</a>
-            <a href="#" th:href="@{__${requestURI}__/delete}" th:if="${ hasModifyPermissions}">Delete</a>
+    <div class="masthead-subheading" th:text="${'Comment'}">Comment</div>
+        <div class="container1" th:style="text-align">
+
+            <p class="message-body" th:text="${comment.getContent()}"></p>
+            <p class="message-body" th:text="${comment.createdBy.email}"></p>
+            <p class="message-body" th:text="${comment.createDate}"></p>
+            <br/><br/>
+            <a class="message-body" href="#" th:href="@{__${requestURI}__/update}" th:if="${ hasModifyPermissions}">Update</a>
+            <a class="message-body" href="#" th:href="@{__${requestURI}__/delete}" th:if="${ hasModifyPermissions}">Delete</a>
         </div>
     </header>
 
