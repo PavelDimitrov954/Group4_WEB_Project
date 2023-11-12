@@ -1,10 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <form th:replace="~{index.html :: head('All Posts')}"></form>
 <body>
-<form th:replace="~{index.html :: header}"></form>
-
+<form th:replace="~{index.html :: nav}"></form>
 <div class="container mt-4">
     <div class="row">
         <!-- Loop to iterate over posts -->
@@ -21,7 +19,6 @@
         <!-- End loop -->
     </div>
 </div>
-
 <form th:replace="~{index.html :: footer}"></form>
 </body>
 </html>
