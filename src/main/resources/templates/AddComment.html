@@ -3,7 +3,7 @@
 <form th:replace="~{index.html :: head('Add comment')}"></form>
 <body id="page-top">
 <div th:replace="~{index.html :: nav}"></div>
-<header class="masthead" th:fragment="comment_form(submit)">
+<header class="masthead" th:fragment="comment_form()">
     <div class="container">
         <div class="masthead-subheading" th:text="${'Comment'}">Comment!</div>
         <div class="body-content" >
@@ -11,8 +11,8 @@
                 <label th:text="${'Content'}">Content</label>
                 <br/>
                 <input th:field="*{content}" type="text"/>
-                <input th:value="${submit}" type="submit" value="Add comment"/>
-                <input class="btn btn-primary mb-2"  th:text="${submit}" type="submit" value="Add comment"/>
+                <input  type="submit" value="Submit"/>
+
             </form>
         </div>
     </div>

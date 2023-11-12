@@ -2,7 +2,6 @@ package com.example.group4_web_project.repositories;
 
 import com.example.group4_web_project.models.*;
 import com.example.group4_web_project.exceptions.EntityNotFoundException;
-import io.swagger.v3.oas.annotations.tags.Tags;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
