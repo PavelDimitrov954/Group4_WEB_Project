@@ -8,6 +8,7 @@ import com.example.group4_web_project.helpers.UserMapper;
 import com.example.group4_web_project.models.*;
 import com.example.group4_web_project.services.UserService;
 
+import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@Api(tags = "User Management")
 public class UserRestController {
 
     private final UserService userService;

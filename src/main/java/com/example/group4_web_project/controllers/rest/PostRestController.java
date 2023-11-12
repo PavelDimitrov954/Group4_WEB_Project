@@ -9,6 +9,7 @@ import com.example.group4_web_project.helpers.TagMapper;
 import com.example.group4_web_project.models.*;
 import com.example.group4_web_project.services.PostService;
 import com.example.group4_web_project.models.Post;
+import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
+@Api(tags = "Post Management")
 public class PostRestController {
 
     private final PostService postService;
