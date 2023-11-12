@@ -3,15 +3,15 @@
 <form th:replace="~{index.html :: head('Add comment')}"></form>
 <body id="page-top">
 <div th:replace="~{index.html :: nav}"></div>
-<header class="masthead">
+<header class="masthead" th:fragment="comment_form(submit)">
     <div class="container">
         <div class="masthead-subheading" th:text="${'Comment'}">Comment!</div>
-        <div class="body-content" th:fragment="comment_form(submit)">
+        <div class="body-content" >
             <form action="#" method="post" th:action="@{__${requestURI}__}" th:object="${comment}">
                 <label th:text="${'Content'}">Content</label>
                 <br/>
                 <input th:field="*{content}" type="text"/>
-                <input th:text="${submit}" type="submit" value="Add comment"/>
+                <input th:value="${submit}" type="submit" value="Add comment"/>
             </form>
         </div>
     </div>
