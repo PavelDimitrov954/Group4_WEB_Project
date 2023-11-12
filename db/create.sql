@@ -28,7 +28,7 @@ create table posts
 create table comments
 (
     comment_id  int auto_increment primary key,
-    content     varchar(256) not null,
+    content     text(8192) not null,
     create_date datetime     not null,
     user_id     int          not null,
     post_id     int          not null,

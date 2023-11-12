@@ -12,13 +12,13 @@
 
             <div class="container white-text">
                 <div class="row justify-content-center white-text">
-                    <h2   class="text-uppercase" th:text="${post.title}">Post Title</h2>
+                    <h2 class="text-uppercase" th:text="${post.title}">Post Title</h2>
                     <div class="col-lg-8">
                         <div class="container1" th:style="text-align">
                             <!-- Project details-->
 
                             <p class="message-body" th:text="${'Content'  + ': ' + post.content} "></p>
-                            <h3  class="message-body"th:if="${hasTags}">TAgs</h3>
+                            <h3 class="message-body" th:if="${hasTags}">Tags</h3>
                             <div class="message-body" th:if="${hasTags}">
 
                                 <span class="row justify-content-center white-text">Tags:</span>
@@ -31,11 +31,12 @@
                             <ul class="list-inline">
                                 <li>
                                     <strong class="row justify-content-center white-text">Author:</strong>
-                                    <p  class="message-body" th:text="${post.getCreatedBy().email}"></p>
+                                    <p class="message-body" th:text="${post.getCreatedBy().email}"></p>
                                 </li>
                                 <li>
                                     <strong class="row justify-content-center white-text">Create Date:</strong>
-                                    <p class="message-body" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                                    <p class="message-body"
+                                       th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
                                 </li>
 
                                 <li>
@@ -47,17 +48,21 @@
                             <h5 class="container1" th:if="${isAuthenticated}">
                                 <!--    <a href="#" th:href="@{/beers/{id}/update(id=${beer.id})}">Update</a>-->
                                 <!--    <a href="#" th:href="@{/beers/{id}/delete(id=${beer.id})}">Delete</a>-->
-                                <a class="message-body" href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}"
+                                <a class="message-body" href="#" th:if="${hasModifyPermissions}" ||
+                                   th:unless="${isBlocked}"
                                    th:href="@{__${requestURI}__/update}">Update</a>
-                                <a class="message-body" href="#" th:if="${hasModifyPermissions}" || th:unless="${isBlocked}"
+                                <a class="message-body" href="#" th:if="${hasModifyPermissions}" ||
+                                   th:unless="${isBlocked}"
                                    th:href="@{__${requestURI}__/delete}">Delete</a>
 
 
                                 <a class="message-body" href="#" th:unless="${hasUserLikedPost}"
                                    th:href="@{/posts/{id}/like(id=${post.id})}">Like</a>
-                                <a class="message-body"  href="#" th:if="${hasUserLikedPost}" th:href="@{/posts/{id}/like(id=${post.id})}">Remove
+                                <a class="message-body" href="#" th:if="${hasUserLikedPost}"
+                                   th:href="@{/posts/{id}/like(id=${post.id})}">Remove
                                     Like</a>
-                                <a class="message-body" href="#" th:unless="${isBlocked}" th:href="@{__${requestURI}__/AddComment}">Add
+                                <a class="message-body" href="#" th:unless="${isBlocked}"
+                                   th:href="@{__${requestURI}__/AddComment}">Add
                                     comment</a>
 
                                 <!-- <a href="#" th:href="@{__${requestURI}__/like}">Like</a>-->
@@ -72,20 +77,30 @@
     <br/><br/>
 
 
-    <div th:if="${hasComments}">
+    <div th:if="${hasComments}" class="comment-section">
         <div class="container1" th:each="comment : ${comments}">
             <div class="message-body">
-                <h6><a href="#" th:href="@{__${requestURI}__/comment/{commentId} (commentId=${comment.id})}"
-                       th:text="${comment.content}">Comment</a></h6>
+                <h6>
+                    <a href="#" th:href="@{__${requestURI}__/comment/{commentId} (commentId=${comment.id})}"
+                       th:text="${comment.content}">Comment</a>
+                </h6>
                 <p class="comment-author" th:text="${comment.getCreatedBy().email}">Author</p>
                 <p class="comment-date" th:text="${comment.getCreateDate()}"> Create Date</p>
             </div>
         </div>
-
     </div>
 
+
     </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="/static/js/scripts.js" th:src="@{../static/js/scripts.js}"></script>
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <!-- * *                               SB Forms JS                               * *-->
+    <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 </header>
 
 

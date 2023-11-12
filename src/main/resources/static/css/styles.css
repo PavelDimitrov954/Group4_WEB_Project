@@ -11235,6 +11235,9 @@ section#contact form#contactForm :-ms-input-placeholder {
 
 .container1 .message-body {
 
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   width: 300px;
   border: 1px solid #CCC;
   background-color: #ffffff;
@@ -11249,6 +11252,7 @@ section#contact form#contactForm :-ms-input-placeholder {
 
 .container1 .message-body p {
   margin: 0;
+  word-break: break-all;
 }
 
 .comment-author{
@@ -11259,5 +11263,14 @@ section#contact form#contactForm :-ms-input-placeholder {
   color: grey;
 }
 
+.comment-section .message-body {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.comment-section .message-body h6 {
+  word-break: break-all;
+}
 
 
