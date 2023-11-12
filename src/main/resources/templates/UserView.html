@@ -26,15 +26,16 @@
 
 
 
-            <a href="#"  th:if="${user.isAdmin() && isPhoneNumber}" th:href="@{/users/{id}/deleteNumber (id=${user.id})}">Delete phone number</a>
+            <a class="message-body" href="#"  th:if="${user.isAdmin() && isPhoneNumber}" th:href="@{/users/{id}/deleteNumber (id=${user.id})}">Delete phone number</a>
 
 
 
 
-        <a href="#"  th:href="@{/users/{id}/update (id =${user.id})}">Update  </a>
-        <a href="#"  th:href="@{/users/current/{id}/delete (id =${user.id})}">Delete  </a>
+        <a class="message-body" href="#"  th:href="@{/users/{id}/update (id =${user.id})}">Update  </a>
+        <a class="message-body" href="#"  th:href="@{/users/current/{id}/delete (id =${user.id})}">Delete  </a>
 
         <form th:replace="~{PostsView.html :: postsList}"></form>
+        <form th:replace="~{index.html :: footer}"></form>
     </div>
 </div>
     </div>
