@@ -11273,4 +11273,10 @@ section#contact form#contactForm :-ms-input-placeholder {
   word-break: break-all;
 }
 
-
+textarea.form-control {
+  width: 50%;
+  min-height: 150px;
+  resize: vertical;
+  display: block;
+  margin: 0 auto;    
+}

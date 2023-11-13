@@ -10,7 +10,7 @@
             <form action="#" method="post" th:action="@{__${requestURI}__}" th:object="${comment}">
                 <label th:text="${'Content'}">Content</label>
                 <br/>
-                <input th:field="*{content}" type="text"/>
+                <textarea th:field="*{content}" rows="4" cols="50" class="form-control"></textarea>
                 <input  type="submit" class="btn btn-primary mb-2" value="Submit"/>
 
             </form>
